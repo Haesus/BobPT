@@ -9,6 +9,8 @@ import UIKit
 import NMapsMap
 
 class ViewController: UIViewController {
+    
+    var a: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
