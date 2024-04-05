@@ -9,9 +9,6 @@ import UIKit
 import NMapsMap
 
 class ViewController: UIViewController {
-    
-    var gitPractice: String?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
