@@ -8,14 +8,9 @@
 import UIKit
 import NMapsMap
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
-    var a: String?
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let mapView = NMFMapView(frame: view.frame)
-        view.addSubview(mapView)
     }
 }
