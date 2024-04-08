@@ -16,10 +16,13 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let receivedData,
-              let coordinate = receivedData["coordinate"] as? [Double] else {return}
+              let coordinate = receivedData["coordinate"] as? [String] else {return}
+        let DoubleCoordinate = coordinate.compactMap { Double($0) }
         
-        let lat: CLLocationDegrees = coordinate[0]
-        let lon: CLLocationDegrees = coordinate[1]
+        let x = DoubleCoordinate[0]
+        let y = DoubleCoordinate[1]
+        let tm = NMGTm128(x: x, y: y)
+        let latLng = tm.toLatLng()
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -29,15 +32,15 @@ class MapViewController: UIViewController {
             mapView.leadingAnchor.constraint(equalTo: bobPTMapView.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: bobPTMapView.trailingAnchor)
         ])
-        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: lat, lng: lon))
+        let cameraUpdate = NMFCameraUpdate(scrollTo: latLng)
         mapView.moveCamera(cameraUpdate)
         
-        let marker = NMFMarker(position: NMGLatLng(lat: lat, lng: lon))
+        let marker = NMFMarker(position: latLng)
         marker.mapView = mapView
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        guard case datasource.title = receivedData["name"] as? String else {return}
+        datasource.title = receivedData["name"] as? String ?? "default"
         infoWindow.open(with: marker)
         localAddress.text = receivedData["address"] as? String
         // Do any additional setup after loading the view.
