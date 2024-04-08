@@ -43,8 +43,8 @@ class MainViewController: UIViewController {
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         
-        koreaFoodButtonLabel.configuration?.image = UIImage(named: "noodle")
-        koreaFoodButtonLabel.configuration?.imagePadding = 100
+//        koreaFoodButtonLabel.configuration?.image = UIImage(named: "noodle")
+//        koreaFoodButtonLabel.configuration?.imagePadding = 100
     }
     
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
