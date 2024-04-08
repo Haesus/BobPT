@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42BE7B35955570FCF5163BD /* Pods_BobPT.framework */; };
+		AF4E067D2BC39359003B2AFF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4E067C2BC39359003B2AFF /* Model.swift */; };
 		FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951452BBFE18000D42AEC /* AppDelegate.swift */; };
 		FA1951482BBFE18000D42AEC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951472BBFE18000D42AEC /* SceneDelegate.swift */; };
 		FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951492BBFE18000D42AEC /* MainViewController.swift */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		037A8917696B2F62461E226C /* Pods-BobPT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BobPT.release.xcconfig"; path = "Target Support Files/Pods-BobPT/Pods-BobPT.release.xcconfig"; sourceTree = "<group>"; };
 		9E92F271DAF5B01FA8E143A6 /* Pods-BobPT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BobPT.debug.xcconfig"; path = "Target Support Files/Pods-BobPT/Pods-BobPT.debug.xcconfig"; sourceTree = "<group>"; };
+		AF4E067C2BC39359003B2AFF /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		B42BE7B35955570FCF5163BD /* Pods_BobPT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BobPT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA1951422BBFE18000D42AEC /* BobPT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BobPT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA1951452BBFE18000D42AEC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 		FA93D57A2BC0E8110007A361 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				AF4E067C2BC39359003B2AFF /* Model.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */,
 				FA93D5842BC0EA0A0007A361 /* SettingViewController.swift in Sources */,
 				FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */,
+				AF4E067D2BC39359003B2AFF /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
