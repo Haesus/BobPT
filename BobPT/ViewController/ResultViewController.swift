@@ -24,6 +24,8 @@ class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         naverSearch(keyword: "강남 중국")
+        
+        print(food)
         // Do any additional setup after loading the view.
     }
     func naverSearch(keyword:String) {
