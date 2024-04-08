@@ -14,6 +14,7 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var todayLbl: UILabel!
     
     var restaurant = [Restaurant]()
+    var food: [String]?
     
     var keyword = "강남 중국"
     
