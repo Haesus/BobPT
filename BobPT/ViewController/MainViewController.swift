@@ -43,8 +43,8 @@ class MainViewController: UIViewController {
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         
-//        koreaFoodButtonLabel.configuration?.image = UIImage(named: "noodle")
-//        koreaFoodButtonLabel.configuration?.imagePadding = 100
+        let image = UIImage(named: "noodle")?.resizeImage(size: CGSize(width: 20, height: 20))
+        koreaFoodButtonLabel.setImage(image, for: .normal)
     }
     
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
@@ -128,12 +128,10 @@ class MainViewController: UIViewController {
             present(alert, animated: true)
         }
         
-        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController") else{
+        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else{
             return
         }
-        guard let result = uvc as? ResultViewController else {
-            return
-        }
+        
         result.food = selectedFood
         result.place = userLocation
         self.navigationController?.pushViewController(uvc, animated: true)
@@ -189,7 +187,4 @@ extension MainViewController: CLLocationManagerDelegate {
 
 // MARK: - NavigationController
 extension MainViewController {
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //
-    //    }
 }
