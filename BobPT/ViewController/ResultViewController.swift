@@ -43,7 +43,7 @@ class ResultViewController: UIViewController {
             case .success( let root): self.restaurant = root.items
                 DispatchQueue.main.async {
                     self.todayLbl.text = "오늘의 추천 식당은"
-                    let message = root as? String
+                    let message = root.items[0].title
                     self.restLbl.text = message                    //음식점 랜덤 출력될 Label
                     self.endLbl.text = "맛있게 드세요"
                 }
