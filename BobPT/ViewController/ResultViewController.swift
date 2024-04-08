@@ -27,23 +27,20 @@ class ResultViewController: UIViewController {
         for i in 0..<food.count {
             let j = "\(place) \(food[i])"
             naverSearch(keyword: j)
-            print(save)
         }
-       
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func buttonaction(_ sender: Any) {
+        print(save)
+    }
+    
     func naverSearch(keyword:String) {
-        let endPoint = "https://openapi.naver.com/v1/search/local.json?query=\(keyword)"
+        let endPoint = "https://openapi.naver.com/v1/search/local.json?query=\(keyword)&display=5"
         let params: Parameters = ["keyword": keyword]
         let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
-        let alamo = AF.request(
-            endPoint,
-            method: .get,
-            parameters: params,
-            headers: headers
-            )
+        let alamo = AF.request(endPoint, method: .get, parameters: params, headers: headers)
         alamo.responseDecodable(of: Root.self) { response in
-            print(response)
             switch response.result {
             case .success(let root):
                 self.save.append(root)
