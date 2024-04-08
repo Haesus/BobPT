@@ -11,6 +11,8 @@ import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
     
+    var selectedFood: [String] = []
+    
     var koreaFoodBool = false
     @IBOutlet weak var koreaFoodButtonLabel: UIButton!
     var chinaFoodBool = false
@@ -30,16 +32,29 @@ class MainViewController: UIViewController {
         if let target = urlWithFilename("SelectedList.plist", type: .propertyList), let source = Bundle.main.url(forResource: "SelectedList.plist", withExtension: nil) {
             copyFile(target, source)
         }
-        
     }
+    
+//    func selectedCategory(foodCategory: Bool, label: UIButton) {
+//        if koreaFoodBool == false {
+//            koreaFoodButtonLabel.tintColor = .gray
+//            koreaFoodBool = true
+//            selectedFood.append("한식")
+//        } else {
+//            koreaFoodButtonLabel.tintColor = .link
+//            koreaFoodBool = false
+//            selectedFood = selectedFood.filter{$0 != "한식"}
+//        }
+//    }
     
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
         if koreaFoodBool == false {
             koreaFoodButtonLabel.tintColor = .gray
             koreaFoodBool = true
+            selectedFood.append("한식")
         } else {
             koreaFoodButtonLabel.tintColor = .link
             koreaFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "한식"}
         }
     }
     
@@ -47,9 +62,11 @@ class MainViewController: UIViewController {
         if chinaFoodBool == false {
             chinaFoodButtonLabel.tintColor = .gray
             chinaFoodBool = true
+            selectedFood.append("중식")
         } else {
             chinaFoodButtonLabel.tintColor = .link
             chinaFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "중식"}
         }
     }
     
@@ -57,9 +74,11 @@ class MainViewController: UIViewController {
         if japanFoodBool == false {
             japanFoodButtonLabel.tintColor = .gray
             japanFoodBool = true
+            selectedFood.append("일식")
         } else {
             japanFoodButtonLabel.tintColor = .link
             japanFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "일식"}
         }
     }
     
@@ -67,9 +86,11 @@ class MainViewController: UIViewController {
         if bunsikFoodBool == false {
             bunsikFoodButtonLabel.tintColor = .gray
             bunsikFoodBool = true
+            selectedFood.append("분식")
         } else {
             bunsikFoodButtonLabel.tintColor = .link
             bunsikFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "분식"}
         }
     }
     
@@ -77,9 +98,11 @@ class MainViewController: UIViewController {
         if burgerFoodBool == false {
             burgerFoodButtonLabel.tintColor = .gray
             burgerFoodBool = true
+            selectedFood.append("햄버거")
         } else {
             burgerFoodButtonLabel.tintColor = .link
             burgerFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "햄버거"}
         }
     }
     
@@ -87,9 +110,11 @@ class MainViewController: UIViewController {
         if noodleFoodBool == false {
             noodleFoodButtonLabel.tintColor = .gray
             noodleFoodBool = true
+            selectedFood.append("면류")
         } else {
             noodleFoodButtonLabel.tintColor = .link
             noodleFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "면류"}
         }
     }
     
@@ -102,9 +127,14 @@ class MainViewController: UIViewController {
             present(alert, animated: true)
         }
         
+        print(selectedFood)
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController") else{
                     return
                 }
+//        guard let result = uvc as? ResultViewController else {
+//            return
+//        }
+//        result.a = selectedFood
         self.navigationController?.pushViewController(uvc, animated: true)
     }
 }

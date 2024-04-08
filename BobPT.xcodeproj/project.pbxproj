@@ -15,12 +15,12 @@
 		FA19514D2BBFE18000D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA19514C2BBFE18000D42AEC /* Base */; };
 		FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA19514E2BBFE18100D42AEC /* Assets.xcassets */; };
 		FA1951522BBFE18100D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA1951512BBFE18100D42AEC /* Base */; };
+		FA5E3D5C2BC3B217002793D3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA5E3D5B2BC3B217002793D3 /* Alamofire */; };
+		FA5E3D5E2BC3B217002793D3 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = FA5E3D5D2BC3B217002793D3 /* AlamofireDynamic */; };
 		FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */; };
 		FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */; };
 		FA93D5822BC0E9FE0007A361 /* SelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */; };
 		FA93D5842BC0EA0A0007A361 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5832BC0EA0A0007A361 /* SettingViewController.swift */; };
-		FA93D5872BC242EB0007A361 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA93D5862BC242EB0007A361 /* Alamofire */; };
-		FA93D5892BC242EB0007A361 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = FA93D5882BC242EB0007A361 /* AlamofireDynamic */; };
 		FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */; };
 /* End PBXBuildFile section */
 
@@ -50,8 +50,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */,
-				FA93D5892BC242EB0007A361 /* AlamofireDynamic in Frameworks */,
-				FA93D5872BC242EB0007A361 /* Alamofire in Frameworks */,
+				FA5E3D5E2BC3B217002793D3 /* AlamofireDynamic in Frameworks */,
+				FA5E3D5C2BC3B217002793D3 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,8 +164,8 @@
 			);
 			name = BobPT;
 			packageProductDependencies = (
-				FA93D5862BC242EB0007A361 /* Alamofire */,
-				FA93D5882BC242EB0007A361 /* AlamofireDynamic */,
+				FA5E3D5B2BC3B217002793D3 /* Alamofire */,
+				FA5E3D5D2BC3B217002793D3 /* AlamofireDynamic */,
 			);
 			productName = BobPT;
 			productReference = FA1951422BBFE18000D42AEC /* BobPT.app */;
@@ -517,12 +517,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA93D5862BC242EB0007A361 /* Alamofire */ = {
+		FA5E3D5B2BC3B217002793D3 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA93D5852BC242EB0007A361 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		FA93D5882BC242EB0007A361 /* AlamofireDynamic */ = {
+		FA5E3D5D2BC3B217002793D3 /* AlamofireDynamic */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA93D5852BC242EB0007A361 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = AlamofireDynamic;

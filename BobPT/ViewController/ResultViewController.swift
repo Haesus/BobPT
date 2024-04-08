@@ -14,6 +14,7 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var todayLbl: UILabel!
     
     var restaurant = [Restaurant]()
+    var a: [String] = []
     
     var keyword = "강남 중국"
     
@@ -23,6 +24,8 @@ class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         naverSearch(keyword: "강남 중국")
+        
+        print(a)
         // Do any additional setup after loading the view.
     }
     func naverSearch(keyword:String) {
