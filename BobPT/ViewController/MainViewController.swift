@@ -131,10 +131,10 @@ class MainViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController") else{
                     return
                 }
-//        guard let result = uvc as? ResultViewController else {
-//            return
-//        }
-//        result.a = selectedFood
+        guard let result = uvc as? ResultViewController else {
+            return
+        }
+        result.food = selectedFood
         self.navigationController?.pushViewController(uvc, animated: true)
     }
 }
