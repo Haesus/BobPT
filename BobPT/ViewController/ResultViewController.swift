@@ -15,7 +15,7 @@ class ResultViewController: UIViewController {
     
     var restaurant = [Restaurant]()
     var food: [String]?
-//    var keyword = [place+food]
+    var keyword = "강남"
     var place: String?
     let idKey = "6Omg7wmoaLIDTN99C0Ff"
     let secretKey = "R9vTsglyOb"
@@ -23,11 +23,18 @@ class ResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.todayLbl.text = "오늘의 추천장소는"
+        self.endLbl.text = "맛있게 드세요!"
         guard let food, let place else { return }
         for i in 0..<food.count {
             let j = "\(place) \(food[i])"
             naverSearch(keyword: j)
         }
+        let randomValue = Int.random(in: 0..<save.count)
+        let message = save[0].items[randomValue]
+        self.restLbl.text = message.title
+       
+        
         // Do any additional setup after loading the view.
     }
     
