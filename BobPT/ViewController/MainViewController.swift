@@ -5,12 +5,16 @@
 //  Created by 윤해수 on 4/5/24.
 //
 
-import UIKit
+import CoreLocation
 import NMapsMap
+import UIKit
 import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
     
+    var latitude: Double?
+    var longitude: Double?
+    var userLocation: String?
     var selectedFood: [String] = []
     
     var koreaFoodBool = false
@@ -26,25 +30,22 @@ class MainViewController: UIViewController {
     var noodleFoodBool = false
     @IBOutlet weak var noodleFoodButtonLabel: UIButton!
     
+    let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let target = urlWithFilename("SelectedList.plist", type: .propertyList), let source = Bundle.main.url(forResource: "SelectedList.plist", withExtension: nil) {
             copyFile(target, source)
         }
+        
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+        
+        koreaFoodButtonLabel.configuration?.image = UIImage(named: "noodle")
+        koreaFoodButtonLabel.configuration?.imagePadding = 100
     }
-    
-//    func selectedCategory(foodCategory: Bool, label: UIButton) {
-//        if koreaFoodBool == false {
-//            koreaFoodButtonLabel.tintColor = .gray
-//            koreaFoodBool = true
-//            selectedFood.append("한식")
-//        } else {
-//            koreaFoodButtonLabel.tintColor = .link
-//            koreaFoodBool = false
-//            selectedFood = selectedFood.filter{$0 != "한식"}
-//        }
-//    }
     
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
         if koreaFoodBool == false {
@@ -127,14 +128,14 @@ class MainViewController: UIViewController {
             present(alert, animated: true)
         }
         
-        print(selectedFood)
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController") else{
-                    return
-                }
+            return
+        }
         guard let result = uvc as? ResultViewController else {
             return
         }
         result.food = selectedFood
+        result.place = userLocation
         self.navigationController?.pushViewController(uvc, animated: true)
     }
 }
@@ -155,6 +156,34 @@ extension MainViewController {
         }
         
         try? FileManager.default.copyItem(at: source, to: target)
+    }
+}
+
+// MARK: - extension CLLocationManagerDelegate
+extension MainViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let currentLocation = locations.last else {
+            return
+        }
+        locationManager.stopUpdatingLocation()
+        latitude = currentLocation.coordinate.latitude
+        longitude = currentLocation.coordinate.longitude
+        
+        print("위도: \(latitude), 경도: \(longitude)")
+        
+        CLGeocoder().reverseGeocodeLocation(currentLocation) { (placemarks, error) in
+            if let error = error {
+                print("지오코딩 에러: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first {
+                if let locality = placemark.subLocality {
+                    self.userLocation = locality
+                    print("현재 위치의 동/면: \(locality)")
+                }
+            }
+        }
     }
 }
 
