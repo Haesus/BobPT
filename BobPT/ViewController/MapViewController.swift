@@ -16,12 +16,12 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let receivedData,
-              let coordinate = receivedData["coordinate"] as? [String] else {return}
-        let DoubleCoordinate = coordinate.compactMap { Double($0) }
+              let coordinateX = receivedData["mapx"] as? String,
+                let coordinateY = receivedData["mapy"] as? String else {return}
+        let DoubleCoordinateX = coordinateX.compactMap { Double($0) }
+        let DoubleCoordinateY = coordinateY.compactMap { Double($0) }
         
-        let x = DoubleCoordinate[0]
-        let y = DoubleCoordinate[1]
-        let tm = NMGTm128(x: x, y: y)
+        let tm = NMGTm128(x: DoubleCoordinateX, y: DoubleCoordinateY)
         let latLng = tm.toLatLng()
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
@@ -40,7 +40,7 @@ class MapViewController: UIViewController {
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        datasource.title = receivedData["name"] as? String ?? "default"
+        datasource.title = receivedData["title"] as? String ?? "default"
         infoWindow.open(with: marker)
         localAddress.text = receivedData["address"] as? String
         // Do any additional setup after loading the view.
