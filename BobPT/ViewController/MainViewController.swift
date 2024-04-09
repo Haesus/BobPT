@@ -5,6 +5,7 @@
 //  Created by 윤해수 on 4/5/24.
 //
 
+import Alamofire
 import CoreLocation
 import NMapsMap
 import UIKit
@@ -12,10 +13,15 @@ import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
     
+    let idKey = "6Omg7wmoaLIDTN99C0Ff"
+    let secretKey = "R9vTsglyOb"
+    
+    // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
     var userLocation: String?
     var selectedFood: [String] = []
+    var save: [Root] = []
     
     var koreaFoodBool = false
     @IBOutlet weak var koreaFoodButtonLabel: UIButton!
@@ -43,8 +49,8 @@ class MainViewController: UIViewController {
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         
-//        koreaFoodButtonLabel.configuration?.image = UIImage(named: "noodle")
-//        koreaFoodButtonLabel.configuration?.imagePadding = 100
+        let image = UIImage(named: "noodle")?.resizeImage(size: CGSize(width: 20, height: 20))
+        koreaFoodButtonLabel.setImage(image, for: .normal)
     }
     
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
@@ -128,15 +134,46 @@ class MainViewController: UIViewController {
             present(alert, animated: true)
         }
         
-        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController") else{
+        guard let userLocation else {
             return
         }
-        guard let result = uvc as? ResultViewController else {
+        
+        let dispatchGroup = DispatchGroup()
+        for i in 0..<selectedFood.count {
+            dispatchGroup.enter()
+            let j = "\(userLocation) \(selectedFood[i])"
+            naverSearch(keyword: j) { _ in
+                dispatchGroup.leave()
+            }
+        }
+        
+        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else{
             return
         }
-        result.food = selectedFood
-        result.place = userLocation
-        self.navigationController?.pushViewController(uvc, animated: true)
+        
+        dispatchGroup.notify(queue: .main) {
+            result.save = self.save
+            self.navigationController?.pushViewController(uvc, animated: true)
+        }
+    }
+}
+
+// MARK: - naverSearch API Function
+extension MainViewController {
+    func naverSearch(keyword:String, completion: @escaping ([Root]) -> Void) {
+        let endPoint = "https://openapi.naver.com/v1/search/local.json?query=\(keyword)&display=5"
+        let params: Parameters = ["keyword": keyword]
+        let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
+        let alamo = AF.request(endPoint, method: .get, parameters: params, headers: headers)
+        alamo.responseDecodable(of: Root.self) { response in
+            switch response.result {
+                case .success(let root):
+                    self.save.append(root)
+                    completion(self.save)
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
     }
 }
 
@@ -166,6 +203,7 @@ extension MainViewController: CLLocationManagerDelegate {
             return
         }
         locationManager.stopUpdatingLocation()
+        // TODO: - 사용자 위치 정보를 통해 추천 매장과의 거리 계산에 필요
         latitude = currentLocation.coordinate.latitude
         longitude = currentLocation.coordinate.longitude
         
@@ -185,11 +223,4 @@ extension MainViewController: CLLocationManagerDelegate {
             }
         }
     }
-}
-
-// MARK: - NavigationController
-extension MainViewController {
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //
-    //    }
 }

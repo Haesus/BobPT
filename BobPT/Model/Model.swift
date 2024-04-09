@@ -15,11 +15,6 @@ struct Restaurant: Codable{
     let address: String
     let mapx: String
     let mapy: String
-    
-//    enum CodingKeys: String, CodingKey {
-//            case title, link, category, description, telephone, mapx, mapy
-//        }
-
 }
 
 struct Root: Codable {

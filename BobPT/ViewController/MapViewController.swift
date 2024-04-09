@@ -20,13 +20,11 @@ class MapViewController: UIViewController {
         guard let receivedData else {return}
         let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
         let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
-        mapViewLoad(x: coordinateX, y: coordinateY)
+        mapViewLoad(x: coordinateY, y: coordinateX)
     }
     
     func mapViewLoad(x:Double, y:Double){
         let latLng = NMGLatLng(lat: x, lng: y)
-        
-        
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
