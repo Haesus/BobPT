@@ -7,22 +7,24 @@
 
 import UIKit
 import NMapsMap
+
 class MapViewController: UIViewController {
     
-    var receivedData : [String:Any]?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
+    var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
     
     @IBOutlet weak var localAddress: UILabel!
     @IBOutlet weak var bobPTMapView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let receivedData,
-              let coordinateX = receivedData["mapx"] as? String,
-                let coordinateY = receivedData["mapy"] as? String else {return}
-        let DoubleCoordinateX = coordinateX.compactMap { Double($0) }
-        let DoubleCoordinateY = coordinateY.compactMap { Double($0) }
         
-        let tm = NMGTm128(x: DoubleCoordinateX, y: DoubleCoordinateY)
-        let latLng = tm.toLatLng()
+        guard let receivedData else {return}
+        let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
+        let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
+        mapViewLoad(x: coordinateY, y: coordinateX)
+    }
+    
+    func mapViewLoad(x:Double, y:Double){
+        let latLng = NMGLatLng(lat: x, lng: y)
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,9 +42,8 @@ class MapViewController: UIViewController {
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        datasource.title = receivedData["title"] as? String ?? "default"
+        datasource.title = receivedData?.title ?? " "
         infoWindow.open(with: marker)
-        localAddress.text = receivedData["address"] as? String
-        // Do any additional setup after loading the view.
+        localAddress.text = receivedData?.address
     }
 }
