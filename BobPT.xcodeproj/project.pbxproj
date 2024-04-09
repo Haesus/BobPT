@@ -452,6 +452,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정보 내놔";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내내내놔";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -483,6 +485,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정보 내놔";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내내내놔";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

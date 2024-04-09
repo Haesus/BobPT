@@ -8,6 +8,16 @@
 import UIKit
 import UniformTypeIdentifiers
 
+extension Bundle {
+    var idKey: String? {
+        return infoDictionary?["ID_KEY"] as? String
+    }
+    
+    var secretKey: String? {
+        return infoDictionary?["SECRET_KEY"] as? String
+    }
+}
+
 extension UIImage {
     func resizeImage(size: CGSize) -> UIImage {
         let originalSize = self.size

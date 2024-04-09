@@ -12,10 +12,6 @@ import UIKit
 import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
-    
-    let idKey = "6Omg7wmoaLIDTN99C0Ff"
-    let secretKey = "R9vTsglyOb"
-    
     // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
@@ -162,6 +158,10 @@ class MainViewController: UIViewController {
 // MARK: - naverSearch API Function
 extension MainViewController {
     func naverSearch(keyword:String, completion: @escaping ([Root]) -> Void) {
+        guard let idKey = Bundle.main.idKey, let secretKey = Bundle.main.secretKey else {
+            print("API 키를 로드하지 못했습니다.")
+            return
+        }
         let endPoint = "https://openapi.naver.com/v1/search/local.json?query=\(keyword)&display=5"
         let params: Parameters = ["keyword": keyword]
         let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
