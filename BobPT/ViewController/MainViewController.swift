@@ -132,6 +132,7 @@ class MainViewController: UIViewController {
             alert.addAction(alertAction)
             present(alert, animated: true)
         }
+        print(selectedFood)
         
         guard let userLocation else {
             return

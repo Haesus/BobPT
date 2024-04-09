@@ -145,7 +145,6 @@
                                 <buttonConfiguration key="configuration" style="plain" title="지도로 위치 확인하기"/>
                                 <connections>
                                     <action selector="mapBtn:" destination="BZn-Wb-Lov" eventType="touchUpInside" id="hDi-U6-699"/>
-                                    <segue destination="ldf-Sp-scJ" kind="show" id="eCN-Ze-Jm5"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aj1-Nz-QMX">
@@ -187,9 +186,9 @@
         <!--Map View Controller-->
         <scene sceneID="ia0-oe-EzN">
             <objects>
-                <viewController id="ldf-Sp-scJ" customClass="MapViewController" customModule="BobPT" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapViewController" id="ldf-Sp-scJ" customClass="MapViewController" customModule="BobPT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vKd-nj-Fuu">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="식당 정보" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JNs-Fw-Uqg">

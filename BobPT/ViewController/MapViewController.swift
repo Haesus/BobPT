@@ -21,10 +21,9 @@ class MapViewController: UIViewController {
         let coordinateY = receivedData.mapy
         guard let microDoubleCoordinateX = Double(coordinateX),
               let microDoubleCoordinateY = Double(coordinateY) else {return}
-        let DoubleCoordinateX = microDoubleCoordinateX/1000000
-        let DoubleCoordinateY = microDoubleCoordinateY/1000000
-        
-        let latLng = NMGLatLng(lat: DoubleCoordinateX, lng: DoubleCoordinateY)
+        let DoubleCoordinateX = microDoubleCoordinateX/10000000
+        let DoubleCoordinateY = microDoubleCoordinateY/10000000
+        let latLng = NMGLatLng(lat: DoubleCoordinateY, lng: DoubleCoordinateX)
         
         
         let mapView = NMFMapView(frame: bobPTMapView.bounds)

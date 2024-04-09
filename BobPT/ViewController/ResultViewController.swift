@@ -13,20 +13,21 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var restLbl: UILabel!
     @IBOutlet weak var todayLbl: UILabel!
     
-    var restaurant = [Restaurant]()
+    var restaurant: Restaurant?
     var save: [Root]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.todayLbl.text = "오늘의 추천장소는"
         self.endLbl.text = "맛있게 드세요!"
-        guard let save else {
-            return
-        }
+        print(save)
         guard let message = self.save?[0].items.randomElement() else {
             return
         }
         self.restLbl.text = message.title
+        restaurant = message
+        print(restaurant?.mapx)
+        print(restaurant?.mapy)
     }
     
     /*
@@ -39,8 +40,11 @@ class ResultViewController: UIViewController {
      }
      */
     @IBAction func mapBtn(_ sender: Any) {
-        let mapPlace = restaurant as? MapViewController
-        performSegue(withIdentifier: "map", sender: nil)
-    }   //식당위치확인 버튼 클릭 후 진웅님 맵뷰로 화면 전환
-    
+        guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let result = uvc as? MapViewController else{
+            return
+        }
+        
+        result.receivedData = restaurant
+        self.navigationController?.pushViewController(uvc, animated: true)
+    }
 }
