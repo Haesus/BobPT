@@ -7,23 +7,59 @@
 
 import UIKit
 
-class SelectedListViewController: UIViewController {
-
+class SelectedListViewController: UITableViewController {
+    var plistArray: [[String: Any]]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.rowHeight = 100
+        plistArray = readPlist()
+    }
+}
 
-        // Do any additional setup after loading the view.
+extension SelectedListViewController {
+    func readPlist() -> [[String: Any]] {
+        guard let url = urlWithFilename("SelectedList.plist", type: .propertyList) else {
+            return []
+        }
+        do {
+            let plistData = try Data(contentsOf: url)
+            
+            guard let decodedArray = try PropertyListSerialization.propertyList(from: plistData, format: nil) as? [[String: Any]] else {
+                return []
+            }
+            return decodedArray
+        } catch {
+            print("Error reading plist: \(error)")
+            return []
+        }
+    }
+}
+
+extension SelectedListViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return plistArray?.count ?? 0
     }
-    */
-
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        guard let dic = plistArray?[indexPath.row] as? [String: String] else {
+            return cell
+        }
+        
+        print("지나간다~")
+        let foodNameLabel = cell.viewWithTag(1) as? UILabel
+        let dateNameLabel = cell.viewWithTag(2) as? UILabel
+        
+        foodNameLabel?.text = dic["title"]
+        dateNameLabel?.text = dic["date"]
+        
+        return cell
+    }
 }

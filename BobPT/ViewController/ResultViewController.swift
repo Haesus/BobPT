@@ -10,8 +10,8 @@ import Alamofire
 
 class ResultViewController: UIViewController {
     
-    var restaurant: Restaurant?
     var save: [Root]?
+    var restaurant: Restaurant?
     
     @IBOutlet weak var endLbl: UILabel!
     @IBOutlet weak var restLbl: UILabel!
@@ -39,33 +39,32 @@ class ResultViewController: UIViewController {
     }
 }
 
+// MARK: - extension writePlist Function
 extension ResultViewController {
     func writePlist() {
         guard let restaurant, let url = urlWithFilename("SelectedList.plist", type: .propertyList) else {
             return
         }
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let currentDate = dateFormatter.string(from: Date())
-        
         do {
-            var dictionaryPlist: [String: Any] = [:]
-            if let existingData = try? Data(contentsOf: url), let decodedDictionary = try? PropertyListSerialization.propertyList(from: existingData, format: nil) as? [String: Any] {
-                dictionaryPlist = decodedDictionary
+            var arrayPlist: [[String: Any]] = []
+            if let existingData = try? Data(contentsOf: url), let decodedArray = try? PropertyListSerialization.propertyList(from: existingData, format: nil) as? [[String: Any]] {
+                arrayPlist = decodedArray
             }
-            var restaurantDictionary: [String: Any] = [:]
-            restaurantDictionary["title"] = restaurant.title
-            restaurantDictionary["link"] = restaurant.link
-            restaurantDictionary["category"] = restaurant.category
-            restaurantDictionary["description"] = restaurant.description
-            restaurantDictionary["address"] = restaurant.address
-            restaurantDictionary["mapx"] = restaurant.mapx
-            restaurantDictionary["mapy"] = restaurant.mapy
             
-            dictionaryPlist[currentDate] = restaurantDictionary
+            var restaurantArray: [String: Any] = [:]
+            restaurantArray["title"] = restaurant.title
+            restaurantArray["link"] = restaurant.link
+            restaurantArray["category"] = restaurant.category
+            restaurantArray["description"] = restaurant.description
+            restaurantArray["address"] = restaurant.address
+            restaurantArray["mapx"] = restaurant.mapx
+            restaurantArray["mapy"] = restaurant.mapy
+            restaurantArray["date"] = restaurant.date
             
-            let plistData = try PropertyListSerialization.data(fromPropertyList: dictionaryPlist, format: .xml, options: 0)
+            arrayPlist.append(restaurantArray)
+            
+            let plistData = try PropertyListSerialization.data(fromPropertyList: arrayPlist, format: .xml, options: 0)
             try plistData.write(to: url)
         } catch {
             print("Error writing to plist: \(error)")

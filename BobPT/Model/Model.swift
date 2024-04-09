@@ -15,6 +15,14 @@ struct Restaurant: Codable{
     let address: String
     let mapx: String
     let mapy: String
+    let date: String = dateFormatter()
+}
+
+func dateFormatter() -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyyMMdd"
+    let currentDate = dateFormatter.string(from: Date())
+    return currentDate
 }
 
 struct Root: Codable {
