@@ -2,12 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>정보 내놔</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>내내내놔</string>
+	<key>ID_KEY</key>
+	<string>$(ID_KEY)</string>
 	<key>NMFClientId</key>
 	<string>547b2kcc2r</string>
+	<key>SECRET_KEY</key>
+	<string>$(SECRET_KEY)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
