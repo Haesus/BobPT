@@ -9,16 +9,17 @@ import UIKit
 import NMapsMap
 class MapViewController: UIViewController {
     
-    var receivedData : [String:Any]?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
+    var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
     
     @IBOutlet weak var localAddress: UILabel!
     @IBOutlet weak var bobPTMapView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let receivedData,
-              let coordinateX = receivedData["mapx"] as? String,
-              let coordinateY = receivedData["mapy"] as? String,
-              let DoubleCoordinateX = Double(coordinateX),
+        
+        guard let receivedData else {return}
+        let coordinateX = receivedData.mapx
+        let coordinateY = receivedData.mapy
+        guard let DoubleCoordinateX = Double(coordinateX),
               let DoubleCoordinateY = Double(coordinateY) else {return}
         
         
@@ -41,9 +42,9 @@ class MapViewController: UIViewController {
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        datasource.title = receivedData["title"] as? String ?? "default"
+        datasource.title = receivedData.title
         infoWindow.open(with: marker)
-        localAddress.text = receivedData["address"] as? String
+        localAddress.text = receivedData.address
         // Do any additional setup after loading the view.
     }
 }
