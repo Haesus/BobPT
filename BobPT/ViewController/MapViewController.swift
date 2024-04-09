@@ -12,6 +12,7 @@ class MapViewController: UIViewController {
     
     var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
     
+    @IBOutlet weak var naverBtnOut: UIButton!
     @IBOutlet weak var localAddress: UILabel!
     @IBOutlet weak var bobPTMapView: UIView!
     override func viewDidLoad() {
@@ -21,6 +22,9 @@ class MapViewController: UIViewController {
         let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
         let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
         mapViewLoad(x: coordinateY, y: coordinateX)
+        let naverBtnOut = UIButton()
+        naverBtnOut.addTarget(self, action: #selector(naverAppBtn), for: .touchUpInside)
+        self.view.addSubview(naverBtnOut)
     }
     
     func mapViewLoad(x:Double, y:Double){
@@ -45,5 +49,19 @@ class MapViewController: UIViewController {
         datasource.title = receivedData?.title ?? " "
         infoWindow.open(with: marker)
         localAddress.text = receivedData?.address
+    }
+    @IBAction func naverAppBtn(_ sender: Any) {
+        guard let searchQuery = receivedData?.title,
+              let encodedQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let naverAppURL = URL(string: "naversearchapp://search?query=\(encodedQuery)")else{return}
+        
+        
+        
+        if UIApplication.shared.canOpenURL(naverAppURL){
+            UIApplication.shared.open(naverAppURL)
+        }else{
+            guard let naverWebURL = URL(string: "https://search.naver.com/search.naver?query=\(encodedQuery)") else {return}
+            UIApplication.shared.open(naverWebURL)
+        }
     }
 }
