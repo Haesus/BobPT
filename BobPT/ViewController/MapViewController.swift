@@ -19,12 +19,14 @@ class MapViewController: UIViewController {
         guard let receivedData else {return}
         let coordinateX = receivedData.mapx
         let coordinateY = receivedData.mapy
-        guard let DoubleCoordinateX = Double(coordinateX),
-              let DoubleCoordinateY = Double(coordinateY) else {return}
+        guard let microDoubleCoordinateX = Double(coordinateX),
+              let microDoubleCoordinateY = Double(coordinateY) else {return}
+        let DoubleCoordinateX = microDoubleCoordinateX/1000000
+        let DoubleCoordinateY = microDoubleCoordinateY/1000000
+        
+        let latLng = NMGLatLng(lat: DoubleCoordinateX, lng: DoubleCoordinateY)
         
         
-        let tm = NMGTm128(x: DoubleCoordinateX, y: DoubleCoordinateY)
-        let latLng = tm.toLatLng()
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
