@@ -7,6 +7,7 @@
 
 import UIKit
 import NMapsMap
+
 class MapViewController: UIViewController {
     
     var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
@@ -20,10 +21,8 @@ class MapViewController: UIViewController {
         let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
         let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
         mapViewLoad(x: coordinateX, y: coordinateY)
-        
-        
-        // Do any additional setup after loading the view.
     }
+    
     func mapViewLoad(x:Double, y:Double){
         let latLng = NMGLatLng(lat: x, lng: y)
         
