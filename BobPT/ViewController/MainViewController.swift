@@ -53,6 +53,10 @@ class MainViewController: UIViewController {
         koreaFoodButtonLabel.setImage(image, for: .normal)
     }
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//    }
+    
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
         if koreaFoodBool == false {
             koreaFoodButtonLabel.tintColor = .gray
@@ -117,11 +121,11 @@ class MainViewController: UIViewController {
         if noodleFoodBool == false {
             noodleFoodButtonLabel.tintColor = .gray
             noodleFoodBool = true
-            selectedFood.append("면류")
+            selectedFood.append("국수")
         } else {
             noodleFoodButtonLabel.tintColor = .link
             noodleFoodBool = false
-            selectedFood = selectedFood.filter{$0 != "면류"}
+            selectedFood = selectedFood.filter{$0 != "국수"}
         }
     }
     
@@ -134,6 +138,7 @@ class MainViewController: UIViewController {
             present(alert, animated: true)
         }
         
+        save = []
         guard let userLocation else {
             return
         }
@@ -169,6 +174,7 @@ extension MainViewController {
             switch response.result {
                 case .success(let root):
                     self.save.append(root)
+                    print(self.save)
                     completion(self.save)
                 case .failure(let error):
                     print(error.localizedDescription)
