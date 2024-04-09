@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UniformTypeIdentifiers
 
 extension UIImage {
     func resizeImage(size: CGSize) -> UIImage {
@@ -16,5 +17,14 @@ extension UIImage {
         }()
         
         return UIImage(cgImage: self.cgImage!, scale: self.scale * ratio, orientation: self.imageOrientation)
+    }
+}
+
+extension UIViewController {
+    func urlWithFilename(_ filename: String, type: UTType) -> URL? {
+        let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURL = docURL.appendingPathComponent(filename, conformingTo: type)
+        
+        return fileURL
     }
 }
