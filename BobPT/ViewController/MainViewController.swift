@@ -12,10 +12,6 @@ import UIKit
 import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
-    
-    let idKey = "6Omg7wmoaLIDTN99C0Ff"
-    let secretKey = "R9vTsglyOb"
-    
     // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
@@ -52,10 +48,6 @@ class MainViewController: UIViewController {
         let image = UIImage(named: "noodle")?.resizeImage(size: CGSize(width: 20, height: 20))
         koreaFoodButtonLabel.setImage(image, for: .normal)
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//    }
     
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
         if koreaFoodBool == false {
@@ -166,6 +158,10 @@ class MainViewController: UIViewController {
 // MARK: - naverSearch API Function
 extension MainViewController {
     func naverSearch(keyword:String, completion: @escaping ([Root]) -> Void) {
+        guard let idKey = Bundle.main.idKey, let secretKey = Bundle.main.secretKey else {
+            print("API 키를 로드하지 못했습니다.")
+            return
+        }
         let endPoint = "https://openapi.naver.com/v1/search/local.json?query=\(keyword)&display=5"
         let params: Parameters = ["keyword": keyword]
         let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
@@ -185,13 +181,6 @@ extension MainViewController {
 
 // MARK: - plist File Copy Function
 extension MainViewController {
-    func urlWithFilename(_ filename: String, type: UTType) -> URL? {
-        let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let fileURL = docURL.appendingPathComponent(filename, conformingTo: type)
-        
-        return fileURL
-    }
-    
     func copyFile(_ target: URL, _ source: URL) {
         guard !FileManager.default.fileExists(atPath: target.path()) else {
             print("이미 파일이 해당 위치에 존재합니다. : \(target)")

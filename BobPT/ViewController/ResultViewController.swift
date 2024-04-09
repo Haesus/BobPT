@@ -10,8 +10,8 @@ import Alamofire
 
 class ResultViewController: UIViewController {
     
-    var restaurant: Restaurant?
     var save: [Root]?
+    var restaurant: Restaurant?
     
     @IBOutlet weak var endLbl: UILabel!
     @IBOutlet weak var restLbl: UILabel!
@@ -26,6 +26,7 @@ class ResultViewController: UIViewController {
         }
         self.restLbl.text = message.title
         restaurant = message
+        writePlist()
     }
     
     @IBAction func mapBtn(_ sender: Any) {
@@ -35,5 +36,38 @@ class ResultViewController: UIViewController {
         
         result.receivedData = restaurant
         self.navigationController?.pushViewController(uvc, animated: true)
+    }
+}
+
+// MARK: - extension writePlist Function
+extension ResultViewController {
+    func writePlist() {
+        guard let restaurant, let url = urlWithFilename("SelectedList.plist", type: .propertyList) else {
+            return
+        }
+        
+        do {
+            var arrayPlist: [[String: Any]] = []
+            if let existingData = try? Data(contentsOf: url), let decodedArray = try? PropertyListSerialization.propertyList(from: existingData, format: nil) as? [[String: Any]] {
+                arrayPlist = decodedArray
+            }
+            
+            var restaurantArray: [String: Any] = [:]
+            restaurantArray["title"] = restaurant.title
+            restaurantArray["link"] = restaurant.link
+            restaurantArray["category"] = restaurant.category
+            restaurantArray["description"] = restaurant.description
+            restaurantArray["address"] = restaurant.address
+            restaurantArray["mapx"] = restaurant.mapx
+            restaurantArray["mapy"] = restaurant.mapy
+            restaurantArray["date"] = restaurant.date
+            
+            arrayPlist.append(restaurantArray)
+            
+            let plistData = try PropertyListSerialization.data(fromPropertyList: arrayPlist, format: .xml, options: 0)
+            try plistData.write(to: url)
+        } catch {
+            print("Error writing to plist: \(error)")
+        }
     }
 }
