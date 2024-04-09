@@ -9,14 +9,15 @@
 /* Begin PBXBuildFile section */
 		802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42BE7B35955570FCF5163BD /* Pods_BobPT.framework */; };
 		AF4E067D2BC39359003B2AFF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4E067C2BC39359003B2AFF /* Model.swift */; };
-		AFD6D4632BC3E807001C8B18 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */; };
 		FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951452BBFE18000D42AEC /* AppDelegate.swift */; };
 		FA1951482BBFE18000D42AEC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951472BBFE18000D42AEC /* SceneDelegate.swift */; };
 		FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951492BBFE18000D42AEC /* MainViewController.swift */; };
 		FA19514D2BBFE18000D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA19514C2BBFE18000D42AEC /* Base */; };
 		FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA19514E2BBFE18100D42AEC /* Assets.xcassets */; };
 		FA1951522BBFE18100D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA1951512BBFE18100D42AEC /* Base */; };
-		FA71E7D02BC430C5006D1388 /* AlamofireDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA71E7CE2BC430C5006D1388 /* AlamofireDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA49A01F2BC538C300F6FB33 /* Settings.bundle */; };
+		FA49A0222BC53A4D00F6FB33 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = FA49A0212BC53A4D00F6FB33 /* AlamofireDynamic */; };
+		FA49A0232BC53A4D00F6FB33 /* AlamofireDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA49A0212BC53A4D00F6FB33 /* AlamofireDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FA71E7D22BC4377D006D1388 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA71E7D12BC4377D006D1388 /* Extension.swift */; };
 		FA71E7D72BC4CC61006D1388 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA4697692BC3C56300A836FD /* Alamofire */; };
 		FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */; };
@@ -33,7 +34,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FA71E7D02BC430C5006D1388 /* AlamofireDynamic in Embed Frameworks */,
+				FA49A0232BC53A4D00F6FB33 /* AlamofireDynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,6 +54,7 @@
 		FA19514E2BBFE18100D42AEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA1951512BBFE18100D42AEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA1951532BBFE18100D42AEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA49A01F2BC538C300F6FB33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		FA71E7D12BC4377D006D1388 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -67,8 +69,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA71E7D72BC4CC61006D1388 /* Alamofire in Frameworks */,
+				FA49A0222BC53A4D00F6FB33 /* AlamofireDynamic in Frameworks */,
 				802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */,
-				AFD6D4632BC3E807001C8B18 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +97,7 @@
 		FA1951392BBFE18000D42AEC = {
 			isa = PBXGroup;
 			children = (
+				FA49A01F2BC538C300F6FB33 /* Settings.bundle */,
 				FA1951442BBFE18000D42AEC /* BobPT */,
 				FA1951432BBFE18000D42AEC /* Products */,
 				95A916859C26B87DAA864BA4 /* Pods */,
@@ -184,7 +187,7 @@
 			name = BobPT;
 			packageProductDependencies = (
 				FA4697692BC3C56300A836FD /* Alamofire */,
-				AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */,
+				FA49A0212BC53A4D00F6FB33 /* AlamofireDynamic */,
 			);
 			productName = BobPT;
 			productReference = FA1951422BBFE18000D42AEC /* BobPT.app */;
@@ -233,6 +236,7 @@
 			files = (
 				FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */,
 				FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */,
+				FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */,
 				FA1951522BBFE18100D42AEC /* Base in Resources */,
 				FA19514D2BBFE18000D42AEC /* Base in Resources */,
 			);
@@ -541,16 +545,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AlamofireDynamic;
-		};
 		FA4697692BC3C56300A836FD /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		FA71E7CE2BC430C5006D1388 /* AlamofireDynamic */ = {
+		FA49A0212BC53A4D00F6FB33 /* AlamofireDynamic */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = AlamofireDynamic;
