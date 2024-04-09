@@ -21,14 +21,11 @@ class ResultViewController: UIViewController {
         super.viewDidLoad()
         self.todayLbl.text = "오늘의 추천장소는"
         self.endLbl.text = "맛있게 드세요!"
-        print(save)
         guard let message = self.save?[0].items.randomElement() else {
             return
         }
         self.restLbl.text = message.title
         restaurant = message
-        print(restaurant?.mapx)
-        print(restaurant?.mapy)
     }
     
     @IBAction func mapBtn(_ sender: Any) {
