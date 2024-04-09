@@ -17,14 +17,15 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         
         guard let receivedData else {return}
-        let coordinateX = receivedData.mapx
-        let coordinateY = receivedData.mapy
-        guard let microDoubleCoordinateX = Double(coordinateX),
-              let microDoubleCoordinateY = Double(coordinateY) else {return}
-        let DoubleCoordinateX = microDoubleCoordinateX/1000000
-        let DoubleCoordinateY = microDoubleCoordinateY/1000000
+        let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
+        let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
+        mapViewLoad(x: coordinateX, y: coordinateY)
         
-        let latLng = NMGLatLng(lat: DoubleCoordinateX, lng: DoubleCoordinateY)
+        
+        // Do any additional setup after loading the view.
+    }
+    func mapViewLoad(x:Double, y:Double){
+        let latLng = NMGLatLng(lat: x, lng: y)
         
         
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
@@ -44,9 +45,8 @@ class MapViewController: UIViewController {
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        datasource.title = receivedData.title
+        datasource.title = receivedData?.title ?? " "
         infoWindow.open(with: marker)
-        localAddress.text = receivedData.address
-        // Do any additional setup after loading the view.
+        localAddress.text = receivedData?.address
     }
 }
