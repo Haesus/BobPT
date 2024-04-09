@@ -16,6 +16,7 @@ class MainViewController: UIViewController {
     let idKey = "6Omg7wmoaLIDTN99C0Ff"
     let secretKey = "R9vTsglyOb"
     
+    // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
     var userLocation: String?
@@ -132,7 +133,6 @@ class MainViewController: UIViewController {
             alert.addAction(alertAction)
             present(alert, animated: true)
         }
-        print(selectedFood)
         
         guard let userLocation else {
             return
@@ -203,6 +203,7 @@ extension MainViewController: CLLocationManagerDelegate {
             return
         }
         locationManager.stopUpdatingLocation()
+        // TODO: - 사용자 위치 정보를 통해 추천 매장과의 거리 계산에 필요
         latitude = currentLocation.coordinate.latitude
         longitude = currentLocation.coordinate.longitude
         
@@ -222,8 +223,4 @@ extension MainViewController: CLLocationManagerDelegate {
             }
         }
     }
-}
-
-// MARK: - NavigationController
-extension MainViewController {
 }

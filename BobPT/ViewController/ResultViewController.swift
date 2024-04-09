@@ -9,12 +9,13 @@ import UIKit
 import Alamofire
 
 class ResultViewController: UIViewController {
-    @IBOutlet weak var endLbl: UILabel!
-    @IBOutlet weak var restLbl: UILabel!
-    @IBOutlet weak var todayLbl: UILabel!
     
     var restaurant: Restaurant?
     var save: [Root]?
+    
+    @IBOutlet weak var endLbl: UILabel!
+    @IBOutlet weak var restLbl: UILabel!
+    @IBOutlet weak var todayLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,15 +31,6 @@ class ResultViewController: UIViewController {
         print(restaurant?.mapy)
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     @IBAction func mapBtn(_ sender: Any) {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let result = uvc as? MapViewController else{
             return
