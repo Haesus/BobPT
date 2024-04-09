@@ -53,10 +53,6 @@ class MainViewController: UIViewController {
         koreaFoodButtonLabel.setImage(image, for: .normal)
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//    }
-    
     @IBAction func koreaFoodButtonAction(_ sender: Any) {
         if koreaFoodBool == false {
             koreaFoodButtonLabel.tintColor = .gray
@@ -185,13 +181,6 @@ extension MainViewController {
 
 // MARK: - plist File Copy Function
 extension MainViewController {
-    func urlWithFilename(_ filename: String, type: UTType) -> URL? {
-        let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let fileURL = docURL.appendingPathComponent(filename, conformingTo: type)
-        
-        return fileURL
-    }
-    
     func copyFile(_ target: URL, _ source: URL) {
         guard !FileManager.default.fileExists(atPath: target.path()) else {
             print("이미 파일이 해당 위치에 존재합니다. : \(target)")
