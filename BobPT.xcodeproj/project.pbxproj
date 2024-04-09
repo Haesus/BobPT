@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42BE7B35955570FCF5163BD /* Pods_BobPT.framework */; };
 		AF4E067D2BC39359003B2AFF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4E067C2BC39359003B2AFF /* Model.swift */; };
-		FA1813F42BC42D3F001D7CDE /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA1813F32BC42D3F001D7CDE /* Alamofire */; settings = {ATTRIBUTES = (Required, ); }; };
+		AFD6D4632BC3E807001C8B18 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */; };
 		FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951452BBFE18000D42AEC /* AppDelegate.swift */; };
 		FA1951482BBFE18000D42AEC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951472BBFE18000D42AEC /* SceneDelegate.swift */; };
 		FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951492BBFE18000D42AEC /* MainViewController.swift */; };
@@ -67,8 +67,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */,
-				FA71E7CF2BC430C5006D1388 /* AlamofireDynamic in Frameworks */,
-				FA1813F42BC42D3F001D7CDE /* Alamofire in Frameworks */,
+				AFD6D4632BC3E807001C8B18 /* AlamofireDynamic in Frameworks */,
+				FA46976A2BC3C56300A836FD /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,8 +183,8 @@
 			);
 			name = BobPT;
 			packageProductDependencies = (
-				FA1813F32BC42D3F001D7CDE /* Alamofire */,
-				FA71E7CE2BC430C5006D1388 /* AlamofireDynamic */,
+				FA4697692BC3C56300A836FD /* Alamofire */,
+				AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */,
 			);
 			productName = BobPT;
 			productReference = FA1951422BBFE18000D42AEC /* BobPT.app */;
@@ -537,7 +537,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA1813F32BC42D3F001D7CDE /* Alamofire */ = {
+		AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA93D5852BC242EB0007A361 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
+		};
+		FA4697692BC3C56300A836FD /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
