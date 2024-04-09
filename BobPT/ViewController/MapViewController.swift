@@ -17,9 +17,10 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         guard let receivedData,
               let coordinateX = receivedData["mapx"] as? String,
-                let coordinateY = receivedData["mapy"] as? String else {return}
-        let DoubleCoordinateX = coordinateX.compactMap { Double($0) }
-        let DoubleCoordinateY = coordinateY.compactMap { Double($0) }
+              let coordinateY = receivedData["mapy"] as? String,
+              let DoubleCoordinateX = Double(coordinateX),
+              let DoubleCoordinateY = Double(coordinateY) else {return}
+        
         
         let tm = NMGTm128(x: DoubleCoordinateX, y: DoubleCoordinateY)
         let latLng = tm.toLatLng()
