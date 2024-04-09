@@ -7,6 +7,7 @@
 
 import UIKit
 import NMapsMap
+
 class MapViewController: UIViewController {
     
     var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
@@ -17,15 +18,13 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         
         guard let receivedData else {return}
-        let coordinateX = receivedData.mapx
-        let coordinateY = receivedData.mapy
-        guard let microDoubleCoordinateX = Double(coordinateX),
-              let microDoubleCoordinateY = Double(coordinateY) else {return}
-        let DoubleCoordinateX = microDoubleCoordinateX/10000000
-        let DoubleCoordinateY = microDoubleCoordinateY/10000000
-        let latLng = NMGLatLng(lat: DoubleCoordinateY, lng: DoubleCoordinateX)
-        
-        
+        let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
+        let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
+        mapViewLoad(x: coordinateY, y: coordinateX)
+    }
+    
+    func mapViewLoad(x:Double, y:Double){
+        let latLng = NMGLatLng(lat: x, lng: y)
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,9 +42,8 @@ class MapViewController: UIViewController {
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        datasource.title = receivedData.title
+        datasource.title = receivedData?.title ?? " "
         infoWindow.open(with: marker)
-        localAddress.text = receivedData.address
-        // Do any additional setup after loading the view.
+        localAddress.text = receivedData?.address
     }
 }
