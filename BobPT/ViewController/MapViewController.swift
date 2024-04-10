@@ -59,6 +59,7 @@ class MapViewController: UIViewController {
         
         if UIApplication.shared.canOpenURL(naverAppURL){
             UIApplication.shared.open(naverAppURL)
+            print("aa")
         }else{
             guard let naverWebURL = URL(string: "https://search.naver.com/search.naver?query=\(encodedQuery)") else {return}
             UIApplication.shared.open(naverWebURL)

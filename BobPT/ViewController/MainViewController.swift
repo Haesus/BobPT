@@ -31,11 +31,23 @@ class MainViewController: UIViewController {
     @IBOutlet weak var burgerFoodButtonLabel: UIButton!
     var noodleFoodBool = false
     @IBOutlet weak var noodleFoodButtonLabel: UIButton!
+    @IBOutlet weak var nextViewButton: UIButton!
+    @IBOutlet weak var listVIewButton: UIButton!
     
     let locationManager = CLLocationManager()
     
+    func buttonShadow(button: UIButton, width: Int, height: Int, opacity: Float, radius: CGFloat) {
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: width, height: height)
+        button.layer.shadowOpacity = opacity
+        button.layer.shadowRadius = radius
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        buttonShadow(button: nextViewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
+        buttonShadow(button: listVIewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
         
         if let target = urlWithFilename("SelectedList.plist", type: .propertyList), let source = Bundle.main.url(forResource: "SelectedList.plist", withExtension: nil) {
             copyFile(target, source)

@@ -39,9 +39,11 @@
                                 <state key="normal" title="음식점 추천 받기">
                                     <color key="titleColor" red="0.6549019814" green="0.7607843876" blue="0.61176472900000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
-                                <buttonConfiguration key="configuration" style="plain" title="음식점 추천 받기" titleAlignment="center">
-                                    <backgroundConfiguration key="background"/>
+                                <buttonConfiguration key="configuration" style="filled" title="음식점 추천 받기" titleAlignment="center">
+                                    <backgroundConfiguration key="background" cornerRadius="10"/>
                                     <fontDescription key="titleFontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="30"/>
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.91372549530000002" green="0.47058826679999999" blue="0.4588235021" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="resultViewButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Qhg-YH-4ow"/>
@@ -50,8 +52,11 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K3I-Yj-GeE">
                                 <rect key="frame" x="20" y="546.66666666666663" width="353" height="40.333333333333371"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="추천 받았던 리스트 확인" titleAlignment="center">
+                                <buttonConfiguration key="configuration" style="filled" title="추천 받았던 리스트 확인" titleAlignment="center">
+                                    <backgroundConfiguration key="background" cornerRadius="10"/>
                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle2"/>
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.99607843159999998" green="0.99215686319999996" blue="0.93333333730000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <segue destination="eo2-et-7pU" kind="show" id="GNT-tG-1Wv"/>
@@ -66,7 +71,10 @@
                                 <color key="tintColor" systemColor="linkColor"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="한식"/>
-                                <buttonConfiguration key="configuration" style="filled" title="한식"/>
+                                <buttonConfiguration key="configuration" style="filled" title="한식">
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.91372549530000002" green="0.47058826679999999" blue="0.4588235021" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="koreaFoodButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="88K-2j-mFc"/>
                                 </connections>
@@ -78,7 +86,10 @@
                                     <constraint firstAttribute="width" secondItem="DHd-Ec-1Yt" secondAttribute="height" multiplier="8:5" id="ckh-Z4-yUu"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="중식"/>
+                                <buttonConfiguration key="configuration" style="filled" title="중식">
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.91372549530000002" green="0.47058826679999999" blue="0.4588235021" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="chinaFoodButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mh2-Bm-5ke"/>
                                 </connections>
@@ -89,7 +100,10 @@
                                     <constraint firstAttribute="width" secondItem="xR0-Z1-kaK" secondAttribute="height" multiplier="8:5" id="gaK-em-ur8"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="분식"/>
+                                <buttonConfiguration key="configuration" style="filled" title="분식">
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.91372549530000002" green="0.47058826679999999" blue="0.4588235021" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="bunsikFoodButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7A8-Tf-QaD"/>
                                 </connections>
@@ -100,7 +114,10 @@
                                     <constraint firstAttribute="width" secondItem="gfP-nk-0ce" secondAttribute="height" multiplier="8:5" id="lT7-uZ-JLy"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="버거"/>
+                                <buttonConfiguration key="configuration" style="filled" title="버거">
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.91372549530000002" green="0.47058826679999999" blue="0.4588235021" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="burgerFoodButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mx3-jh-EZj"/>
                                 </connections>
@@ -111,7 +128,10 @@
                                     <constraint firstAttribute="width" secondItem="L8V-cP-2oX" secondAttribute="height" multiplier="8:5" id="OJy-7S-Jff"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="면류"/>
+                                <buttonConfiguration key="configuration" style="filled" title="면류">
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.91372549530000002" green="0.47058826679999999" blue="0.4588235021" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="noodleFoodButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tsc-At-2Ms"/>
                                 </connections>
@@ -123,13 +143,17 @@
                                     <constraint firstAttribute="width" constant="80" id="X98-cl-xhD"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="일식"/>
+                                <buttonConfiguration key="configuration" style="filled" title="일식">
+                                    <color key="baseForegroundColor" red="0.18039217590000001" green="0.1764705926" blue="0.18039217590000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="baseBackgroundColor" red="0.91372549530000002" green="0.47058826679999999" blue="0.4588235021" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="japanFoodButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mO9-se-0aA"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="0.80392158030000005" green="0.91764706370000004" blue="0.78431367870000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="K3I-Yj-GeE" firstAttribute="leading" secondItem="0g0-9S-whO" secondAttribute="leading" id="0xQ-gb-K1z"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0g0-9S-whO" secondAttribute="trailing" constant="20" id="4IL-3x-u3I"/>
@@ -170,6 +194,8 @@
                         <outlet property="chinaFoodButtonLabel" destination="DHd-Ec-1Yt" id="Ct8-JQ-hU8"/>
                         <outlet property="japanFoodButtonLabel" destination="eW8-s8-HGN" id="afm-wV-PST"/>
                         <outlet property="koreaFoodButtonLabel" destination="c8k-7c-tMI" id="fLh-ON-Vwm"/>
+                        <outlet property="listVIewButton" destination="K3I-Yj-GeE" id="Wbr-gM-ixR"/>
+                        <outlet property="nextViewButton" destination="0g0-9S-whO" id="UO1-8L-ZU5"/>
                         <outlet property="noodleFoodButtonLabel" destination="L8V-cP-2oX" id="xBn-2c-IL1"/>
                     </connections>
                 </viewController>
