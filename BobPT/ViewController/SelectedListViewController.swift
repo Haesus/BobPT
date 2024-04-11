@@ -44,11 +44,6 @@ extension SelectedListViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let url = urlWithFilename("SelectedList.plist", type: .propertyList)
-//        if let plistArray = NSArray(contentsOf: url!) as? [[String: Any]] {
-//               return plistArray.count
-//           }
-//        return 0
         return plistArray?.count ?? 0
     }
     
@@ -78,11 +73,17 @@ extension SelectedListViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            var url = urlWithFilename("SelectedList.plist", type: .propertyList)
-            if var plistArray {
-                plistArray.remove(at: indexPath.row)
-//                try? plistArray.write(to:url)
+            guard let url = urlWithFilename("SelectedList.plist", type: .propertyList) else {
+                return
             }
+            
+            plistArray?.remove(at: indexPath.row)
+            guard let plistArray else {
+                return
+            }
+            let plistData = try? PropertyListSerialization.data(fromPropertyList: plistArray, format: .xml, options: 0)
+            try? plistData?.write(to: url)
+        
                 tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.reloadRows(at: [indexPath], with: .fade)
         }
