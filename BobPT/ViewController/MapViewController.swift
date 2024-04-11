@@ -11,6 +11,7 @@ import NMapsMap
 class MapViewController: UIViewController {
     
     var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
+    var userLocation : String?
     
     @IBOutlet weak var naverBtnOut: UIButton!
     @IBOutlet weak var localAddress: UILabel!
@@ -55,7 +56,7 @@ class MapViewController: UIViewController {
               let searchQueryCategory = receivedData?.category.split(separator: ">").first,
               let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let naverAppURL = URL(string: "naversearchapp://search?query=\(encodedQueryTitle),\(encodedQueryCategory)")else{return}
+            let naverAppURL = URL(string: "naversearchapp://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&version=1")else{return}
         
         
         
