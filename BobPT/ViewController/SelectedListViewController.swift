@@ -15,6 +15,7 @@ class SelectedListViewController: UITableViewController {
         
         tableView.rowHeight = 100
         plistArray = readPlist()
+        self.navigationItem.rightBarButtonItem = editButtonItem
     }
 }
 
@@ -61,5 +62,31 @@ extension SelectedListViewController {
         dateNameLabel?.text = dic["date"]
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let url = urlWithFilename("SelectedList.plist", type: .propertyList) else {
+                return
+            }
+            
+            plistArray?.remove(at: indexPath.row)
+            guard let plistArray else {
+                return
+            }
+            let plistData = try? PropertyListSerialization.data(fromPropertyList: plistArray, format: .xml, options: 0)
+            try? plistData?.write(to: url)
+        
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        }
     }
 }
