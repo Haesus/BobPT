@@ -51,17 +51,19 @@ class MapViewController: UIViewController {
         localAddress.text = receivedData?.address
     }
     @IBAction func naverAppBtn(_ sender: Any) {
-        guard let searchQuery = receivedData?.title,
-              let encodedQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let naverAppURL = URL(string: "naversearchapp://search?query=\(encodedQuery)")else{return}
+        guard let searchQueryTitle = receivedData?.title,
+              let searchQueryCategory = receivedData?.category.split(separator: ">").first,
+              let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let naverAppURL = URL(string: "naversearchapp://search?query=\(encodedQueryTitle),\(encodedQueryCategory)")else{return}
         
         
         
         if UIApplication.shared.canOpenURL(naverAppURL){
             UIApplication.shared.open(naverAppURL)
         }else{
-            guard let naverWebURL = URL(string: "https://search.naver.com/search.naver?query=\(encodedQuery)") else {return}
-            UIApplication.shared.open(naverWebURL)
+            guard let naverSearchURL = URL(string: "https://search.naver.com/search.naver?query=\(encodedQueryTitle),\(encodedQueryCategory)") else {return}
+            UIApplication.shared.open(naverSearchURL)
         }
     }
 }
