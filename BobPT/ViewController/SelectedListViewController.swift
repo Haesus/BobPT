@@ -15,6 +15,7 @@ class SelectedListViewController: UITableViewController {
         
         tableView.rowHeight = 100
         plistArray = readPlist()
+        self.navigationItem.rightBarButtonItem = editButtonItem
     }
 }
 
@@ -43,6 +44,11 @@ extension SelectedListViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        let url = urlWithFilename("SelectedList.plist", type: .propertyList)
+//        if let plistArray = NSArray(contentsOf: url!) as? [[String: Any]] {
+//               return plistArray.count
+//           }
+//        return 0
         return plistArray?.count ?? 0
     }
     
@@ -61,5 +67,24 @@ extension SelectedListViewController {
         dateNameLabel?.text = dic["date"]
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            var url = urlWithFilename("SelectedList.plist", type: .propertyList)
+            if var plistArray {
+                plistArray.remove(at: indexPath.row)
+//                try? plistArray.write(to:url)
+            }
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        }
     }
 }

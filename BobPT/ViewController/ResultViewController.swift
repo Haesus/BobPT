@@ -24,8 +24,8 @@ class ResultViewController: UIViewController {
         guard let message = self.save?[0].items.randomElement() else {
             return
         }
-        self.restLbl.text = message.title
-        restaurant = message
+        self.restLbl.text = message.title.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: "")
+//        restaurant = message
         writePlist()
     }
     
