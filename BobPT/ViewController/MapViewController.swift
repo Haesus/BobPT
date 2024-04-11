@@ -10,7 +10,7 @@ import NMapsMap
 
 class MapViewController: UIViewController {
     
-    var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
+    var receivedData : Restaurant?
     var userLocation : String?
     
     @IBOutlet weak var naverBtnOut: UIButton!
@@ -56,15 +56,14 @@ class MapViewController: UIViewController {
               let searchQueryCategory = receivedData?.category.split(separator: ">").first,
               let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let naverAppURL = URL(string: "naversearchapp://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&version=1")else{return}
-        
-        
-        
-        if UIApplication.shared.canOpenURL(naverAppURL){
-            UIApplication.shared.open(naverAppURL)
-        }else{
-            guard let naverSearchURL = URL(string: "https://search.naver.com/search.naver?query=\(encodedQueryTitle),\(encodedQueryCategory)") else {return}
-            UIApplication.shared.open(naverSearchURL)
-        }
+              let url = URL(string: "nmap://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&appname=BobPT"),
+              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8")else{return}
+
+              if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+              } else {
+                UIApplication.shared.open(appStoreURL)
+              }
+    
     }
 }
