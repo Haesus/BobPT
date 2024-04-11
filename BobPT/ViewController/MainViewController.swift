@@ -70,9 +70,6 @@ class MainViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
-        
-        let image = UIImage(named: "noodle")?.resizeImage(size: CGSize(width: 20, height: 20))
-        soupFoodButtonLabel.setImage(image, for: .normal)
     }
     
     @IBAction func researchLocationButtonAction(_ sender: Any) {
@@ -411,6 +408,15 @@ extension MainViewController {
         buttonShadow(button: sandwichFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
         saladFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
         buttonShadow(button: saladFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
+        
+        let soupImage = UIImage(named: "Soup")?.resizeImage(size: CGSize(width: 20, height: 20))
+        soupFoodButtonLabel.setImage(soupImage, for: .normal)
+        soupFoodButtonLabel.contentVerticalAlignment = .top
+        soupFoodButtonLabel.contentHorizontalAlignment = .center
+        let meatImage = UIImage(named: "Meat")?.resizeImage(size: CGSize(width: 20, height: 20))
+        meatFoodButtonLabel.setImage(meatImage, for: .normal)
+        let sushiImage = UIImage(named: "Sushi")?.resizeImage(size: CGSize(width: 20, height: 20))
+        meatFoodButtonLabel.setImage(sushiImage, for: .normal)
         
         buttonShadow(button: nextViewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
         buttonShadow(button: listVIewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
