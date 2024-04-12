@@ -21,12 +21,15 @@
 		FA19514D2BBFE18000D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA19514C2BBFE18000D42AEC /* Base */; };
 		FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA19514E2BBFE18100D42AEC /* Assets.xcassets */; };
 		FA1951522BBFE18100D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA1951512BBFE18100D42AEC /* Base */; };
-		FA71E7D02BC430C5006D1388 /* AlamofireDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA71E7CE2BC430C5006D1388 /* AlamofireDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA49A01F2BC538C300F6FB33 /* Settings.bundle */; };
 		FA71E7D22BC4377D006D1388 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA71E7D12BC4377D006D1388 /* Extension.swift */; };
 		FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */; };
 		FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */; };
 		FA93D5822BC0E9FE0007A361 /* SelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */; };
 		FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */; };
+		FAB69FCB2BC8B66000BADE15 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB69FCA2BC8B66000BADE15 /* SettingTableViewController.swift */; };
+		FAB69FCD2BC8B68D00BADE15 /* DevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB69FCC2BC8B68D00BADE15 /* DevViewController.swift */; };
+		FACDB4C92BC8CD0F00A013E1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FACDB4C82BC8CD0F00A013E1 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,7 +39,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FA71E7D02BC430C5006D1388 /* AlamofireDynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,11 +60,14 @@
 		FA19514E2BBFE18100D42AEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA1951512BBFE18100D42AEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA1951532BBFE18100D42AEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA49A01F2BC538C300F6FB33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		FA71E7D12BC4377D006D1388 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedListViewController.swift; sourceTree = "<group>"; };
 		FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SelectedList.plist; sourceTree = "<group>"; };
+		FAB69FCA2BC8B66000BADE15 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
+		FAB69FCC2BC8B68D00BADE15 /* DevViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,8 +78,9 @@
 				E6D4F49C2BC763600044F1BD /* AlamofireDynamic in Frameworks */,
 				E6D4F49F2BC763790044F1BD /* Alamofire in Frameworks */,
 				E6D4F4A12BC763790044F1BD /* AlamofireDynamic in Frameworks */,
+				FACDB4C92BC8CD0F00A013E1 /* Kingfisher in Frameworks */,
+				FA71E7D72BC4CC61006D1388 /* Alamofire in Frameworks */,
 				802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */,
-				AFD6D4632BC3E807001C8B18 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +107,7 @@
 		FA1951392BBFE18000D42AEC = {
 			isa = PBXGroup;
 			children = (
+				FA49A01F2BC538C300F6FB33 /* Settings.bundle */,
 				FA1951442BBFE18000D42AEC /* BobPT */,
 				FA1951432BBFE18000D42AEC /* Products */,
 				95A916859C26B87DAA864BA4 /* Pods */,
@@ -141,6 +148,8 @@
 				FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */,
 				E6D4F4A62BC7C0A60044F1BD /* SettingTableViewController.swift */,
 				E6D4F4A82BC7C6640044F1BD /* DevViewController.swift */,
+				FAB69FCA2BC8B66000BADE15 /* SettingTableViewController.swift */,
+				FAB69FCC2BC8B68D00BADE15 /* DevViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -194,6 +203,8 @@
 				E6D4F49B2BC763600044F1BD /* AlamofireDynamic */,
 				E6D4F49E2BC763790044F1BD /* Alamofire */,
 				E6D4F4A02BC763790044F1BD /* AlamofireDynamic */,
+				FA4697692BC3C56300A836FD /* Alamofire */,
+				FACDB4C82BC8CD0F00A013E1 /* Kingfisher */,
 			);
 			productName = BobPT;
 			productReference = FA1951422BBFE18000D42AEC /* BobPT.app */;
@@ -225,6 +236,8 @@
 			mainGroup = FA1951392BBFE18000D42AEC;
 			packageReferences = (
 				E6D4F49D2BC763790044F1BD /* XCRemoteSwiftPackageReference "Alamofire" */,
+				FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */,
+				FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = FA1951432BBFE18000D42AEC /* Products */;
 			projectDirPath = "";
@@ -242,6 +255,7 @@
 			files = (
 				FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */,
 				FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */,
+				FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */,
 				FA1951522BBFE18100D42AEC /* Base in Resources */,
 				FA19514D2BBFE18000D42AEC /* Base in Resources */,
 			);
@@ -296,6 +310,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAB69FCD2BC8B68D00BADE15 /* DevViewController.swift in Sources */,
+				FAB69FCB2BC8B66000BADE15 /* SettingTableViewController.swift in Sources */,
 				FA71E7D22BC4377D006D1388 /* Extension.swift in Sources */,
 				FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */,
 				FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */,
@@ -456,9 +472,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4Y857U95UQ;
+				DEVELOPMENT_TEAM = 3TGR3P459K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
@@ -477,6 +494,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kibwa.BobPT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -489,9 +507,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4Y857U95UQ;
+				DEVELOPMENT_TEAM = 3TGR3P459K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
@@ -510,6 +529,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kibwa.BobPT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -556,6 +576,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -563,7 +591,7 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = AlamofireDynamic;
 		};
-		E6D4F49B2BC763600044F1BD /* AlamofireDynamic */ = {
+		FA4697692BC3C56300A836FD /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AlamofireDynamic;
 		};
@@ -577,10 +605,10 @@
 			package = E6D4F49D2BC763790044F1BD /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = AlamofireDynamic;
 		};
-		FA71E7CE2BC430C5006D1388 /* AlamofireDynamic */ = {
+		FACDB4C82BC8CD0F00A013E1 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
+			package = FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
