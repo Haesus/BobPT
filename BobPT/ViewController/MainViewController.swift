@@ -282,9 +282,8 @@ class MainViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else{
             return
         }
-        var userLocationLatLng = CLLocation(latitude: latitude ?? 37.49457, longitude: longitude ?? 127.0276)
-        result.userLocation = userLocationLatLng
-        
+        result.latitude = latitude
+        result.longitude = longitude
         dispatchGroup.notify(queue: .main) {
             result.save = self.save
             self.navigationController?.pushViewController(uvc, animated: true)

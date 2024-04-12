@@ -12,10 +12,10 @@ class MapViewController: UIViewController {
     @IBOutlet weak var restaurantImage: UIImageView!
     @IBOutlet weak var button: UIButton!
     var receivedData : Restaurant?
+    var userLatitude : Double?
+    var userLongitude : Double?
     var userLocation : CLLocation?
-    func updateLocation(newLocation: CLLocation) {
-        userLocation = newLocation
-    }
+    
     
     @IBOutlet weak var locationImage: UIImageView!
     @IBOutlet weak var naverBtnOut: UIButton!
@@ -37,10 +37,6 @@ class MapViewController: UIViewController {
             view.addSubview(button)
         }
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let mapVC = uvc as? MapViewController else {return}
-        
-        mapVC.userLocation = userLocation
-        
-        
                 
         guard let receivedData else {return}
         let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
@@ -62,15 +58,14 @@ class MapViewController: UIViewController {
             mapView.leadingAnchor.constraint(equalTo: bobPTMapView.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: bobPTMapView.trailingAnchor)
         ])
-        if let location = userLocation{
-            let marker = NMFMarker()
-            marker.position = NMGLatLng(lat: location.coordinate.latitude, lng: location.coordinate.longitude)
-            marker.iconTintColor = .red
-            marker.mapView = mapView
-            print("User location marker set at \(location.coordinate.latitude), \(location.coordinate.longitude)")
-           } else {
-               print("User location is nil")
-           }
+        
+        let userLocation = CLLocation(latitude: userLatitude ?? 37.494529, longitude: userLongitude ?? 127.027562)
+        let marker = NMFMarker()
+        marker.position = NMGLatLng(lat: userLocation.coordinate.latitude, lng: userLocation.coordinate.longitude)
+        marker.iconTintColor = .red
+        marker.mapView = mapView
+        print("User location marker set at \(userLocation.coordinate.latitude), \(userLocation.coordinate.longitude)")
+        
         let cameraUpdate = NMFCameraUpdate(scrollTo: latLng)
         mapView.moveCamera(cameraUpdate)
         
