@@ -7,17 +7,36 @@
 
 import UIKit
 import NMapsMap
-
 class MapViewController: UIViewController {
     
-    var receivedData : Restaurant?//dictionary type로 받을 걸 상정하고 제작함. key:value는 각각 coordinate ->double array, name: 음식점 이름
+    @IBOutlet weak var restaurantImage: UIImageView!
+    @IBOutlet weak var button: UIButton!
+    var receivedData : Restaurant?
+    var userLocation : String?
     
+    @IBOutlet weak var locationImage: UIImageView!
     @IBOutlet weak var naverBtnOut: UIButton!
     @IBOutlet weak var localAddress: UILabel!
     @IBOutlet weak var bobPTMapView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        restaurantImage.image = UIImage(named: "restaurant")
+        locationImage.image = UIImage(named: "location")
+        self.button.layer.masksToBounds = true
+        self.button.layer.cornerRadius = 10
+        if let image = UIImage(named: "Map_Service_Icon") {
+            // 이미지를 50x50 크기로 조정
+            let resizedImage = image.resized(to: CGSize(width: 50, height: 50))
+            
+            // 버튼에 이미지 설정
+            button.setImage(resizedImage, for: .normal)
+            button.imageView?.contentMode = .center // 이미지가 버튼 중앙에 위치하도록 설정
+            view.addSubview(button)
+        }
+
         
+        
+                
         guard let receivedData else {return}
         let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
         let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
@@ -50,18 +69,29 @@ class MapViewController: UIViewController {
         infoWindow.open(with: marker)
         localAddress.text = receivedData?.address
     }
+    
     @IBAction func naverAppBtn(_ sender: Any) {
-        guard let searchQuery = receivedData?.title,
-              let encodedQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let naverAppURL = URL(string: "naversearchapp://search?query=\(encodedQuery)")else{return}
+        guard let searchQueryTitle = receivedData?.title,
+              let searchQueryCategory = receivedData?.category.split(separator: ">").first,
+              let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "nmap://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&appname=BobPT"),
+              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8") else {
+            return
+        }
         
-        
-        
-        if UIApplication.shared.canOpenURL(naverAppURL){
-            UIApplication.shared.open(naverAppURL)
-        }else{
-            guard let naverWebURL = URL(string: "https://search.naver.com/search.naver?query=\(encodedQuery)") else {return}
-            UIApplication.shared.open(naverWebURL)
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        } else {
+            UIApplication.shared.open(appStoreURL)
+        }
+    }
+}
+
+extension UIImage {
+    func resized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
         }
     }
 }

@@ -9,20 +9,20 @@
 /* Begin PBXBuildFile section */
 		802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42BE7B35955570FCF5163BD /* Pods_BobPT.framework */; };
 		AF4E067D2BC39359003B2AFF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4E067C2BC39359003B2AFF /* Model.swift */; };
-		AFD6D4632BC3E807001C8B18 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */; };
+		E6D4F4A72BC7C0A60044F1BD /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D4F4A62BC7C0A60044F1BD /* SettingTableViewController.swift */; };
 		FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951452BBFE18000D42AEC /* AppDelegate.swift */; };
 		FA1951482BBFE18000D42AEC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951472BBFE18000D42AEC /* SceneDelegate.swift */; };
 		FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951492BBFE18000D42AEC /* MainViewController.swift */; };
-		FA19514D2BBFE18000D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA19514C2BBFE18000D42AEC /* Base */; };
 		FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA19514E2BBFE18100D42AEC /* Assets.xcassets */; };
-		FA1951522BBFE18100D42AEC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA1951512BBFE18100D42AEC /* Base */; };
-		FA71E7D02BC430C5006D1388 /* AlamofireDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA71E7CE2BC430C5006D1388 /* AlamofireDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA49A01F2BC538C300F6FB33 /* Settings.bundle */; };
+		FA55AC8F2BC8F8BB006CE78F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FA55AC8E2BC8F8BB006CE78F /* Kingfisher */; };
+		FA55AC912BC8F8C3006CE78F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA55AC902BC8F8C3006CE78F /* Alamofire */; };
+		FA55AC952BC8F934006CE78F /* DevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55AC942BC8F933006CE78F /* DevViewController.swift */; };
+		FA55AC962BC8F9B8006CE78F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA19514B2BBFE18000D42AEC /* Main.storyboard */; };
 		FA71E7D22BC4377D006D1388 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA71E7D12BC4377D006D1388 /* Extension.swift */; };
-		FA71E7D72BC4CC61006D1388 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA4697692BC3C56300A836FD /* Alamofire */; };
 		FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */; };
 		FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */; };
 		FA93D5822BC0E9FE0007A361 /* SelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */; };
-		FA93D5842BC0EA0A0007A361 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5832BC0EA0A0007A361 /* SettingViewController.swift */; };
 		FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +33,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FA71E7D02BC430C5006D1388 /* AlamofireDynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -45,6 +44,7 @@
 		9E92F271DAF5B01FA8E143A6 /* Pods-BobPT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BobPT.debug.xcconfig"; path = "Target Support Files/Pods-BobPT/Pods-BobPT.debug.xcconfig"; sourceTree = "<group>"; };
 		AF4E067C2BC39359003B2AFF /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		B42BE7B35955570FCF5163BD /* Pods_BobPT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BobPT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6D4F4A62BC7C0A60044F1BD /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		FA1951422BBFE18000D42AEC /* BobPT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BobPT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA1951452BBFE18000D42AEC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA1951472BBFE18000D42AEC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,11 +53,12 @@
 		FA19514E2BBFE18100D42AEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA1951512BBFE18100D42AEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA1951532BBFE18100D42AEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA49A01F2BC538C300F6FB33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		FA55AC942BC8F933006CE78F /* DevViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevViewController.swift; sourceTree = "<group>"; };
 		FA71E7D12BC4377D006D1388 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedListViewController.swift; sourceTree = "<group>"; };
-		FA93D5832BC0EA0A0007A361 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SelectedList.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,9 +67,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA71E7D72BC4CC61006D1388 /* Alamofire in Frameworks */,
+				FA55AC912BC8F8C3006CE78F /* Alamofire in Frameworks */,
+				FA55AC8F2BC8F8BB006CE78F /* Kingfisher in Frameworks */,
 				802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */,
-				AFD6D4632BC3E807001C8B18 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +96,7 @@
 		FA1951392BBFE18000D42AEC = {
 			isa = PBXGroup;
 			children = (
+				FA49A01F2BC538C300F6FB33 /* Settings.bundle */,
 				FA1951442BBFE18000D42AEC /* BobPT */,
 				FA1951432BBFE18000D42AEC /* Products */,
 				95A916859C26B87DAA864BA4 /* Pods */,
@@ -133,7 +135,8 @@
 				FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */,
 				FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */,
 				FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */,
-				FA93D5832BC0EA0A0007A361 /* SettingViewController.swift */,
+				E6D4F4A62BC7C0A60044F1BD /* SettingTableViewController.swift */,
+				FA55AC942BC8F933006CE78F /* DevViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -183,8 +186,8 @@
 			);
 			name = BobPT;
 			packageProductDependencies = (
-				FA4697692BC3C56300A836FD /* Alamofire */,
-				AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */,
+				FA55AC8E2BC8F8BB006CE78F /* Kingfisher */,
+				FA55AC902BC8F8C3006CE78F /* Alamofire */,
 			);
 			productName = BobPT;
 			productReference = FA1951422BBFE18000D42AEC /* BobPT.app */;
@@ -215,7 +218,9 @@
 			);
 			mainGroup = FA1951392BBFE18000D42AEC;
 			packageReferences = (
+				E6D4F49D2BC763790044F1BD /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */,
+				FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = FA1951432BBFE18000D42AEC /* Products */;
 			projectDirPath = "";
@@ -231,10 +236,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA55AC962BC8F9B8006CE78F /* Main.storyboard in Resources */,
 				FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */,
 				FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */,
-				FA1951522BBFE18100D42AEC /* Base in Resources */,
-				FA19514D2BBFE18000D42AEC /* Base in Resources */,
+				FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,13 +292,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA55AC952BC8F934006CE78F /* DevViewController.swift in Sources */,
 				FA71E7D22BC4377D006D1388 /* Extension.swift in Sources */,
 				FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */,
 				FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */,
 				FA93D5822BC0E9FE0007A361 /* SelectedListViewController.swift in Sources */,
 				FA1951482BBFE18000D42AEC /* SceneDelegate.swift in Sources */,
 				FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */,
-				FA93D5842BC0EA0A0007A361 /* SettingViewController.swift in Sources */,
+				E6D4F4A72BC7C0A60044F1BD /* SettingTableViewController.swift in Sources */,
 				FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */,
 				AF4E067D2BC39359003B2AFF /* Model.swift in Sources */,
 			);
@@ -446,6 +452,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -459,7 +466,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -467,6 +474,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kibwa.BobPT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -479,6 +487,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -492,7 +501,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -500,6 +509,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kibwa.BobPT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -530,6 +540,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E6D4F49D2BC763790044F1BD /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
 		FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -538,22 +556,26 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AFD6D4622BC3E807001C8B18 /* AlamofireDynamic */ = {
+		FA55AC8E2BC8F8BB006CE78F /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AlamofireDynamic;
+			package = FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
-		FA4697692BC3C56300A836FD /* Alamofire */ = {
+		FA55AC902BC8F8C3006CE78F /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		FA71E7CE2BC430C5006D1388 /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
