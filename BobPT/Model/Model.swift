@@ -18,13 +18,6 @@ struct Restaurant: Codable{
     let date: String = dateFormatter()
 }
 
-func dateFormatter() -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyyMMdd"
-    let currentDate = dateFormatter.string(from: Date())
-    return currentDate
-}
-
 struct Root: Codable {
     let items: [Restaurant]
 }

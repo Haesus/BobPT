@@ -12,6 +12,7 @@ import UIKit
 import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
+    let locationManager = CLLocationManager()
     // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
@@ -52,11 +53,7 @@ class MainViewController: UIViewController {
     var saladFoodBool = false
     @IBOutlet weak var saladFoodButtonLabel: UIButton!
     
-    
     @IBOutlet weak var nextViewButton: UIButton!
-    @IBOutlet weak var listVIewButton: UIButton!
-    
-    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +70,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func researchLocationButtonAction(_ sender: Any) {
-        locationLabel.text = userLocation
+        self.labelDesign(labelName: self.locationLabel, labelString: self.userLocation)
     }
     
     @IBAction func soupFoodButtonAction(_ sender: Any) {
@@ -258,11 +255,21 @@ class MainViewController: UIViewController {
     
     @IBAction func resultViewButtonAction(_ sender: Any) {
         if !soupFoodBool && !meatFoodBool && !sushiFoodBool && !ramenFoodBool && !kimbapFoodBool && !burritoFoodBool && !pizzaFoodBool && !chickenFoodBool && !hamburgerFoodBool && !jajangmyeonFoodBool && !jjambbongFoodBool && !malatangFoodBool && !ricenoodlesFoodBool && !sandwichFoodBool && !saladFoodBool {
-            let alert = UIAlertController(title: "하나의 음식이라도 골라주세요.", message: "", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "확인", style: .cancel)
+            let alert = UIAlertController(title: "메뉴를 한가지 이상 선택해주세요", message: "밥피티가 맛있는 집을 추천해드립니다.", preferredStyle: .alert)
+            DispatchQueue.main.async {
+                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
+                alert.customViewAlert(customView, image: "Robot")
+            }
             
-            alert.addAction(alertAction)
-            present(alert, animated: true)
+            let action = UIAlertAction(title: "확인", style: .default)
+            action.setValue(UIColor.black, forKey: "titleTextColor")
+            alert.addAction(action)
+            
+            let subview = (alert.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
+            subview.layer.cornerRadius = 30
+            subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
+            
+            self.present(alert, animated: true)
         }
         
         save = []
@@ -279,7 +286,7 @@ class MainViewController: UIViewController {
             }
         }
         
-        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else{
+        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else {
             return
         }
         result.latitude = latitude
@@ -306,7 +313,6 @@ extension MainViewController {
             switch response.result {
                 case .success(let root):
                     self.save.append(root)
-                    print(self.save)
                     completion(self.save)
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -338,8 +344,6 @@ extension MainViewController: CLLocationManagerDelegate {
         latitude = currentLocation.coordinate.latitude
         longitude = currentLocation.coordinate.longitude
         
-        print("위도: \(latitude), 경도: \(longitude)")
-        
         CLGeocoder().reverseGeocodeLocation(currentLocation) { (placemarks, error) in
             if let error = error {
                 print("지오코딩 에러: \(error.localizedDescription)")
@@ -349,9 +353,7 @@ extension MainViewController: CLLocationManagerDelegate {
             if let placemark = placemarks?.first {
                 if let locality = placemark.subLocality {
                     self.userLocation = locality
-                    print("현재 위치의 동/면: \(locality)")
                     self.labelDesign(labelName: self.locationLabel, labelString: self.userLocation)
-//                    self.locationLabel.text = self.userLocation
                 }
             }
         }
@@ -384,8 +386,9 @@ extension MainViewController {
         buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
     }
     
-    func makeNoImageButton(buttonName: UIButton, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
+    func makeNoImageButton(buttonName: UIButton, radius: CGFloat, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
         var config = UIButton.Configuration.filled()
+        config.background.cornerRadius = radius
         config.baseBackgroundColor = UIColorFromHex(hexString: backgroundUIColorString)
         config.baseForegroundColor = UIColorFromHex(hexString: foreGroundUIColorString)
         var titleContainer = AttributeContainer()
@@ -416,7 +419,6 @@ extension MainViewController {
         makeDesignedFoodButton(buttonName: sandwichFoodButtonLabel, imageName: "Sandwich", titleName: "샌드위치")
         makeDesignedFoodButton(buttonName: saladFoodButtonLabel, imageName: "Salad", titleName: "샐러드")
         
-        makeNoImageButton(buttonName: nextViewButton, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
-        makeNoImageButton(buttonName: listVIewButton, backgroundUIColorString: "A1C398", foreGroundUIColorString: "FEFDED", titleSize: 20, titleName: "추천 받은 리스트")
+        makeNoImageButton(buttonName: nextViewButton, radius: 10, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
     }
 }
