@@ -377,48 +377,42 @@ extension MainViewController {
         button.layer.shadowRadius = radius
     }
     
-    fileprivate func designButton() {
-        soupFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: soupFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        meatFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: meatFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        sushiFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: sushiFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        ramenFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: ramenFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        kimbapFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: kimbapFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        burritoFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: burritoFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        pizzaFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: pizzaFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        chickenFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: chickenFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        hamburgerFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: hamburgerFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        jajangmyeonFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: jajangmyeonFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        jjambbongFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: jjambbongFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        malatangFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: malatangFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        ricenoodlesFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: ricenoodlesFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        sandwichFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: sandwichFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
-        saladFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: saladFoodButtonLabel, width: 3, height: 2, opacity: 0.5, radius: 4)
+    func makeDesignedFoodButton(buttonName: UIButton, imageName: String, titleName: String) {
+        let Image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
+        buttonName.setImage(Image, for: .normal)
+        buttonName.setTitle(titleName, for: .normal)
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 5
+        config.imagePlacement = .top
+        config.imageColorTransformer = .monochromeTint
+        buttonName.configuration = config
+        buttonName.tintColor = UIColorFromHex(hexString: "FA7070")
+        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
+    }
+    
+    func designButton() {
+        makeDesignedFoodButton(buttonName: soupFoodButtonLabel, imageName: "Soup", titleName: "찌개")
+        makeDesignedFoodButton(buttonName: meatFoodButtonLabel, imageName: "Meat", titleName: "고기")
+        makeDesignedFoodButton(buttonName: sushiFoodButtonLabel, imageName: "Sushi", titleName: "초밥")
         
-        let soupImage = UIImage(named: "Soup")?.resizeImage(size: CGSize(width: 20, height: 20))
-        soupFoodButtonLabel.setImage(soupImage, for: .normal)
-        soupFoodButtonLabel.contentVerticalAlignment = .top
-        soupFoodButtonLabel.contentHorizontalAlignment = .center
-        let meatImage = UIImage(named: "Meat")?.resizeImage(size: CGSize(width: 20, height: 20))
-        meatFoodButtonLabel.setImage(meatImage, for: .normal)
-        let sushiImage = UIImage(named: "Sushi")?.resizeImage(size: CGSize(width: 20, height: 20))
-        meatFoodButtonLabel.setImage(sushiImage, for: .normal)
+        makeDesignedFoodButton(buttonName: ramenFoodButtonLabel, imageName: "Ramen", titleName: "라멘")
+        makeDesignedFoodButton(buttonName: kimbapFoodButtonLabel, imageName: "Kimbap", titleName: "김밥")
+        makeDesignedFoodButton(buttonName: burritoFoodButtonLabel, imageName: "Burrito", titleName: "부리또")
+        
+        makeDesignedFoodButton(buttonName: pizzaFoodButtonLabel, imageName: "Pizza", titleName: "피자")
+        makeDesignedFoodButton(buttonName: chickenFoodButtonLabel, imageName: "Chicken", titleName: "치킨")
+        makeDesignedFoodButton(buttonName: hamburgerFoodButtonLabel, imageName: "Hamburger", titleName: "햄버거")
+        
+        makeDesignedFoodButton(buttonName: jajangmyeonFoodButtonLabel, imageName: "Jajangmyeon", titleName: "짜장면")
+        makeDesignedFoodButton(buttonName: jjambbongFoodButtonLabel, imageName: "Jjambbong", titleName: "짬뽕")
+        makeDesignedFoodButton(buttonName: malatangFoodButtonLabel, imageName: "Malatang", titleName: "마라탕")
+        
+        makeDesignedFoodButton(buttonName: ricenoodlesFoodButtonLabel, imageName: "Ricenoodles", titleName: "쌀국수")
+        makeDesignedFoodButton(buttonName: sandwichFoodButtonLabel, imageName: "Sandwich", titleName: "샌드위치")
+        makeDesignedFoodButton(buttonName: saladFoodButtonLabel, imageName: "Salad", titleName: "샐러드")
         
         buttonShadow(button: nextViewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
+        nextViewButton.tintColor = UIColorFromHex(hexString: "A1C398")
         buttonShadow(button: listVIewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
     }
 }
