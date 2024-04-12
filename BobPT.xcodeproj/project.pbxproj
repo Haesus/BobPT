@@ -21,8 +21,9 @@
 		FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */; };
 		FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */; };
 		FA93D5822BC0E9FE0007A361 /* SelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */; };
-		FA93D5842BC0EA0A0007A361 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5832BC0EA0A0007A361 /* SettingViewController.swift */; };
 		FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */; };
+		FAB69FCB2BC8B66000BADE15 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB69FCA2BC8B66000BADE15 /* SettingTableViewController.swift */; };
+		FAB69FCD2BC8B68D00BADE15 /* DevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB69FCC2BC8B68D00BADE15 /* DevViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,8 +57,9 @@
 		FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedListViewController.swift; sourceTree = "<group>"; };
-		FA93D5832BC0EA0A0007A361 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SelectedList.plist; sourceTree = "<group>"; };
+		FAB69FCA2BC8B66000BADE15 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
+		FAB69FCC2BC8B68D00BADE15 /* DevViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,7 +134,8 @@
 				FA93D57D2BC0E9DA0007A361 /* ResultViewController.swift */,
 				FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */,
 				FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */,
-				FA93D5832BC0EA0A0007A361 /* SettingViewController.swift */,
+				FAB69FCA2BC8B66000BADE15 /* SettingTableViewController.swift */,
+				FAB69FCC2BC8B68D00BADE15 /* DevViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -286,13 +289,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAB69FCD2BC8B68D00BADE15 /* DevViewController.swift in Sources */,
+				FAB69FCB2BC8B66000BADE15 /* SettingTableViewController.swift in Sources */,
 				FA71E7D22BC4377D006D1388 /* Extension.swift in Sources */,
 				FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */,
 				FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */,
 				FA93D5822BC0E9FE0007A361 /* SelectedListViewController.swift in Sources */,
 				FA1951482BBFE18000D42AEC /* SceneDelegate.swift in Sources */,
 				FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */,
-				FA93D5842BC0EA0A0007A361 /* SettingViewController.swift in Sources */,
 				FA93D57E2BC0E9DA0007A361 /* ResultViewController.swift in Sources */,
 				AF4E067D2BC39359003B2AFF /* Model.swift in Sources */,
 			);
