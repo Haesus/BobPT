@@ -12,6 +12,8 @@ class ResultViewController: UIViewController {
     
     var save: [Root]?
     var restaurant: Restaurant?
+    var latitude: Double?
+    var longitude: Double?
     
     @IBOutlet weak var endLbl: UILabel!
     @IBOutlet weak var restLbl: UILabel!
@@ -33,7 +35,8 @@ class ResultViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let result = uvc as? MapViewController else{
             return
         }
-        
+        result.userLatitude = latitude
+        result.userLongitude = longitude
         result.receivedData = restaurant
         self.navigationController?.pushViewController(uvc, animated: true)
     }

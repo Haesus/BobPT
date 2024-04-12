@@ -289,7 +289,8 @@ class MainViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else {
             return
         }
-        
+        result.latitude = latitude
+        result.longitude = longitude
         dispatchGroup.notify(queue: .main) {
             result.save = self.save
             self.navigationController?.pushViewController(uvc, animated: true)
