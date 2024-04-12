@@ -8,6 +8,15 @@
 import UIKit
 import UniformTypeIdentifiers
 
+// MARK: - Global Function
+func dateFormatter() -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyyMMdd"
+    let currentDate = dateFormatter.string(from: Date())
+    return currentDate
+}
+
+// MARK: - extension Bundle
 extension Bundle {
     var idKey: String? {
         return infoDictionary?["ID_KEY"] as? String
@@ -18,6 +27,7 @@ extension Bundle {
     }
 }
 
+// MARK: - extension UIImage
 extension UIImage {
     func resizeImage(size: CGSize) -> UIImage {
         let originalSize = self.size
@@ -30,6 +40,7 @@ extension UIImage {
     }
 }
 
+// MARK: - extension UIViewController
 extension UIViewController {
     func urlWithFilename(_ filename: String, type: UTType) -> URL? {
         let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -51,6 +62,7 @@ extension UIViewController {
     }
 }
 
+// MARK: - extension UIAlertController
 extension UIAlertController {
     public func customViewAlert(_ view: UIView, image: String) {        
         let input = view

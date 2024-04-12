@@ -12,6 +12,7 @@ import UIKit
 import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
+    let locationManager = CLLocationManager()
     // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
@@ -53,8 +54,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var saladFoodButtonLabel: UIButton!
     
     @IBOutlet weak var nextViewButton: UIButton!
-    
-    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -313,7 +312,6 @@ extension MainViewController {
             switch response.result {
                 case .success(let root):
                     self.save.append(root)
-                    print(self.save)
                     completion(self.save)
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -345,8 +343,6 @@ extension MainViewController: CLLocationManagerDelegate {
         latitude = currentLocation.coordinate.latitude
         longitude = currentLocation.coordinate.longitude
         
-        print("위도: \(latitude), 경도: \(longitude)")
-        
         CLGeocoder().reverseGeocodeLocation(currentLocation) { (placemarks, error) in
             if let error = error {
                 print("지오코딩 에러: \(error.localizedDescription)")
@@ -356,7 +352,6 @@ extension MainViewController: CLLocationManagerDelegate {
             if let placemark = placemarks?.first {
                 if let locality = placemark.subLocality {
                     self.userLocation = locality
-                    print("현재 위치의 동/면: \(locality)")
                     self.labelDesign(labelName: self.locationLabel, labelString: self.userLocation)
                 }
             }
