@@ -7,8 +7,6 @@
 
 import UIKit
 import NMapsMap
-import SwiftUI
-
 class MapViewController: UIViewController {
     
     @IBOutlet weak var restaurantImage: UIImageView!
