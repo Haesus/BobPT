@@ -349,7 +349,8 @@ extension MainViewController: CLLocationManagerDelegate {
                 if let locality = placemark.subLocality {
                     self.userLocation = locality
                     print("현재 위치의 동/면: \(locality)")
-                    self.locationLabel.text = self.userLocation
+                    self.labelDesign(labelName: self.locationLabel, labelString: self.userLocation)
+//                    self.locationLabel.text = self.userLocation
                 }
             }
         }
@@ -370,6 +371,11 @@ extension MainViewController {
         return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
     }
     
+    func labelDesign(labelName: UILabel, labelString: String?) {
+        labelName.textColor = .tintColor
+        labelName.text = labelString
+    }
+    
     func buttonShadow(button: UIButton, width: Int, height: Int, opacity: Float, radius: CGFloat) {
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: width, height: height)
@@ -384,9 +390,20 @@ extension MainViewController {
         var config = UIButton.Configuration.plain()
         config.imagePadding = 5
         config.imagePlacement = .top
-        config.imageColorTransformer = .monochromeTint
+//        config.imageColorTransformer = .monochromeTint
         buttonName.configuration = config
         buttonName.tintColor = UIColorFromHex(hexString: "FA7070")
+        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
+    }
+    
+    func makeNoImageButton(buttonName: UIButton, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = UIColorFromHex(hexString: backgroundUIColorString)
+        config.baseForegroundColor = UIColorFromHex(hexString: foreGroundUIColorString)
+        var titleContainer = AttributeContainer()
+        titleContainer.font = UIFont.systemFont(ofSize: titleSize)
+        config.attributedTitle = AttributedString(titleName, attributes: titleContainer)
+        buttonName.configuration = config
         buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
     }
     
@@ -411,8 +428,7 @@ extension MainViewController {
         makeDesignedFoodButton(buttonName: sandwichFoodButtonLabel, imageName: "Sandwich", titleName: "샌드위치")
         makeDesignedFoodButton(buttonName: saladFoodButtonLabel, imageName: "Salad", titleName: "샐러드")
         
-        buttonShadow(button: nextViewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
-        nextViewButton.tintColor = UIColorFromHex(hexString: "A1C398")
-        buttonShadow(button: listVIewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
+        makeNoImageButton(buttonName: nextViewButton, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
+        makeNoImageButton(buttonName: listVIewButton, backgroundUIColorString: "A1C398", foreGroundUIColorString: "FEFDED", titleSize: 20, titleName: "추천 받은 리스트")
     }
 }
