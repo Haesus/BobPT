@@ -54,7 +54,6 @@ extension SelectedListViewController {
             return cell
         }
         
-        print("지나간다~")
         let foodNameLabel = cell.viewWithTag(1) as? UILabel
         let dateNameLabel = cell.viewWithTag(2) as? UILabel
         
