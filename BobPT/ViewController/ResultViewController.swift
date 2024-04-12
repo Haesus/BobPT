@@ -25,7 +25,7 @@ class ResultViewController: UIViewController {
             return
         }
         self.restLbl.text = message.title.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: "")
-//        restaurant = message
+        restaurant = message
         writePlist()
     }
     
