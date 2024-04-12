@@ -51,19 +51,21 @@ class MapViewController: UIViewController {
         infoWindow.open(with: marker)
         localAddress.text = receivedData?.address
     }
+    
     @IBAction func naverAppBtn(_ sender: Any) {
         guard let searchQueryTitle = receivedData?.title,
               let searchQueryCategory = receivedData?.category.split(separator: ">").first,
               let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "nmap://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&appname=BobPT"),
-              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8")else{return}
-
-              if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-              } else {
-                UIApplication.shared.open(appStoreURL)
-              }
-    
+              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8") else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        } else {
+            UIApplication.shared.open(appStoreURL)
+        }
     }
 }

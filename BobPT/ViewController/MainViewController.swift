@@ -19,23 +19,49 @@ class MainViewController: UIViewController {
     var selectedFood: [String] = []
     var save: [Root] = []
     
-    var koreaFoodBool = false
-    @IBOutlet weak var koreaFoodButtonLabel: UIButton!
-    var chinaFoodBool = false
-    @IBOutlet weak var chinaFoodButtonLabel: UIButton!
-    var japanFoodBool = false
-    @IBOutlet weak var japanFoodButtonLabel: UIButton!
-    var bunsikFoodBool = false
-    @IBOutlet weak var bunsikFoodButtonLabel: UIButton!
-    var burgerFoodBool = false
-    @IBOutlet weak var burgerFoodButtonLabel: UIButton!
-    var noodleFoodBool = false
-    @IBOutlet weak var noodleFoodButtonLabel: UIButton!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var locationButton: UIButton!
+    var soupFoodBool = false
+    @IBOutlet weak var soupFoodButtonLabel: UIButton!
+    var meatFoodBool = false
+    @IBOutlet weak var meatFoodButtonLabel: UIButton!
+    var sushiFoodBool = false
+    @IBOutlet weak var sushiFoodButtonLabel: UIButton!
+    var ramenFoodBool = false
+    @IBOutlet weak var ramenFoodButtonLabel: UIButton!
+    var kimbapFoodBool = false
+    @IBOutlet weak var kimbapFoodButtonLabel: UIButton!
+    var burritoFoodBool = false
+    @IBOutlet weak var burritoFoodButtonLabel: UIButton!
+    var pizzaFoodBool = false
+    @IBOutlet weak var pizzaFoodButtonLabel: UIButton!
+    var chickenFoodBool = false
+    @IBOutlet weak var chickenFoodButtonLabel: UIButton!
+    var hamburgerFoodBool = false
+    @IBOutlet weak var hamburgerFoodButtonLabel: UIButton!
+    var jajangmyeonFoodBool = false
+    @IBOutlet weak var jajangmyeonFoodButtonLabel: UIButton!
+    var jjambbongFoodBool = false
+    @IBOutlet weak var jjambbongFoodButtonLabel: UIButton!
+    var malatangFoodBool = false
+    @IBOutlet weak var malatangFoodButtonLabel: UIButton!
+    var ricenoodlesFoodBool = false
+    @IBOutlet weak var ricenoodlesFoodButtonLabel: UIButton!
+    var sandwichFoodBool = false
+    @IBOutlet weak var sandwichFoodButtonLabel: UIButton!
+    var saladFoodBool = false
+    @IBOutlet weak var saladFoodButtonLabel: UIButton!
+    
+    
+    @IBOutlet weak var nextViewButton: UIButton!
+    @IBOutlet weak var listVIewButton: UIButton!
     
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        designButton()
         
         if let target = urlWithFilename("SelectedList.plist", type: .propertyList), let source = Bundle.main.url(forResource: "SelectedList.plist", withExtension: nil) {
             copyFile(target, source)
@@ -44,85 +70,194 @@ class MainViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
-        
-        let image = UIImage(named: "noodle")?.resizeImage(size: CGSize(width: 20, height: 20))
-        koreaFoodButtonLabel.setImage(image, for: .normal)
     }
     
-    @IBAction func koreaFoodButtonAction(_ sender: Any) {
-        if koreaFoodBool == false {
-            koreaFoodButtonLabel.tintColor = .gray
-            koreaFoodBool = true
-            selectedFood.append("한식")
+    @IBAction func researchLocationButtonAction(_ sender: Any) {
+        locationLabel.text = userLocation
+    }
+    
+    @IBAction func soupFoodButtonAction(_ sender: Any) {
+        if soupFoodBool == false {
+            soupFoodButtonLabel.tintColor = .gray
+            soupFoodBool = true
+            selectedFood.append("찌개")
         } else {
-            koreaFoodButtonLabel.tintColor = .link
-            koreaFoodBool = false
-            selectedFood = selectedFood.filter{$0 != "한식"}
+            soupFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            soupFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "찌개"}
         }
     }
     
-    @IBAction func chinaFoodButtonAction(_ sender: Any) {
-        if chinaFoodBool == false {
-            chinaFoodButtonLabel.tintColor = .gray
-            chinaFoodBool = true
-            selectedFood.append("중식")
+    @IBAction func meatFoodButtonAction(_ sender: Any) {
+        if meatFoodBool == false {
+            meatFoodButtonLabel.tintColor = .gray
+            meatFoodBool = true
+            selectedFood.append("고기")
         } else {
-            chinaFoodButtonLabel.tintColor = .link
-            chinaFoodBool = false
-            selectedFood = selectedFood.filter{$0 != "중식"}
+            meatFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            meatFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "고기"}
         }
     }
     
-    @IBAction func japanFoodButtonAction(_ sender: Any) {
-        if japanFoodBool == false {
-            japanFoodButtonLabel.tintColor = .gray
-            japanFoodBool = true
-            selectedFood.append("일식")
+    @IBAction func sushiFoodButtonAction(_ sender: Any) {
+        if sushiFoodBool == false {
+            sushiFoodButtonLabel.tintColor = .gray
+            sushiFoodBool = true
+            selectedFood.append("초밥")
         } else {
-            japanFoodButtonLabel.tintColor = .link
-            japanFoodBool = false
-            selectedFood = selectedFood.filter{$0 != "일식"}
+            sushiFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            sushiFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "초밥"}
         }
     }
     
-    @IBAction func bunsikFoodButtonAction(_ sender: Any) {
-        if bunsikFoodBool == false {
-            bunsikFoodButtonLabel.tintColor = .gray
-            bunsikFoodBool = true
-            selectedFood.append("분식")
+    @IBAction func ramenFoodButtonAction(_ sender: Any) {
+        if ramenFoodBool == false {
+            ramenFoodButtonLabel.tintColor = .gray
+            ramenFoodBool = true
+            selectedFood.append("라멘")
         } else {
-            bunsikFoodButtonLabel.tintColor = .link
-            bunsikFoodBool = false
-            selectedFood = selectedFood.filter{$0 != "분식"}
+            ramenFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            ramenFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "라멘"}
         }
     }
     
-    @IBAction func burgerFoodButtonAction(_ sender: Any) {
-        if burgerFoodBool == false {
-            burgerFoodButtonLabel.tintColor = .gray
-            burgerFoodBool = true
+    @IBAction func kimbapFoodButtonAction(_ sender: Any) {
+        if kimbapFoodBool == false {
+            kimbapFoodButtonLabel.tintColor = .gray
+            kimbapFoodBool = true
+            selectedFood.append("김밥")
+        } else {
+            kimbapFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            kimbapFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "김밥"}
+        }
+    }
+    
+    @IBAction func burritoFoodButtonAction(_ sender: Any) {
+        if burritoFoodBool == false {
+            burritoFoodButtonLabel.tintColor = .gray
+            burritoFoodBool = true
+            selectedFood.append("부리또")
+        } else {
+            burritoFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            burritoFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "부리또"}
+        }
+    }
+    
+    @IBAction func pizzaFoodButtonAction(_ sender: Any) {
+        if pizzaFoodBool == false {
+            pizzaFoodButtonLabel.tintColor = .gray
+            pizzaFoodBool = true
+            selectedFood.append("피자")
+        } else {
+            pizzaFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            pizzaFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "피자"}
+        }
+    }
+    
+    @IBAction func chickenFoodButtonAction(_ sender: Any) {
+        if chickenFoodBool == false {
+            chickenFoodButtonLabel.tintColor = .gray
+            chickenFoodBool = true
+            selectedFood.append("치킨")
+        } else {
+            chickenFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            chickenFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "치킨"}
+        }
+    }
+    
+    @IBAction func hamburgerFoodButtonAction(_ sender: Any) {
+        if hamburgerFoodBool == false {
+            hamburgerFoodButtonLabel.tintColor = .gray
+            hamburgerFoodBool = true
             selectedFood.append("햄버거")
         } else {
-            burgerFoodButtonLabel.tintColor = .link
-            burgerFoodBool = false
+            hamburgerFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            hamburgerFoodBool = false
             selectedFood = selectedFood.filter{$0 != "햄버거"}
         }
     }
     
-    @IBAction func noodleFoodButtonAction(_ sender: Any) {
-        if noodleFoodBool == false {
-            noodleFoodButtonLabel.tintColor = .gray
-            noodleFoodBool = true
-            selectedFood.append("국수")
+    @IBAction func jajangmyeonFoodButtonAction(_ sender: Any) {
+        if jajangmyeonFoodBool == false {
+            jajangmyeonFoodButtonLabel.tintColor = .gray
+            jajangmyeonFoodBool = true
+            selectedFood.append("짜장면")
         } else {
-            noodleFoodButtonLabel.tintColor = .link
-            noodleFoodBool = false
-            selectedFood = selectedFood.filter{$0 != "국수"}
+            jajangmyeonFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            jajangmyeonFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "짜장면"}
+        }
+    }
+    
+    @IBAction func jjambbongFoodButtonAction(_ sender: Any) {
+        if jjambbongFoodBool == false {
+            jjambbongFoodButtonLabel.tintColor = .gray
+            jjambbongFoodBool = true
+            selectedFood.append("짬뽕")
+        } else {
+            jjambbongFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            jjambbongFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "짬뽕"}
+        }
+    }
+    
+    @IBAction func malatangFoodButtonAction(_ sender: Any) {
+        if malatangFoodBool == false {
+            malatangFoodButtonLabel.tintColor = .gray
+            malatangFoodBool = true
+            selectedFood.append("마라탕")
+        } else {
+            malatangFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            malatangFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "마라탕"}
+        }
+    }
+    
+    @IBAction func ricenoodlesFoodButtonAction(_ sender: Any) {
+        if ricenoodlesFoodBool == false {
+            ricenoodlesFoodButtonLabel.tintColor = .gray
+            ricenoodlesFoodBool = true
+            selectedFood.append("쌀국수")
+        } else {
+            ricenoodlesFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            ricenoodlesFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "쌀국수"}
+        }
+    }
+    
+    @IBAction func sandwichFoodButtonAction(_ sender: Any) {
+        if sandwichFoodBool == false {
+            sandwichFoodButtonLabel.tintColor = .gray
+            sandwichFoodBool = true
+            selectedFood.append("샌드위치")
+        } else {
+            sandwichFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            sandwichFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "샌드위치"}
+        }
+    }
+    
+    @IBAction func saladFoodButtonAction(_ sender: Any) {
+        if saladFoodBool == false {
+            saladFoodButtonLabel.tintColor = .gray
+            saladFoodBool = true
+            selectedFood.append("샐러드")
+        } else {
+            saladFoodButtonLabel.tintColor = UIColorFromHex(hexString: "FA7070")
+            saladFoodBool = false
+            selectedFood = selectedFood.filter{$0 != "샐러드"}
         }
     }
     
     @IBAction func resultViewButtonAction(_ sender: Any) {
-        if !koreaFoodBool && !chinaFoodBool && !japanFoodBool && !bunsikFoodBool && !burgerFoodBool && !noodleFoodBool {
+        if !soupFoodBool && !meatFoodBool && !sushiFoodBool && !ramenFoodBool && !kimbapFoodBool && !burritoFoodBool && !pizzaFoodBool && !chickenFoodBool && !hamburgerFoodBool && !jajangmyeonFoodBool && !jjambbongFoodBool && !malatangFoodBool && !ricenoodlesFoodBool && !sandwichFoodBool && !saladFoodBool {
             let alert = UIAlertController(title: "하나의 음식이라도 골라주세요.", message: "", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "확인", style: .cancel)
             
@@ -214,8 +349,70 @@ extension MainViewController: CLLocationManagerDelegate {
                 if let locality = placemark.subLocality {
                     self.userLocation = locality
                     print("현재 위치의 동/면: \(locality)")
+                    self.locationLabel.text = self.userLocation
                 }
             }
         }
+    }
+}
+
+// MARK: - Design Function
+extension MainViewController {
+    func UIColorFromHex(hexString: String) -> UIColor? {
+        var rgbValue: UInt64 = 0
+        
+        Scanner(string: hexString).scanHexInt64(&rgbValue)
+        
+        let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgbValue & 0x0000FF) / 255.0
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+    
+    func buttonShadow(button: UIButton, width: Int, height: Int, opacity: Float, radius: CGFloat) {
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: width, height: height)
+        button.layer.shadowOpacity = opacity
+        button.layer.shadowRadius = radius
+    }
+    
+    func makeDesignedFoodButton(buttonName: UIButton, imageName: String, titleName: String) {
+        let Image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
+        buttonName.setImage(Image, for: .normal)
+        buttonName.setTitle(titleName, for: .normal)
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 5
+        config.imagePlacement = .top
+        config.imageColorTransformer = .monochromeTint
+        buttonName.configuration = config
+        buttonName.tintColor = UIColorFromHex(hexString: "FA7070")
+        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
+    }
+    
+    func designButton() {
+        makeDesignedFoodButton(buttonName: soupFoodButtonLabel, imageName: "Soup", titleName: "찌개")
+        makeDesignedFoodButton(buttonName: meatFoodButtonLabel, imageName: "Meat", titleName: "고기")
+        makeDesignedFoodButton(buttonName: sushiFoodButtonLabel, imageName: "Sushi", titleName: "초밥")
+        
+        makeDesignedFoodButton(buttonName: ramenFoodButtonLabel, imageName: "Ramen", titleName: "라멘")
+        makeDesignedFoodButton(buttonName: kimbapFoodButtonLabel, imageName: "Kimbap", titleName: "김밥")
+        makeDesignedFoodButton(buttonName: burritoFoodButtonLabel, imageName: "Burrito", titleName: "부리또")
+        
+        makeDesignedFoodButton(buttonName: pizzaFoodButtonLabel, imageName: "Pizza", titleName: "피자")
+        makeDesignedFoodButton(buttonName: chickenFoodButtonLabel, imageName: "Chicken", titleName: "치킨")
+        makeDesignedFoodButton(buttonName: hamburgerFoodButtonLabel, imageName: "Hamburger", titleName: "햄버거")
+        
+        makeDesignedFoodButton(buttonName: jajangmyeonFoodButtonLabel, imageName: "Jajangmyeon", titleName: "짜장면")
+        makeDesignedFoodButton(buttonName: jjambbongFoodButtonLabel, imageName: "Jjambbong", titleName: "짬뽕")
+        makeDesignedFoodButton(buttonName: malatangFoodButtonLabel, imageName: "Malatang", titleName: "마라탕")
+        
+        makeDesignedFoodButton(buttonName: ricenoodlesFoodButtonLabel, imageName: "Ricenoodles", titleName: "쌀국수")
+        makeDesignedFoodButton(buttonName: sandwichFoodButtonLabel, imageName: "Sandwich", titleName: "샌드위치")
+        makeDesignedFoodButton(buttonName: saladFoodButtonLabel, imageName: "Salad", titleName: "샐러드")
+        
+        buttonShadow(button: nextViewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
+        nextViewButton.tintColor = UIColorFromHex(hexString: "A1C398")
+        buttonShadow(button: listVIewButton, width: 3, height: 2, opacity: 0.5, radius: 4)
     }
 }

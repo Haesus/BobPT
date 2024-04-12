@@ -1,0 +1,13 @@
+name: NMapsGeometry, nameSpecified: 
+body: Copyright © 2018 NAV…
+version: 1.0.1
+
+name: NMapsMap, nameSpecified: 
+body: Copyright © 2018 NAV…
+version: 3.18.0
+
+name: Alamofire, nameSpecified: Alamofire, owner: Alamofire, version: 5.9.1, source: https://github.com/Alamofire/Alamofire
+
+add-version-numbers: false
+
+LicensePlist Version: 3.25.1
