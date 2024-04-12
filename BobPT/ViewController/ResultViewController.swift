@@ -7,11 +7,13 @@
 
 import UIKit
 import Alamofire
+import CoreLocation
 
 class ResultViewController: UIViewController {
     
     var save: [Root]?
     var restaurant: Restaurant?
+    var userLocation: CLLocation?
     
     @IBOutlet weak var endLbl: UILabel!
     @IBOutlet weak var restLbl: UILabel!
@@ -33,7 +35,7 @@ class ResultViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let result = uvc as? MapViewController else{
             return
         }
-        
+        result.userLocation = userLocation
         result.receivedData = restaurant
         self.navigationController?.pushViewController(uvc, animated: true)
     }

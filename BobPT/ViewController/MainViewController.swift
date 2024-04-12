@@ -282,6 +282,8 @@ class MainViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else{
             return
         }
+        var userLocationLatLng = CLLocation(latitude: latitude ?? 37.49457, longitude: longitude ?? 127.0276)
+        result.userLocation = userLocationLatLng
         
         dispatchGroup.notify(queue: .main) {
             result.save = self.save
@@ -408,7 +410,7 @@ extension MainViewController {
         makeDesignedFoodButton(buttonName: hamburgerFoodButtonLabel, imageName: "Hamburger", titleName: "햄버거")
         
         makeDesignedFoodButton(buttonName: jajangmyeonFoodButtonLabel, imageName: "Jajangmyeon", titleName: "짜장면")
-        makeDesignedFoodButton(buttonName: jjambbongFoodButtonLabel, imageName: "jjambbong", titleName: "짬뽕")
+        makeDesignedFoodButton(buttonName: jjambbongFoodButtonLabel, imageName: "Jjambbong", titleName: "짬뽕")
         makeDesignedFoodButton(buttonName: malatangFoodButtonLabel, imageName: "Malatang", titleName: "마라탕")
         
         makeDesignedFoodButton(buttonName: ricenoodlesFoodButtonLabel, imageName: "Ricenoodles", titleName: "쌀국수")
