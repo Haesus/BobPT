@@ -26,9 +26,7 @@ class ResultViewController: UIViewController, CLLocationManagerDelegate {
             return
         }
         self.restLbl.text = message.title.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: "")
-//        restaurant = message
-        let x = message.mapx
-        let y = message.mapy
+        restaurant = message
         writePlist()
         
        
@@ -36,6 +34,14 @@ class ResultViewController: UIViewController, CLLocationManagerDelegate {
 //        fetchLocationsNearby(location: goLocation)
     }
     
+    @IBAction func reroleBtn(_ sender: Any) {
+        guard let message = self.save?[0].items.randomElement() else {
+            return
+        }
+        self.restLbl.text = message.title.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: "")
+        restaurant = message
+        writePlist()
+    }
     
     @IBAction func mapBtn(_ sender: Any) {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let result = uvc as? MapViewController else{
@@ -45,7 +51,6 @@ class ResultViewController: UIViewController, CLLocationManagerDelegate {
         result.receivedData = restaurant
         self.navigationController?.pushViewController(uvc, animated: true)
     }
-    
 }
 
 // MARK: - extension writePlist Function

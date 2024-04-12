@@ -134,7 +134,6 @@ class MainViewController: UIViewController {
         guard let userLocation else {
             return
         }
-        
         let dispatchGroup = DispatchGroup()
         for i in 0..<selectedFood.count {
             dispatchGroup.enter()
@@ -147,7 +146,6 @@ class MainViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else{
             return
         }
-        
         dispatchGroup.notify(queue: .main) {
             result.save = self.save
             self.navigationController?.pushViewController(uvc, animated: true)
@@ -156,7 +154,21 @@ class MainViewController: UIViewController {
 }
 
 // MARK: - naverSearch API Function
+extension Double {
+    func toRadians() -> Double {
+        return self * .pi / 180.0
+    }
+}
 extension MainViewController {
+    func calculateDistanceInMeters(fromLatitude lat1: Double, fromLongitude lon1: Double, toLatitude lat2: Double, toLongitude lon2: Double) -> Double {
+        let earthRadius = 6371.0 // 지구의 반지름 (단위: km)
+        let deltaLatitude = (lat2 - lat1).toRadians()
+        let deltaLongitude = (lon2 - lon1).toRadians()
+        let a = sin(deltaLatitude / 2) * sin(deltaLatitude / 2) + cos(lat1.toRadians()) * cos(lat2.toRadians()) * sin(deltaLongitude / 2) * sin(deltaLongitude / 2)
+        let c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        let distance = earthRadius * c * 200 // 거리를 미터로 변환
+        return distance
+    }
     func naverSearch(keyword:String, completion: @escaping ([Root]) -> Void) {
         guard let idKey = Bundle.main.idKey, let secretKey = Bundle.main.secretKey else {
             print("API 키를 로드하지 못했습니다.")
@@ -165,14 +177,9 @@ extension MainViewController {
         let endPoint = "https://openapi.naver.com/v1/search/local.json?query=\(keyword)&display=5"
         let params: Parameters = ["keyword": keyword]
         let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
-        let radius: Double = 1000 // 1km 반경
-        let baseUrl = "https://api.example.com/search"
-        let parameters: [String: Any] = [
-//            "latitude": latitude.latitude,
-//            "longitude": longitude.longitude,
-            "radius": radius,]
         let alamo = AF.request(endPoint, method: .get, parameters: params, headers: headers)
         alamo.responseDecodable(of: Root.self) { response in
+            print(response)
             switch response.result {
             case .success(let root):
                 self.save.append(root)
@@ -182,13 +189,7 @@ extension MainViewController {
                 print(error.localizedDescription)
             }
         }
-        let alamoLocation = AF.request(baseUrl, method: .get, parameters: parameters).responseDecodable(of:Root.self ) { response in
-            switch response.result {
-            case .success(let root): break
-            case .failure(let error):
-                print("API 요청 실패: \(error)")
-            }
-        }
+
     }
 }
 
