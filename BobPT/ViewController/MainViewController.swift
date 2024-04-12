@@ -165,15 +165,28 @@ extension MainViewController {
         let endPoint = "https://openapi.naver.com/v1/search/local.json?query=\(keyword)&display=5"
         let params: Parameters = ["keyword": keyword]
         let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
+        let radius: Double = 1000 // 1km 반경
+        let baseUrl = "https://api.example.com/search"
+        let parameters: [String: Any] = [
+//            "latitude": latitude.latitude,
+//            "longitude": longitude.longitude,
+            "radius": radius,]
         let alamo = AF.request(endPoint, method: .get, parameters: params, headers: headers)
         alamo.responseDecodable(of: Root.self) { response in
             switch response.result {
-                case .success(let root):
-                    self.save.append(root)
-                    print(self.save)
-                    completion(self.save)
-                case .failure(let error):
-                    print(error.localizedDescription)
+            case .success(let root):
+                self.save.append(root)
+                print(self.save)
+                completion(self.save)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        let alamoLocation = AF.request(baseUrl, method: .get, parameters: parameters).responseDecodable(of:Root.self ) { response in
+            switch response.result {
+            case .success(let root): break
+            case .failure(let error):
+                print("API 요청 실패: \(error)")
             }
         }
     }

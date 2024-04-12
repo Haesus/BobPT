@@ -7,8 +7,9 @@
 
 import UIKit
 import Alamofire
+import CoreLocation
 
-class ResultViewController: UIViewController {
+class ResultViewController: UIViewController, CLLocationManagerDelegate {
     
     var save: [Root]?
     var restaurant: Restaurant?
@@ -26,8 +27,15 @@ class ResultViewController: UIViewController {
         }
         self.restLbl.text = message.title.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: "")
 //        restaurant = message
+        let x = message.mapx
+        let y = message.mapy
         writePlist()
+        
+       
+//        let goLocation = Location(latitude: 37.7749, longitude: -122.4194)
+//        fetchLocationsNearby(location: goLocation)
     }
+    
     
     @IBAction func mapBtn(_ sender: Any) {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let result = uvc as? MapViewController else{
@@ -37,6 +45,7 @@ class ResultViewController: UIViewController {
         result.receivedData = restaurant
         self.navigationController?.pushViewController(uvc, animated: true)
     }
+    
 }
 
 // MARK: - extension writePlist Function
