@@ -359,18 +359,6 @@ extension MainViewController: CLLocationManagerDelegate {
 
 // MARK: - Design Function
 extension MainViewController {
-    func UIColorFromHex(hexString: String) -> UIColor? {
-        var rgbValue: UInt64 = 0
-        
-        Scanner(string: hexString).scanHexInt64(&rgbValue)
-        
-        let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
-        let green = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
-        let blue = CGFloat(rgbValue & 0x0000FF) / 255.0
-        
-        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
-    }
-    
     func labelDesign(labelName: UILabel, labelString: String?) {
         labelName.textColor = .tintColor
         labelName.text = labelString
@@ -390,7 +378,6 @@ extension MainViewController {
         var config = UIButton.Configuration.plain()
         config.imagePadding = 5
         config.imagePlacement = .top
-//        config.imageColorTransformer = .monochromeTint
         buttonName.configuration = config
         buttonName.tintColor = UIColorFromHex(hexString: "FA7070")
         buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
@@ -401,7 +388,7 @@ extension MainViewController {
         config.baseBackgroundColor = UIColorFromHex(hexString: backgroundUIColorString)
         config.baseForegroundColor = UIColorFromHex(hexString: foreGroundUIColorString)
         var titleContainer = AttributeContainer()
-        titleContainer.font = UIFont.systemFont(ofSize: titleSize)
+        titleContainer.font = UIFont.boldSystemFont(ofSize: titleSize)
         config.attributedTitle = AttributedString(titleName, attributes: titleContainer)
         buttonName.configuration = config
         buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
