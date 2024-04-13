@@ -86,16 +86,16 @@ extension UIAlertController {
 
         let topMargin: CGFloat = 0
         let leftMargin: CGFloat = 0
-        let btnHeight: CGFloat = 44.0
+        let btnHeight: CGFloat = 40
         let alertWidth = self.view.frame.size.width - (2 * leftMargin)
         
         let viewWidth = (alertWidth / input.frame.width) * input.frame.width
         let viewHeight = (alertWidth / input.frame.width) * input.frame.height
         
         input.frame = CGRect(x: leftMargin, y: topMargin, width: viewWidth, height: viewHeight)
-        imageView.frame = CGRect(x: (alertWidth - viewWidth / 2) / 2, y: topMargin + 20, width: viewWidth/2, height: viewHeight/3)
-        titleLabel.frame = CGRect(x: leftMargin, y: imageView.frame.maxY + 10, width: alertWidth, height: 30)
-        messageLabel.frame = CGRect(x: leftMargin, y: titleLabel.frame.maxY + 10, width: alertWidth, height: 30)
+        imageView.frame = CGRect(x: (alertWidth - viewWidth / 3) / 2, y: topMargin + 20, width: viewWidth/3, height: viewHeight/3)
+        titleLabel.frame = CGRect(x: leftMargin, y: imageView.frame.maxY + 10, width: alertWidth, height: 50)
+        messageLabel.frame = CGRect(x: leftMargin, y: titleLabel.frame.maxY + 10, width: alertWidth, height: 50)
         
         let maskLayer = CAShapeLayer()
         let roundedPath = UIBezierPath(roundedRect: input.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 30, height: 30))

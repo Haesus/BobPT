@@ -257,7 +257,7 @@ class MainViewController: UIViewController {
         if !soupFoodBool && !meatFoodBool && !sushiFoodBool && !ramenFoodBool && !kimbapFoodBool && !burritoFoodBool && !pizzaFoodBool && !chickenFoodBool && !hamburgerFoodBool && !jajangmyeonFoodBool && !jjambbongFoodBool && !malatangFoodBool && !ricenoodlesFoodBool && !sandwichFoodBool && !saladFoodBool {
             let alert = UIAlertController(title: "메뉴를 한가지 이상 선택해주세요", message: "밥피티가 맛있는 집을 추천해드립니다.", preferredStyle: .alert)
             DispatchQueue.main.async {
-                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
+                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
                 alert.customViewAlert(customView, image: "Robot")
             }
             
