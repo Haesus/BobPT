@@ -41,7 +41,7 @@ class SettingTableViewController: UITableViewController, MFMailComposeViewContro
             accessory.tintColor = UIColor.black
             accessory.isUserInteractionEnabled = true
             
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapAccessory))
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTap))
             accessory.addGestureRecognizer(tapGesture)
             cell.accessoryView = accessory
             return cell
@@ -62,7 +62,7 @@ class SettingTableViewController: UITableViewController, MFMailComposeViewContro
             }
         }
     }
-    @objc func didTapAccessory(){
+    @objc func didTap(){
         if MFMailComposeViewController.canSendMail(){
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
