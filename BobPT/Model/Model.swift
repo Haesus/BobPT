@@ -25,7 +25,6 @@ func dateFormatter() -> String {
     return currentDate
 }
 
-
 struct Root: Codable {
     let items: [Restaurant]
 }

@@ -169,16 +169,11 @@ extension MainViewController {
         let a = sin(deltaLatitude / 2) * sin(deltaLatitude / 2) + cos(lat1.toRadians()) * cos(lat2.toRadians()) * sin(deltaLongitude / 2) * sin(deltaLongitude / 2)
         let c = 2 * atan2(sqrt(a), sqrt(1 - a))
         let distance = earthRadius * c * 200 // 거리를 미터로 변환
-        return distance
-        
-        let locations: [(mapx: Double, mapy: Double)] = 
-        /* API 모델에서 가져온 지점들의 배열 */
-
-
-
+        let locations: [(mapx: Double, mapy: Double)] = root.items[0].mapx as? Double
+        //모델 mapx 접근 찾기
         // 반경 내에 있는 지점들을 저장할 배열
         var nearbyLocations: [(latitude: Double, longitude: Double)] = []
-
+        
         // 현재 위치와 각 지점 간의 거리를 계산하여 반경 내에 있는 지점들을 찾음
         for location in locations {
             let distance = calculateDistanceInMeters(fromLatitude: latitude!, fromLongitude: longitude!, toLatitude: location.mapx, toLongitude: location.mapy)
@@ -186,30 +181,8 @@ extension MainViewController {
                 nearbyLocations.append((location.mapx, location.mapy))
             }
         }
-        
-//        var nearbyLocations: [(latitude: Double, longitude: Double)] = []
-//        var nearbyLocationsCount = 0
-//        // 반경 내에 있는 지점들을 찾기 위한 반복문
-//        for latitude in stride(from: latitude! - 0.01, through: latitude! + 0.01, by: 0.0001) {
-//            
-//        
-//            for longitude in stride(from: longitude! - 0.01, through: longitude! + 0.01, by: 0.0001) {
-//                let distance = calculateDistanceInMeters(fromLatitude: latitude, fromLongitude: longitude, toLatitude: latitude, toLongitude: longitude)
-//                if distance <= radius {
-//                    nearbyLocationsCount += 1
-////                     nearbyLocations.append((latitude, longitude))
-//                }
-//            }
-//            return Double(nearbyLocationsCount)
-//        }
-
-        // 반경 내에 있는 지점들을 출력
-//        for location in nearbyLocations {
-//            print("Latitude: \(location.latitude), Longitude: \(location.longitude)")
-//            return nearbyLocations
-//        }
+        return distance
     }
-    
     func naverSearch(keyword:String, completion: @escaping ([Root]) -> Void) {
         guard let idKey = Bundle.main.idKey, let secretKey = Bundle.main.secretKey else {
             print("API 키를 로드하지 못했습니다.")
@@ -230,7 +203,6 @@ extension MainViewController {
                 print(error.localizedDescription)
             }
         }
-
     }
 }
 
@@ -241,7 +213,6 @@ extension MainViewController {
             print("이미 파일이 해당 위치에 존재합니다. : \(target)")
             return
         }
-        
         try? FileManager.default.copyItem(at: source, to: target)
     }
 }
