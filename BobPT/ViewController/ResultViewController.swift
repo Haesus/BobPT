@@ -18,6 +18,7 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var endLbl: UILabel!
     @IBOutlet weak var restLbl: UILabel!
     @IBOutlet weak var todayLbl: UILabel!
+    @IBOutlet weak var foodImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,9 @@ class ResultViewController: UIViewController {
         guard let message = self.save?[0].items.randomElement() else {
             return
         }
-        self.restLbl.text = message.title.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: "")
+        self.restLbl.text = message.title.htmlEscaped
+        let image = UIImage(named: message.imageString!)?.resizeImage(size: CGSize(width: 60, height: 50))
+        self.foodImage.image = image
         restaurant = message
         writePlist()
     }
@@ -64,6 +67,7 @@ extension ResultViewController {
             restaurantArray["mapx"] = restaurant.mapx
             restaurantArray["mapy"] = restaurant.mapy
             restaurantArray["date"] = restaurant.date
+            restaurantArray["imageString"] = restaurant.imageString
             
             arrayPlist.append(restaurantArray)
             

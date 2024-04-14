@@ -16,6 +16,23 @@ func dateFormatter() -> String {
     return currentDate
 }
 
+extension String {
+    var htmlEscaped: String {
+        guard let encodedData = self.data(using: .utf8) else {
+            return self
+        }
+        
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html,.characterEncoding: String.Encoding.utf8.rawValue]
+        
+        do {
+            let attributed = try NSAttributedString(data: encodedData, options: options, documentAttributes: nil)
+            return attributed.string
+        } catch {
+            return self
+        }
+    }
+}
+
 // MARK: - extension Bundle
 extension Bundle {
     var idKey: String? {
@@ -64,7 +81,7 @@ extension UIViewController {
 
 // MARK: - extension UIAlertController
 extension UIAlertController {
-    public func customViewAlert(_ view: UIView, image: String) {        
+    public func customViewAlert(_ view: UIView, image: String) {
         let input = view
         let imageView = UIImageView(image: UIImage(named: image))
         let titleLabel = UILabel()
@@ -83,7 +100,7 @@ extension UIAlertController {
         messageLabel.textColor = .black
         
         self.view.addSubview(input)
-
+        
         let topMargin: CGFloat = 0
         let leftMargin: CGFloat = 0
         let btnHeight: CGFloat = 40
