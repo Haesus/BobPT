@@ -15,9 +15,11 @@ struct Restaurant: Codable{
     let address: String
     let mapx: String
     let mapy: String
+    
     let date: String = dateFormatter()
+    var imageString: String?
 }
 
 struct Root: Codable {
-    let items: [Restaurant]
+    var items: [Restaurant]
 }

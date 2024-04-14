@@ -257,8 +257,8 @@ class MainViewController: UIViewController {
         if !soupFoodBool && !meatFoodBool && !sushiFoodBool && !ramenFoodBool && !kimbapFoodBool && !burritoFoodBool && !pizzaFoodBool && !chickenFoodBool && !hamburgerFoodBool && !jajangmyeonFoodBool && !jjambbongFoodBool && !malatangFoodBool && !ricenoodlesFoodBool && !sandwichFoodBool && !saladFoodBool {
             let alert = UIAlertController(title: "메뉴를 한가지 이상 선택해주세요", message: "밥피티가 맛있는 집을 추천해드립니다.", preferredStyle: .alert)
             DispatchQueue.main.async {
-                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
-                alert.customViewAlert(customView, image: "Robot")
+                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+                alert.customViewAlert(customView, image: "RobotError")
             }
             
             let action = UIAlertAction(title: "확인", style: .default)
@@ -280,8 +280,8 @@ class MainViewController: UIViewController {
         let dispatchGroup = DispatchGroup()
         for i in 0..<selectedFood.count {
             dispatchGroup.enter()
-            let j = "\(userLocation) \(selectedFood[i])"
-            naverSearch(keyword: j) { _ in
+            let keyword = "\(userLocation) \(selectedFood[i])"
+            naverSearch(keyword: keyword, selectedFood: selectedFood[i]) { _ in
                 dispatchGroup.leave()
             }
         }
@@ -300,7 +300,7 @@ class MainViewController: UIViewController {
 
 // MARK: - naverSearch API Function
 extension MainViewController {
-    func naverSearch(keyword:String, completion: @escaping ([Root]) -> Void) {
+    func naverSearch(keyword:String, selectedFood: String, completion: @escaping ([Root]) -> Void) {
         guard let idKey = Bundle.main.idKey, let secretKey = Bundle.main.secretKey else {
             print("API 키를 로드하지 못했습니다.")
             return
@@ -310,9 +310,47 @@ extension MainViewController {
         let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
         let alamo = AF.request(endPoint, method: .get, parameters: params, headers: headers)
         alamo.responseDecodable(of: Root.self) { response in
+            print(response)
             switch response.result {
                 case .success(let root):
-                    self.save.append(root)
+                    var appendRoot = root
+                    for index in 0..<root.items.count {
+                        switch selectedFood {
+                            case "찌개":
+                                appendRoot.items[index].imageString = "Soup"
+                            case "고기":
+                                appendRoot.items[index].imageString = "Meat"
+                            case "초밥":
+                                appendRoot.items[index].imageString = "Sushi"
+                            case "라멘":
+                                appendRoot.items[index].imageString = "Ramen"
+                            case "김밥":
+                                appendRoot.items[index].imageString = "Kimbap"
+                            case "부리또":
+                                appendRoot.items[index].imageString = "Burrito"
+                            case "피자":
+                                appendRoot.items[index].imageString = "Pizza"
+                            case "치킨":
+                                appendRoot.items[index].imageString = "Chicken"
+                            case "햄버거":
+                                appendRoot.items[index].imageString = "Hamburger"
+                            case "짜장면":
+                                appendRoot.items[index].imageString = "Jajangmyeon"
+                            case "짬뽕":
+                                appendRoot.items[index].imageString = "Jjambbong"
+                            case "마라탕":
+                                appendRoot.items[index].imageString = "Malatang"
+                            case "쌀국수":
+                                appendRoot.items[index].imageString = "Ricenoodles"
+                            case "샌드위치":
+                                appendRoot.items[index].imageString = "Sandwich"
+                            case "샐러드":
+                                appendRoot.items[index].imageString = "Salad"
+                            default:
+                                appendRoot.items[index].imageString = "Default"
+                        }
+                    }
+                    self.save.append(appendRoot)
                     completion(self.save)
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -375,8 +413,8 @@ extension MainViewController {
     }
     
     func makeDesignedFoodButton(buttonName: UIButton, imageName: String, titleName: String) {
-        let Image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
-        buttonName.setImage(Image, for: .normal)
+        let image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
+        buttonName.setImage(image, for: .normal)
         buttonName.setTitle(titleName, for: .normal)
         var config = UIButton.Configuration.plain()
         config.imagePadding = 5
