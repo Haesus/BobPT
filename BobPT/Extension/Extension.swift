@@ -16,6 +16,23 @@ func dateFormatter() -> String {
     return currentDate
 }
 
+extension String {
+    var htmlEscaped: String {
+        guard let encodedData = self.data(using: .utf8) else {
+            return self
+        }
+        
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html,.characterEncoding: String.Encoding.utf8.rawValue]
+        
+        do {
+            let attributed = try NSAttributedString(data: encodedData, options: options, documentAttributes: nil)
+            return attributed.string
+        } catch {
+            return self
+        }
+    }
+}
+
 // MARK: - extension Bundle
 extension Bundle {
     var idKey: String? {
@@ -64,7 +81,7 @@ extension UIViewController {
 
 // MARK: - extension UIAlertController
 extension UIAlertController {
-    public func customViewAlert(_ view: UIView, image: String) {        
+    public func customViewAlert(_ view: UIView, image: String) {
         let input = view
         let imageView = UIImageView(image: UIImage(named: image))
         let titleLabel = UILabel()
@@ -83,19 +100,19 @@ extension UIAlertController {
         messageLabel.textColor = .black
         
         self.view.addSubview(input)
-
+        
         let topMargin: CGFloat = 0
         let leftMargin: CGFloat = 0
-        let btnHeight: CGFloat = 44.0
+        let btnHeight: CGFloat = 40
         let alertWidth = self.view.frame.size.width - (2 * leftMargin)
         
         let viewWidth = (alertWidth / input.frame.width) * input.frame.width
         let viewHeight = (alertWidth / input.frame.width) * input.frame.height
         
         input.frame = CGRect(x: leftMargin, y: topMargin, width: viewWidth, height: viewHeight)
-        imageView.frame = CGRect(x: (alertWidth - viewWidth / 2) / 2, y: topMargin + 20, width: viewWidth/2, height: viewHeight/3)
-        titleLabel.frame = CGRect(x: leftMargin, y: imageView.frame.maxY + 10, width: alertWidth, height: 30)
-        messageLabel.frame = CGRect(x: leftMargin, y: titleLabel.frame.maxY + 10, width: alertWidth, height: 30)
+        imageView.frame = CGRect(x: (alertWidth - viewWidth / 3) / 2, y: topMargin + 20, width: viewWidth/3, height: viewHeight/3)
+        titleLabel.frame = CGRect(x: leftMargin, y: imageView.frame.maxY + 10, width: alertWidth, height: 50)
+        messageLabel.frame = CGRect(x: leftMargin, y: titleLabel.frame.maxY + 10, width: alertWidth, height: 50)
         
         let maskLayer = CAShapeLayer()
         let roundedPath = UIBezierPath(roundedRect: input.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 30, height: 30))

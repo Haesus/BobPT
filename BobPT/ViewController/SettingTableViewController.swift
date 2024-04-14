@@ -17,9 +17,9 @@ class SettingTableViewController: UITableViewController, MFMailComposeViewContro
         return 3
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        
         if indexPath.row == 0 {
             
         } else if indexPath.row == 1 {
@@ -31,7 +31,7 @@ class SettingTableViewController: UITableViewController, MFMailComposeViewContro
             let accessory  = UIImageView(image: UIImage(systemName: "chevron.right"))
             accessory.tintColor = UIColor.black
             cell.accessoryView = accessory
-        } else{
+        } else {
             let name = cell.viewWithTag(1) as? UILabel
             name?.text = "건의사항"
             let version = cell.viewWithTag(2) as? UILabel
@@ -39,13 +39,9 @@ class SettingTableViewController: UITableViewController, MFMailComposeViewContro
             
             let accessory = UIImageView(image: UIImage(systemName: "chevron.right"))
             accessory.tintColor = UIColor.black
-            accessory.isUserInteractionEnabled = true
-            
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapAccessory))
-            accessory.addGestureRecognizer(tapGesture)
             cell.accessoryView = accessory
-            return cell
         }
+        
         let bgColorView = UIView()
         bgColorView.backgroundColor = UIColorFromHex(hexString: "C6EBC5")
         cell.selectedBackgroundView = bgColorView
@@ -60,24 +56,18 @@ class SettingTableViewController: UITableViewController, MFMailComposeViewContro
             if let devViewController = storyboard?.instantiateViewController(withIdentifier: "NextViewController") as? DevViewController {
                 navigationController?.pushViewController(devViewController, animated: true)
             }
+        } else if indexPath.row == 2 {
+            if MFMailComposeViewController.canSendMail(){
+                let mail = MFMailComposeViewController()
+                mail.mailComposeDelegate = self
+                mail.setToRecipients(["sea15510@icloud.com"])
+                mail.setSubject("앱 건의사항")
+                mail.setMessageBody("<p>여기에 건의사항을 입력해 주세요.</p>", isHTML: true)
+                
+                present(mail, animated: true)
+            } else {
+                print("메일 계정을 설정해주세요")
+            }
         }
-    }
-    @objc func didTapAccessory(){
-        if MFMailComposeViewController.canSendMail(){
-            let mail = MFMailComposeViewController()
-            mail.mailComposeDelegate = self
-            mail.setToRecipients(["sea15510@icloud.com"])
-            mail.setSubject("앱 건의사항")
-            mail.setMessageBody("<p>여기에 건의사항을 입력해 주세요.</p>", isHTML: true)
-            
-            present(mail, animated: true)
-        } else {
-            print("메일 계정을 설정해주세요")
-        }
-        
-    }
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true)
     }
 }
-
