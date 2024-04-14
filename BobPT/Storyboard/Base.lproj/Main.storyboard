@@ -347,18 +347,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MI2-RL-Hcv">
-                                <rect key="frame" x="124" y="473" width="166" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="KEw-Uo-RnB"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="opD-gU-Zk9"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="지도로 위치 확인하기"/>
-                                <connections>
-                                    <action selector="mapBtn:" destination="BZn-Wb-Lov" eventType="touchUpInside" id="hDi-U6-699"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aj1-Nz-QMX">
                                 <rect key="frame" x="112.5" y="98" width="189" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -400,25 +388,37 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MI2-RL-Hcv">
+                                <rect key="frame" x="124" y="480" width="166" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="KEw-Uo-RnB"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="opD-gU-Zk9"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="지도로 위치 확인하기"/>
+                                <connections>
+                                    <action selector="mapBtn:" destination="BZn-Wb-Lov" eventType="touchUpInside" id="hDi-U6-699"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NR6-gc-J23"/>
                         <color key="backgroundColor" red="0.99607843159999998" green="0.99215686319999996" blue="0.93333333730000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="fW2-zB-SMH" firstAttribute="trailing" secondItem="erL-bc-5rf" secondAttribute="trailing" id="2dU-aO-cZ1"/>
                             <constraint firstItem="fW2-zB-SMH" firstAttribute="top" secondItem="erL-bc-5rf" secondAttribute="bottom" constant="30" id="3c5-r8-183"/>
-                            <constraint firstItem="MI2-RL-Hcv" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="NR6-gc-J23" secondAttribute="bottom" constant="100" id="3uV-BV-c1Q"/>
+                            <constraint firstItem="NR6-gc-J23" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="MI2-RL-Hcv" secondAttribute="bottom" constant="100" id="3uV-BV-c1Q"/>
                             <constraint firstItem="NR6-gc-J23" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="aj1-Nz-QMX" secondAttribute="trailing" constant="30" id="68q-qU-c75"/>
-                            <constraint firstItem="MI2-RL-Hcv" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fW2-zB-SMH" secondAttribute="bottom" constant="100" id="7i5-1w-mKO"/>
+                            <constraint firstItem="MI2-RL-Hcv" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fW2-zB-SMH" secondAttribute="bottom" constant="50" id="7i5-1w-mKO"/>
                             <constraint firstItem="aj1-Nz-QMX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NR6-gc-J23" secondAttribute="leading" constant="30" id="9Q3-ZJ-aHQ"/>
                             <constraint firstItem="fW2-zB-SMH" firstAttribute="leading" secondItem="erL-bc-5rf" secondAttribute="leading" id="HJh-1u-VpX"/>
                             <constraint firstItem="erL-bc-5rf" firstAttribute="centerX" secondItem="bdj-3v-vqS" secondAttribute="centerX" id="I26-Nd-eeW"/>
                             <constraint firstItem="fW2-zB-SMH" firstAttribute="centerX" secondItem="bdj-3v-vqS" secondAttribute="centerX" id="JqV-0M-i9I"/>
                             <constraint firstItem="erL-bc-5rf" firstAttribute="top" secondItem="aj1-Nz-QMX" secondAttribute="bottom" constant="30" id="btN-fR-ZvH"/>
                             <constraint firstItem="erL-bc-5rf" firstAttribute="leading" secondItem="aj1-Nz-QMX" secondAttribute="leading" id="buH-h9-hKI"/>
-                            <constraint firstItem="MI2-RL-Hcv" firstAttribute="leading" secondItem="NR6-gc-J23" secondAttribute="leading" constant="124" id="diJ-I5-ebJ"/>
+                            <constraint firstItem="MI2-RL-Hcv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NR6-gc-J23" secondAttribute="leading" constant="30" id="diJ-I5-ebJ"/>
                             <constraint firstItem="MI2-RL-Hcv" firstAttribute="centerX" secondItem="bdj-3v-vqS" secondAttribute="centerX" id="gew-k0-kdo"/>
                             <constraint firstItem="erL-bc-5rf" firstAttribute="trailing" secondItem="aj1-Nz-QMX" secondAttribute="trailing" id="iU8-lT-ygT"/>
-                            <constraint firstItem="NR6-gc-J23" firstAttribute="trailing" secondItem="MI2-RL-Hcv" secondAttribute="trailing" constant="124" id="iVk-Ai-XDt"/>
+                            <constraint firstItem="NR6-gc-J23" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MI2-RL-Hcv" secondAttribute="trailing" constant="30" id="iVk-Ai-XDt"/>
                             <constraint firstItem="aj1-Nz-QMX" firstAttribute="top" secondItem="NR6-gc-J23" secondAttribute="top" constant="50" id="m6h-8t-X1m"/>
                             <constraint firstItem="aj1-Nz-QMX" firstAttribute="centerX" secondItem="bdj-3v-vqS" secondAttribute="centerX" id="zdy-ev-bxH"/>
                         </constraints>
