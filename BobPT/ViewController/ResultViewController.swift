@@ -32,6 +32,7 @@ class ResultViewController: UIViewController {
         self.foodImage.image = image
         restaurant = message
         writePlist()
+        restLbl.adjustsFontSizeToFitWidth = true
     }
     
     @IBAction func mapBtn(_ sender: Any) {
