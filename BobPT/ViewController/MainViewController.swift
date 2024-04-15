@@ -337,7 +337,7 @@ extension MainViewController {
                             case "짜장면":
                                 appendRoot.items[index].imageString = "Jajangmyeon"
                             case "짬뽕":
-                                appendRoot.items[index].imageString = "jjambbong"
+                                appendRoot.items[index].imageString = "Jjambbong"
                             case "마라탕":
                                 appendRoot.items[index].imageString = "Malatang"
                             case "쌀국수":
@@ -450,7 +450,7 @@ extension MainViewController {
         makeDesignedFoodButton(buttonName: hamburgerFoodButtonLabel, imageName: "Hamburger", titleName: "햄버거")
         
         makeDesignedFoodButton(buttonName: jajangmyeonFoodButtonLabel, imageName: "Jajangmyeon", titleName: "짜장면")
-        makeDesignedFoodButton(buttonName: jjambbongFoodButtonLabel, imageName: "jjambbong", titleName: "짬뽕")
+        makeDesignedFoodButton(buttonName: jjambbongFoodButtonLabel, imageName: "Jjambbong", titleName: "짬뽕")
         makeDesignedFoodButton(buttonName: malatangFoodButtonLabel, imageName: "Malatang", titleName: "마라탕")
         
         makeDesignedFoodButton(buttonName: ricenoodlesFoodButtonLabel, imageName: "Ricenoodles", titleName: "쌀국수")
