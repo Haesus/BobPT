@@ -38,7 +38,7 @@ class SettingTableViewController: UITableViewController, MFMailComposeViewContro
             version?.text = nil
             
             let accessory = UIImageView(image: UIImage(systemName: "chevron.right"))
-            accessory.tintColor = UIColor.black
+            accessory.tintColor = UIColor.black           
             cell.accessoryView = accessory
         }
         

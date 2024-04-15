@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Alamofire
 
 class ResultViewController: UIViewController {
     
@@ -32,6 +31,7 @@ class ResultViewController: UIViewController {
         self.foodImage.image = image
         restaurant = message
         writePlist()
+        restLbl.adjustsFontSizeToFitWidth = true
     }
     
     @IBAction func mapBtn(_ sender: Any) {
@@ -69,7 +69,7 @@ extension ResultViewController {
             restaurantArray["date"] = restaurant.date
             restaurantArray["imageString"] = restaurant.imageString
             
-            arrayPlist.append(restaurantArray)
+            arrayPlist.insert(restaurantArray, at: 0)
             
             let plistData = try PropertyListSerialization.data(fromPropertyList: arrayPlist, format: .xml, options: 0)
             try plistData.write(to: url)
