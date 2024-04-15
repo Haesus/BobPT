@@ -254,7 +254,10 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func resultViewButtonAction(_ sender: Any) {
-        if !soupFoodBool && !meatFoodBool && !sushiFoodBool && !ramenFoodBool && !kimbapFoodBool && !burritoFoodBool && !pizzaFoodBool && !chickenFoodBool && !hamburgerFoodBool && !jajangmyeonFoodBool && !jjambbongFoodBool && !malatangFoodBool && !ricenoodlesFoodBool && !sandwichFoodBool && !saladFoodBool {
+        let foodBools = [soupFoodBool, meatFoodBool, sushiFoodBool, ramenFoodBool, kimbapFoodBool, burritoFoodBool, pizzaFoodBool, chickenFoodBool, hamburgerFoodBool, jajangmyeonFoodBool, jjambbongFoodBool, malatangFoodBool, ricenoodlesFoodBool, sandwichFoodBool, saladFoodBool]
+        let trueCount = foodBools.filter { $0 == true }.count
+
+        if  trueCount == 0 {
             let alert = UIAlertController(title: "메뉴를 한가지 이상 선택해주세요", message: "밥피티가 맛있는 집을 추천해드립니다.", preferredStyle: .alert)
             DispatchQueue.main.async {
                 let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -270,6 +273,24 @@ class MainViewController: UIViewController {
             subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
             
             self.present(alert, animated: true)
+            
+        }else if trueCount > 10 {
+            let alertTooMany = UIAlertController(title: "메뉴를 너무 많이 선택했습니다.", message: "10개 이하로 선택하실 수 있습니다.", preferredStyle: .alert)
+            DispatchQueue.main.async {
+                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+                alertTooMany.customViewAlert(customView, image: "RobotError")
+            }
+            
+            let action = UIAlertAction(title: "확인", style: .default)
+            action.setValue(UIColor.black, forKey: "titleTextColor")
+            alertTooMany.addAction(action)
+            
+            let subview = (alertTooMany.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
+            subview.layer.cornerRadius = 30
+            subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
+            
+            self.present(alertTooMany, animated: true)
+        
         }
         
         save = []
