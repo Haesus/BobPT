@@ -29,12 +29,19 @@ class MapViewController: UIViewController {
         self.button.layer.masksToBounds = true
         self.button.layer.cornerRadius = 10
         if let image = UIImage(named: "Map_Service_Icon") {
-
-            let resizedImage = image.resized(to: CGSize(width: 50, height: 50))
             
+            let resizedImage = image.resized(to: CGSize(width: 50, height: 50))
+            var config = UIButton.Configuration.plain()
+            config.image = resizedImage
+            config.showsActivityIndicator = false
+            button.configuration = config
+
             button.setImage(resizedImage, for: .normal)
             button.imageView?.contentMode = .scaleAspectFit
+            button.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+                    button.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
             view.addSubview(button)
+            
         }
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let mapVC = uvc as? MapViewController else {return}
                 
@@ -46,6 +53,17 @@ class MapViewController: UIViewController {
         naverBtnOut.addTarget(self, action: #selector(naverAppBtn), for: .touchUpInside)
         self.view.addSubview(naverBtnOut)
     }
+    @objc func buttonTouchDown() {
+            UIView.animate(withDuration: 0.2) {
+                self.button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95) // 버튼을 5% 줄임
+            }
+        }
+
+        @objc func buttonTouchUp() {
+            UIView.animate(withDuration: 0.2) {
+                self.button.transform = CGAffineTransform.identity // 원래 크기로 복원
+            }
+        }
     
     func mapViewLoad(x:Double, y:Double){
         let latLng = NMGLatLng(lat: x, lng: y)
