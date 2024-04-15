@@ -18,11 +18,16 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var restLbl: UILabel!
     @IBOutlet weak var todayLbl: UILabel!
     @IBOutlet weak var foodImage: UIImageView!
+    @IBOutlet weak var nextMapViewButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.todayLbl.text = "오늘의 추천장소는"
         self.endLbl.text = "맛있게 드세요!"
+        makeNoImageButton(buttonName: nextMapViewButton, radius: 10, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "지도로 위치 확인하기")
+        nextMapViewButton.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+        nextMapViewButton.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
+        
         guard let message = self.save?[0].items.randomElement() else {
             return
         }

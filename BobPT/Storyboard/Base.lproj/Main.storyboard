@@ -425,6 +425,7 @@
                     <connections>
                         <outlet property="endLbl" destination="fW2-zB-SMH" id="LkM-35-9k4"/>
                         <outlet property="foodImage" destination="1J3-k0-at6" id="hEe-xW-HTc"/>
+                        <outlet property="nextMapViewButton" destination="MI2-RL-Hcv" id="zKF-Rj-TC8"/>
                         <outlet property="restLbl" destination="7EV-Bk-xgX" id="uOS-Wz-Ovw"/>
                         <outlet property="todayLbl" destination="aj1-Nz-QMX" id="rGL-UC-cCa"/>
                     </connections>
@@ -546,7 +547,7 @@
                         <color key="backgroundColor" red="0.99607843159999998" green="0.99215686319999996" blue="0.93333333730000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="sectionIndexBackgroundColor" red="0.99607843159999998" green="0.99215686319999996" blue="0.93333333730000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="RB4-eK-dk7">
-                            <rect key="frame" x="0.0" y="173.33333015441895" width="393" height="502"/>
+                            <rect key="frame" x="0.0" y="173.33333015441889" width="393" height="502.00000000000006"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="밥피티가 추천했던 내역이 없습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lhr-qX-NgK">
@@ -608,7 +609,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iei-s8-VRd">
-                                            <rect key="frame" x="110.00000000000001" y="21" width="41.666666666666671" height="21.666666666666671"/>
+                                            <rect key="frame" x="110.00000000000001" y="21" width="41.666666666666671" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="f21-fq-ym6"/>
                                             </constraints>

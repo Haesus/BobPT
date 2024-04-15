@@ -53,17 +53,17 @@ class MapViewController: UIViewController {
         naverBtnOut.addTarget(self, action: #selector(naverAppBtn), for: .touchUpInside)
         self.view.addSubview(naverBtnOut)
     }
-    @objc func buttonTouchDown() {
-            UIView.animate(withDuration: 0.2) {
-                self.button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95) // 버튼을 5% 줄임
-            }
-        }
-
-        @objc func buttonTouchUp() {
-            UIView.animate(withDuration: 0.2) {
-                self.button.transform = CGAffineTransform.identity // 원래 크기로 복원
-            }
-        }
+//    @objc func buttonTouchDown() {
+//            UIView.animate(withDuration: 0.2) {
+//                self.button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95) // 버튼을 5% 줄임
+//            }
+//        }
+//
+//        @objc func buttonTouchUp() {
+//            UIView.animate(withDuration: 0.2) {
+//                self.button.transform = CGAffineTransform.identity // 원래 크기로 복원
+//            }
+//        }
     
     func mapViewLoad(x:Double, y:Double){
         let latLng = NMGLatLng(lat: x, lng: y)
