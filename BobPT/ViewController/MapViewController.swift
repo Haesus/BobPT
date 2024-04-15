@@ -7,6 +7,7 @@
 
 import UIKit
 import NMapsMap
+
 class MapViewController: UIViewController {
     
     @IBOutlet weak var restaurantImage: UIImageView!
@@ -28,12 +29,11 @@ class MapViewController: UIViewController {
         self.button.layer.masksToBounds = true
         self.button.layer.cornerRadius = 10
         if let image = UIImage(named: "Map_Service_Icon") {
-            // 이미지를 50x50 크기로 조정
+
             let resizedImage = image.resized(to: CGSize(width: 50, height: 50))
             
-            // 버튼에 이미지 설정
             button.setImage(resizedImage, for: .normal)
-            button.imageView?.contentMode = .center // 이미지가 버튼 중앙에 위치하도록 설정
+            button.imageView?.contentMode = .scaleAspectFit
             view.addSubview(button)
         }
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let mapVC = uvc as? MapViewController else {return}
@@ -106,3 +106,4 @@ extension UIImage {
         }
     }
 }
+
