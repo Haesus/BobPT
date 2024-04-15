@@ -297,7 +297,7 @@ class MainViewController: UIViewController {
             
             self.present(alert, animated: true)
             
-        }else if trueCount > 10 {
+        } else if trueCount > 10 {
             let alertTooMany = UIAlertController(title: "메뉴를 너무 많이 선택했습니다.", message: "10개 이하로 선택하실 수 있습니다.", preferredStyle: .alert)
             DispatchQueue.main.async {
                 let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -313,7 +313,6 @@ class MainViewController: UIViewController {
             subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
             
             self.present(alertTooMany, animated: true)
-        
         }
         
         save = []

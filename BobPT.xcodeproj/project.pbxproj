@@ -100,7 +100,6 @@
 		FA1951392BBFE18000D42AEC = {
 			isa = PBXGroup;
 			children = (
-				FA994B4A2BCCEFEE00538BCE /* LaunchScreen.json */,
 				FA49A01F2BC538C300F6FB33 /* Settings.bundle */,
 				FA1951442BBFE18000D42AEC /* BobPT */,
 				FA1951432BBFE18000D42AEC /* Products */,
@@ -129,6 +128,7 @@
 				FA19514E2BBFE18100D42AEC /* Assets.xcassets */,
 				FA1951532BBFE18100D42AEC /* Info.plist */,
 				FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */,
+				FA994B4A2BCCEFEE00538BCE /* LaunchScreen.json */,
 			);
 			path = BobPT;
 			sourceTree = "<group>";
@@ -467,8 +467,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정보 내놔";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내내내놔";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자의 위치 정보를 가져와 메뉴를 추천해드릴게요.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치 정보를 통해 메뉴를 추천합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -506,8 +506,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정보 내놔";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내내내놔";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자의 위치 정보를 가져와 메뉴를 추천해드릴게요.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치 정보를 통해 메뉴를 추천합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
