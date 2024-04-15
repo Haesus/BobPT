@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 // MARK: - Global Function
 func dateFormatter() -> String {
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyyMMdd"
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
     let currentDate = dateFormatter.string(from: Date())
     return currentDate
 }

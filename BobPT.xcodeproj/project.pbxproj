@@ -9,14 +9,14 @@
 /* Begin PBXBuildFile section */
 		802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42BE7B35955570FCF5163BD /* Pods_BobPT.framework */; };
 		AF4E067D2BC39359003B2AFF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4E067C2BC39359003B2AFF /* Model.swift */; };
+		AFC717B22BCCB8A800B4EAE0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AFC717B12BCCB8A800B4EAE0 /* Alamofire */; };
+		AFC717B62BCCB8B000B4EAE0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AFC717B52BCCB8B000B4EAE0 /* Kingfisher */; };
 		E6D4F4A72BC7C0A60044F1BD /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D4F4A62BC7C0A60044F1BD /* SettingTableViewController.swift */; };
 		FA1951462BBFE18000D42AEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951452BBFE18000D42AEC /* AppDelegate.swift */; };
 		FA1951482BBFE18000D42AEC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951472BBFE18000D42AEC /* SceneDelegate.swift */; };
 		FA19514A2BBFE18000D42AEC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1951492BBFE18000D42AEC /* MainViewController.swift */; };
 		FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA19514E2BBFE18100D42AEC /* Assets.xcassets */; };
 		FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA49A01F2BC538C300F6FB33 /* Settings.bundle */; };
-		FA55AC8F2BC8F8BB006CE78F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FA55AC8E2BC8F8BB006CE78F /* Kingfisher */; };
-		FA55AC912BC8F8C3006CE78F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA55AC902BC8F8C3006CE78F /* Alamofire */; };
 		FA55AC952BC8F934006CE78F /* DevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55AC942BC8F933006CE78F /* DevViewController.swift */; };
 		FA55AC962BC8F9B8006CE78F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA19514B2BBFE18000D42AEC /* Main.storyboard */; };
 		FA71E7D22BC4377D006D1388 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA71E7D12BC4377D006D1388 /* Extension.swift */; };
@@ -67,9 +67,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA55AC912BC8F8C3006CE78F /* Alamofire in Frameworks */,
-				FA55AC8F2BC8F8BB006CE78F /* Kingfisher in Frameworks */,
+				AFC717B62BCCB8B000B4EAE0 /* Kingfisher in Frameworks */,
 				802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */,
+				AFC717B22BCCB8A800B4EAE0 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,8 +186,8 @@
 			);
 			name = BobPT;
 			packageProductDependencies = (
-				FA55AC8E2BC8F8BB006CE78F /* Kingfisher */,
-				FA55AC902BC8F8C3006CE78F /* Alamofire */,
+				AFC717B12BCCB8A800B4EAE0 /* Alamofire */,
+				AFC717B52BCCB8B000B4EAE0 /* Kingfisher */,
 			);
 			productName = BobPT;
 			productReference = FA1951422BBFE18000D42AEC /* BobPT.app */;
@@ -567,15 +567,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA55AC8E2BC8F8BB006CE78F /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
-		};
-		FA55AC902BC8F8C3006CE78F /* Alamofire */ = {
+		AFC717B12BCCB8A800B4EAE0 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		AFC717B52BCCB8B000B4EAE0 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
