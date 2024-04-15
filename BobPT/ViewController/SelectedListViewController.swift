@@ -118,12 +118,6 @@ extension SelectedListViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 30
+        return 5
     }
-    
-//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-//        cell.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-//        cell.preservesSuperviewLayoutMargins = false
-//    }
 }
