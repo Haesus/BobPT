@@ -7,9 +7,7 @@
 
 import Alamofire
 import CoreLocation
-import NMapsMap
 import UIKit
-import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
     let locationManager = CLLocationManager()
