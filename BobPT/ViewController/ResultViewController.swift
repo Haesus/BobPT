@@ -12,10 +12,13 @@ class ResultViewController: UIViewController {
     
     var save: [Root]?
     var restaurant: Restaurant?
+    var latitude: Double?
+    var longitude: Double?
     
     @IBOutlet weak var endLbl: UILabel!
     @IBOutlet weak var restLbl: UILabel!
     @IBOutlet weak var todayLbl: UILabel!
+    @IBOutlet weak var foodImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +27,10 @@ class ResultViewController: UIViewController {
         guard let message = self.save?[0].items.randomElement() else {
             return
         }
-        self.restLbl.text = message.title.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: "")
-//        restaurant = message
+        self.restLbl.text = message.title.htmlEscaped
+        let image = UIImage(named: message.imageString!)?.resizeImage(size: CGSize(width: 60, height: 50))
+        self.foodImage.image = image
+        restaurant = message
         writePlist()
     }
     
@@ -33,7 +38,8 @@ class ResultViewController: UIViewController {
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let result = uvc as? MapViewController else{
             return
         }
-        
+        result.userLatitude = latitude
+        result.userLongitude = longitude
         result.receivedData = restaurant
         self.navigationController?.pushViewController(uvc, animated: true)
     }
@@ -61,6 +67,7 @@ extension ResultViewController {
             restaurantArray["mapx"] = restaurant.mapx
             restaurantArray["mapy"] = restaurant.mapy
             restaurantArray["date"] = restaurant.date
+            restaurantArray["imageString"] = restaurant.imageString
             
             arrayPlist.append(restaurantArray)
             

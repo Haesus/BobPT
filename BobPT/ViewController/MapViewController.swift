@@ -12,7 +12,10 @@ class MapViewController: UIViewController {
     @IBOutlet weak var restaurantImage: UIImageView!
     @IBOutlet weak var button: UIButton!
     var receivedData : Restaurant?
-    var userLocation : String?
+    var userLatitude : Double?
+    var userLongitude : Double?
+    var userLocation : CLLocation?
+    
     
     @IBOutlet weak var locationImage: UIImageView!
     @IBOutlet weak var naverBtnOut: UIButton!
@@ -33,9 +36,7 @@ class MapViewController: UIViewController {
             button.imageView?.contentMode = .center // 이미지가 버튼 중앙에 위치하도록 설정
             view.addSubview(button)
         }
-
-        
-        
+        guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let mapVC = uvc as? MapViewController else {return}
                 
         guard let receivedData else {return}
         let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
@@ -57,17 +58,27 @@ class MapViewController: UIViewController {
             mapView.leadingAnchor.constraint(equalTo: bobPTMapView.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: bobPTMapView.trailingAnchor)
         ])
+        
+        let userLocation = CLLocation(latitude: userLatitude ?? 37.494529, longitude: userLongitude ?? 127.027562)
+        let marker = NMFMarker()
+        marker.position = NMGLatLng(lat: userLocation.coordinate.latitude, lng: userLocation.coordinate.longitude)
+        marker.iconTintColor = .red
+        marker.mapView = mapView
+        print("User location marker set at \(userLocation.coordinate.latitude), \(userLocation.coordinate.longitude)")
+        
         let cameraUpdate = NMFCameraUpdate(scrollTo: latLng)
         mapView.moveCamera(cameraUpdate)
         
-        let marker = NMFMarker(position: latLng)
-        marker.mapView = mapView
+        let destinationMarker = NMFMarker(position: latLng)
+        destinationMarker.mapView = mapView
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
         datasource.title = receivedData?.title ?? " "
-        infoWindow.open(with: marker)
+        infoWindow.open(with: destinationMarker)
         localAddress.text = receivedData?.address
+        
+        
     }
     
     @IBAction func naverAppBtn(_ sender: Any) {

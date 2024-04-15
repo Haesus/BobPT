@@ -12,6 +12,7 @@ import UIKit
 import UniformTypeIdentifiers
 
 class MainViewController: UIViewController {
+    let locationManager = CLLocationManager()
     // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
@@ -52,11 +53,7 @@ class MainViewController: UIViewController {
     var saladFoodBool = false
     @IBOutlet weak var saladFoodButtonLabel: UIButton!
     
-    
     @IBOutlet weak var nextViewButton: UIButton!
-    @IBOutlet weak var listVIewButton: UIButton!
-    
-    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +70,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func researchLocationButtonAction(_ sender: Any) {
-        locationLabel.text = userLocation
+        self.labelDesign(labelName: self.locationLabel, labelString: self.userLocation)
     }
     
     @IBAction func soupFoodButtonAction(_ sender: Any) {
@@ -258,11 +255,21 @@ class MainViewController: UIViewController {
     
     @IBAction func resultViewButtonAction(_ sender: Any) {
         if !soupFoodBool && !meatFoodBool && !sushiFoodBool && !ramenFoodBool && !kimbapFoodBool && !burritoFoodBool && !pizzaFoodBool && !chickenFoodBool && !hamburgerFoodBool && !jajangmyeonFoodBool && !jjambbongFoodBool && !malatangFoodBool && !ricenoodlesFoodBool && !sandwichFoodBool && !saladFoodBool {
-            let alert = UIAlertController(title: "하나의 음식이라도 골라주세요.", message: "", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "확인", style: .cancel)
+            let alert = UIAlertController(title: "메뉴를 한가지 이상 선택해주세요", message: "밥피티가 맛있는 집을 추천해드립니다.", preferredStyle: .alert)
+            DispatchQueue.main.async {
+                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+                alert.customViewAlert(customView, image: "RobotError")
+            }
             
-            alert.addAction(alertAction)
-            present(alert, animated: true)
+            let action = UIAlertAction(title: "확인", style: .default)
+            action.setValue(UIColor.black, forKey: "titleTextColor")
+            alert.addAction(action)
+            
+            let subview = (alert.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
+            subview.layer.cornerRadius = 30
+            subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
+            
+            self.present(alert, animated: true)
         }
         
         save = []
@@ -273,16 +280,17 @@ class MainViewController: UIViewController {
         let dispatchGroup = DispatchGroup()
         for i in 0..<selectedFood.count {
             dispatchGroup.enter()
-            let j = "\(userLocation) \(selectedFood[i])"
-            naverSearch(keyword: j) { _ in
+            let keyword = "\(userLocation) \(selectedFood[i])"
+            naverSearch(keyword: keyword, selectedFood: selectedFood[i]) { _ in
                 dispatchGroup.leave()
             }
         }
         
-        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else{
+        guard let uvc = self.storyboard?.instantiateViewController(identifier: "ResultViewController"), let result = uvc as? ResultViewController else {
             return
         }
-        
+        result.latitude = latitude
+        result.longitude = longitude
         dispatchGroup.notify(queue: .main) {
             result.save = self.save
             self.navigationController?.pushViewController(uvc, animated: true)
@@ -292,7 +300,7 @@ class MainViewController: UIViewController {
 
 // MARK: - naverSearch API Function
 extension MainViewController {
-    func naverSearch(keyword:String, completion: @escaping ([Root]) -> Void) {
+    func naverSearch(keyword:String, selectedFood: String, completion: @escaping ([Root]) -> Void) {
         guard let idKey = Bundle.main.idKey, let secretKey = Bundle.main.secretKey else {
             print("API 키를 로드하지 못했습니다.")
             return
@@ -302,10 +310,47 @@ extension MainViewController {
         let headers: HTTPHeaders = ["X-Naver-Client-Id" : idKey, "X-Naver-Client-Secret" : secretKey]
         let alamo = AF.request(endPoint, method: .get, parameters: params, headers: headers)
         alamo.responseDecodable(of: Root.self) { response in
+            print(response)
             switch response.result {
                 case .success(let root):
-                    self.save.append(root)
-                    print(self.save)
+                    var appendRoot = root
+                    for index in 0..<root.items.count {
+                        switch selectedFood {
+                            case "찌개":
+                                appendRoot.items[index].imageString = "Soup"
+                            case "고기":
+                                appendRoot.items[index].imageString = "Meat"
+                            case "초밥":
+                                appendRoot.items[index].imageString = "Sushi"
+                            case "라멘":
+                                appendRoot.items[index].imageString = "Ramen"
+                            case "김밥":
+                                appendRoot.items[index].imageString = "Kimbap"
+                            case "부리또":
+                                appendRoot.items[index].imageString = "Burrito"
+                            case "피자":
+                                appendRoot.items[index].imageString = "Pizza"
+                            case "치킨":
+                                appendRoot.items[index].imageString = "Chicken"
+                            case "햄버거":
+                                appendRoot.items[index].imageString = "Hamburger"
+                            case "짜장면":
+                                appendRoot.items[index].imageString = "Jajangmyeon"
+                            case "짬뽕":
+                                appendRoot.items[index].imageString = "Jjambbong"
+                            case "마라탕":
+                                appendRoot.items[index].imageString = "Malatang"
+                            case "쌀국수":
+                                appendRoot.items[index].imageString = "Ricenoodles"
+                            case "샌드위치":
+                                appendRoot.items[index].imageString = "Sandwich"
+                            case "샐러드":
+                                appendRoot.items[index].imageString = "Salad"
+                            default:
+                                appendRoot.items[index].imageString = "Default"
+                        }
+                    }
+                    self.save.append(appendRoot)
                     completion(self.save)
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -337,8 +382,6 @@ extension MainViewController: CLLocationManagerDelegate {
         latitude = currentLocation.coordinate.latitude
         longitude = currentLocation.coordinate.longitude
         
-        print("위도: \(latitude), 경도: \(longitude)")
-        
         CLGeocoder().reverseGeocodeLocation(currentLocation) { (placemarks, error) in
             if let error = error {
                 print("지오코딩 에러: \(error.localizedDescription)")
@@ -348,9 +391,7 @@ extension MainViewController: CLLocationManagerDelegate {
             if let placemark = placemarks?.first {
                 if let locality = placemark.subLocality {
                     self.userLocation = locality
-                    print("현재 위치의 동/면: \(locality)")
                     self.labelDesign(labelName: self.locationLabel, labelString: self.userLocation)
-//                    self.locationLabel.text = self.userLocation
                 }
             }
         }
@@ -372,8 +413,8 @@ extension MainViewController {
     }
     
     func makeDesignedFoodButton(buttonName: UIButton, imageName: String, titleName: String) {
-        let Image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
-        buttonName.setImage(Image, for: .normal)
+        let image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
+        buttonName.setImage(image, for: .normal)
         buttonName.setTitle(titleName, for: .normal)
         var config = UIButton.Configuration.plain()
         config.imagePadding = 5
@@ -383,8 +424,9 @@ extension MainViewController {
         buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
     }
     
-    func makeNoImageButton(buttonName: UIButton, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
+    func makeNoImageButton(buttonName: UIButton, radius: CGFloat, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
         var config = UIButton.Configuration.filled()
+        config.background.cornerRadius = radius
         config.baseBackgroundColor = UIColorFromHex(hexString: backgroundUIColorString)
         config.baseForegroundColor = UIColorFromHex(hexString: foreGroundUIColorString)
         var titleContainer = AttributeContainer()
@@ -415,7 +457,6 @@ extension MainViewController {
         makeDesignedFoodButton(buttonName: sandwichFoodButtonLabel, imageName: "Sandwich", titleName: "샌드위치")
         makeDesignedFoodButton(buttonName: saladFoodButtonLabel, imageName: "Salad", titleName: "샐러드")
         
-        makeNoImageButton(buttonName: nextViewButton, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
-        makeNoImageButton(buttonName: listVIewButton, backgroundUIColorString: "A1C398", foreGroundUIColorString: "FEFDED", titleSize: 20, titleName: "추천 받은 리스트")
+        makeNoImageButton(buttonName: nextViewButton, radius: 10, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
     }
 }
