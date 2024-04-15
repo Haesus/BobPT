@@ -8,6 +8,7 @@
 import Alamofire
 import CoreLocation
 import UIKit
+import Lottie
 
 class MainViewController: UIViewController {
     let locationManager = CLLocationManager()
@@ -17,6 +18,12 @@ class MainViewController: UIViewController {
     var userLocation: String?
     var selectedFood: [String] = []
     var save: [Root] = []
+    
+    private let animationView: LottieAnimationView = {
+        let lottieAnimationView = LottieAnimationView(name: "LaunchScreen")
+        lottieAnimationView.backgroundColor = UIColor(red: 254/255, green: 253/255, blue: 237/255, alpha: 1.0)
+        return lottieAnimationView
+    }()
     
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var locationButton: UIButton!
@@ -55,6 +62,21 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(animationView)
+        
+        animationView.frame = view.bounds
+        animationView.center = view.center
+        animationView.alpha = 1
+        
+        animationView.play { _ in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.animationView.alpha = 0
+            }, completion: { _ in
+                self.animationView.isHidden = true
+                self.animationView.removeFromSuperview()
+            })
+        }
         
         designButton()
         
