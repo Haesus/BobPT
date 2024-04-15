@@ -7,6 +7,7 @@
 
 import UIKit
 import NMapsMap
+
 class MapViewController: UIViewController {
     
     @IBOutlet weak var restaurantImage: UIImageView!
@@ -28,13 +29,19 @@ class MapViewController: UIViewController {
         self.button.layer.masksToBounds = true
         self.button.layer.cornerRadius = 10
         if let image = UIImage(named: "Map_Service_Icon") {
-            // 이미지를 50x50 크기로 조정
-            let resizedImage = image.resized(to: CGSize(width: 50, height: 50))
             
-            // 버튼에 이미지 설정
+            let resizedImage = image.resized(to: CGSize(width: 50, height: 50))
+            var config = UIButton.Configuration.plain()
+            config.image = resizedImage
+            config.showsActivityIndicator = false
+            button.configuration = config
+
             button.setImage(resizedImage, for: .normal)
-            button.imageView?.contentMode = .center // 이미지가 버튼 중앙에 위치하도록 설정
+            button.imageView?.contentMode = .scaleAspectFit
+            button.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+                    button.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
             view.addSubview(button)
+            
         }
         guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let mapVC = uvc as? MapViewController else {return}
                 
@@ -46,6 +53,17 @@ class MapViewController: UIViewController {
         naverBtnOut.addTarget(self, action: #selector(naverAppBtn), for: .touchUpInside)
         self.view.addSubview(naverBtnOut)
     }
+    @objc func buttonTouchDown() {
+            UIView.animate(withDuration: 0.2) {
+                self.button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95) // 버튼을 5% 줄임
+            }
+        }
+
+        @objc func buttonTouchUp() {
+            UIView.animate(withDuration: 0.2) {
+                self.button.transform = CGAffineTransform.identity // 원래 크기로 복원
+            }
+        }
     
     func mapViewLoad(x:Double, y:Double){
         let latLng = NMGLatLng(lat: x, lng: y)
@@ -106,3 +124,4 @@ extension UIImage {
         }
     }
 }
+
