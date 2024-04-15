@@ -67,6 +67,9 @@ class MainViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
+        
+        nextViewButton.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+        nextViewButton.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
     }
     
     @IBAction func researchLocationButtonAction(_ sender: Any) {
@@ -458,5 +461,20 @@ extension MainViewController {
         makeDesignedFoodButton(buttonName: saladFoodButtonLabel, imageName: "Salad", titleName: "샐러드")
         
         makeNoImageButton(buttonName: nextViewButton, radius: 10, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
+    }
+}
+
+// MARK: - Objective-C Function
+extension MainViewController {
+    @objc func buttonTouchDown(button: UIButton) {
+        UIView.animate(withDuration: 0.2) {
+            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }
+    }
+    
+    @objc func buttonTouchUp(button: UIButton) {
+        UIView.animate(withDuration: 0.2) {
+            button.transform = CGAffineTransform.identity
+        }
     }
 }
