@@ -7,9 +7,8 @@
 
 import Alamofire
 import CoreLocation
-import NMapsMap
 import UIKit
-import UniformTypeIdentifiers
+import Lottie
 
 class MainViewController: UIViewController {
     let locationManager = CLLocationManager()
@@ -19,6 +18,12 @@ class MainViewController: UIViewController {
     var userLocation: String?
     var selectedFood: [String] = []
     var save: [Root] = []
+    
+    private let animationView: LottieAnimationView = {
+        let lottieAnimationView = LottieAnimationView(name: "LaunchScreen")
+        lottieAnimationView.backgroundColor = UIColor(red: 254/255, green: 253/255, blue: 237/255, alpha: 1.0)
+        return lottieAnimationView
+    }()
     
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var locationButton: UIButton!
@@ -58,6 +63,21 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(animationView)
+        
+        animationView.frame = view.bounds
+        animationView.center = view.center
+        animationView.alpha = 1
+        
+        animationView.play { _ in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.animationView.alpha = 0
+            }, completion: { _ in
+                self.animationView.isHidden = true
+                self.animationView.removeFromSuperview()
+            })
+        }
+        
         designButton()
         
         if let target = urlWithFilename("SelectedList.plist", type: .propertyList), let source = Bundle.main.url(forResource: "SelectedList.plist", withExtension: nil) {
@@ -67,6 +87,9 @@ class MainViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
+        
+        nextViewButton.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+        nextViewButton.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
     }
     
     @IBAction func researchLocationButtonAction(_ sender: Any) {
@@ -274,7 +297,7 @@ class MainViewController: UIViewController {
             
             self.present(alert, animated: true)
             
-        }else if trueCount > 10 {
+        } else if trueCount > 10 {
             let alertTooMany = UIAlertController(title: "메뉴를 너무 많이 선택했습니다.", message: "10개 이하로 선택하실 수 있습니다.", preferredStyle: .alert)
             DispatchQueue.main.async {
                 let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -290,7 +313,6 @@ class MainViewController: UIViewController {
             subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
             
             self.present(alertTooMany, animated: true)
-        
         }
         
         save = []
@@ -426,37 +448,6 @@ extension MainViewController {
         labelName.text = labelString
     }
     
-    func buttonShadow(button: UIButton, width: Int, height: Int, opacity: Float, radius: CGFloat) {
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOffset = CGSize(width: width, height: height)
-        button.layer.shadowOpacity = opacity
-        button.layer.shadowRadius = radius
-    }
-    
-    func makeDesignedFoodButton(buttonName: UIButton, imageName: String, titleName: String) {
-        let image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
-        buttonName.setImage(image, for: .normal)
-        buttonName.setTitle(titleName, for: .normal)
-        var config = UIButton.Configuration.plain()
-        config.imagePadding = 5
-        config.imagePlacement = .top
-        buttonName.configuration = config
-        buttonName.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
-    }
-    
-    func makeNoImageButton(buttonName: UIButton, radius: CGFloat, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
-        var config = UIButton.Configuration.filled()
-        config.background.cornerRadius = radius
-        config.baseBackgroundColor = UIColorFromHex(hexString: backgroundUIColorString)
-        config.baseForegroundColor = UIColorFromHex(hexString: foreGroundUIColorString)
-        var titleContainer = AttributeContainer()
-        titleContainer.font = UIFont.boldSystemFont(ofSize: titleSize)
-        config.attributedTitle = AttributedString(titleName, attributes: titleContainer)
-        buttonName.configuration = config
-        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
-    }
-    
     func designButton() {
         makeDesignedFoodButton(buttonName: soupFoodButtonLabel, imageName: "Soup", titleName: "찌개")
         makeDesignedFoodButton(buttonName: meatFoodButtonLabel, imageName: "Meat", titleName: "고기")
@@ -480,4 +471,19 @@ extension MainViewController {
         
         makeNoImageButton(buttonName: nextViewButton, radius: 10, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
     }
+}
+
+// MARK: - Objective-C Function
+extension MainViewController {
+//    @objc func buttonTouchDown(button: UIButton) {
+//        UIView.animate(withDuration: 0.2) {
+//            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+//        }
+//    }
+//    
+//    @objc func buttonTouchUp(button: UIButton) {
+//        UIView.animate(withDuration: 0.2) {
+//            button.transform = CGAffineTransform.identity
+//        }
+//    }
 }

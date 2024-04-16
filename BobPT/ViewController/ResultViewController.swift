@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Alamofire
 
 class ResultViewController: UIViewController {
     
@@ -19,11 +18,16 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var restLbl: UILabel!
     @IBOutlet weak var todayLbl: UILabel!
     @IBOutlet weak var foodImage: UIImageView!
+    @IBOutlet weak var nextMapViewButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.todayLbl.text = "오늘의 추천장소는"
         self.endLbl.text = "맛있게 드세요!"
+        makeNoImageButton(buttonName: nextMapViewButton, radius: 10, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "지도로 위치 확인하기")
+        nextMapViewButton.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+        nextMapViewButton.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
+        
         guard let message = self.save?[0].items.randomElement() else {
             return
         }
@@ -32,6 +36,7 @@ class ResultViewController: UIViewController {
         self.foodImage.image = image
         restaurant = message
         writePlist()
+        restLbl.adjustsFontSizeToFitWidth = true
     }
     
     @IBAction func mapBtn(_ sender: Any) {
@@ -69,7 +74,7 @@ extension ResultViewController {
             restaurantArray["date"] = restaurant.date
             restaurantArray["imageString"] = restaurant.imageString
             
-            arrayPlist.append(restaurantArray)
+            arrayPlist.insert(restaurantArray, at: 0)
             
             let plistData = try PropertyListSerialization.data(fromPropertyList: arrayPlist, format: .xml, options: 0)
             try plistData.write(to: url)
