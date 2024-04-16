@@ -24,6 +24,8 @@
 		FA93D5802BC0E9EB0007A361 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */; };
 		FA93D5822BC0E9FE0007A361 /* SelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */; };
 		FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */; };
+		FA994B3B2BCCD39200538BCE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = FA994B3A2BCCD39200538BCE /* Lottie */; };
+		FA994B4B2BCCEFEE00538BCE /* LaunchScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = FA994B4A2BCCEFEE00538BCE /* LaunchScreen.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +62,7 @@
 		FA93D57F2BC0E9EB0007A361 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		FA93D5812BC0E9FE0007A361 /* SelectedListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedListViewController.swift; sourceTree = "<group>"; };
 		FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SelectedList.plist; sourceTree = "<group>"; };
+		FA994B4A2BCCEFEE00538BCE /* LaunchScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LaunchScreen.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +73,7 @@
 				AFC717B62BCCB8B000B4EAE0 /* Kingfisher in Frameworks */,
 				802A9BED0497E01F75C07C8C /* Pods_BobPT.framework in Frameworks */,
 				AFC717B22BCCB8A800B4EAE0 /* Alamofire in Frameworks */,
+				FA994B3B2BCCD39200538BCE /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +128,7 @@
 				FA19514E2BBFE18100D42AEC /* Assets.xcassets */,
 				FA1951532BBFE18100D42AEC /* Info.plist */,
 				FA93D58C2BC2D6CC0007A361 /* SelectedList.plist */,
+				FA994B4A2BCCEFEE00538BCE /* LaunchScreen.json */,
 			);
 			path = BobPT;
 			sourceTree = "<group>";
@@ -188,6 +193,7 @@
 			packageProductDependencies = (
 				AFC717B12BCCB8A800B4EAE0 /* Alamofire */,
 				AFC717B52BCCB8B000B4EAE0 /* Kingfisher */,
+				FA994B3A2BCCD39200538BCE /* Lottie */,
 			);
 			productName = BobPT;
 			productReference = FA1951422BBFE18000D42AEC /* BobPT.app */;
@@ -221,6 +227,7 @@
 				E6D4F49D2BC763790044F1BD /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FA1813F22BC42D3F001D7CDE /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				FA994B392BCCD39200538BCE /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			productRefGroup = FA1951432BBFE18000D42AEC /* Products */;
 			projectDirPath = "";
@@ -239,6 +246,7 @@
 				FA55AC962BC8F9B8006CE78F /* Main.storyboard in Resources */,
 				FA19514F2BBFE18100D42AEC /* Assets.xcassets in Resources */,
 				FA93D58D2BC2D6CC0007A361 /* SelectedList.plist in Resources */,
+				FA994B4B2BCCEFEE00538BCE /* LaunchScreen.json in Resources */,
 				FA49A0202BC538C300F6FB33 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,14 +467,15 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정보 내놔";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내내내놔";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자의 위치 정보를 가져와 메뉴를 추천해드릴게요.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치 정보를 통해 메뉴를 추천합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -475,9 +484,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kibwa.BobPT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -494,14 +507,15 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BobPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bob-PT";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정보 내놔";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내내내놔";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자의 위치 정보를 가져와 메뉴를 추천해드릴게요.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치 정보를 통해 메뉴를 추천합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -510,9 +524,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kibwa.BobPT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -556,6 +574,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		FA994B392BCCD39200538BCE /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.2;
+			};
+		};
 		FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -576,6 +602,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FACDB4C72BC8CD0F00A013E1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		FA994B3A2BCCD39200538BCE /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA994B392BCCD39200538BCE /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
