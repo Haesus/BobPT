@@ -277,7 +277,10 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func resultViewButtonAction(_ sender: Any) {
-        if !soupFoodBool && !meatFoodBool && !sushiFoodBool && !ramenFoodBool && !kimbapFoodBool && !burritoFoodBool && !pizzaFoodBool && !chickenFoodBool && !hamburgerFoodBool && !jajangmyeonFoodBool && !jjambbongFoodBool && !malatangFoodBool && !ricenoodlesFoodBool && !sandwichFoodBool && !saladFoodBool {
+        let foodBools = [soupFoodBool, meatFoodBool, sushiFoodBool, ramenFoodBool, kimbapFoodBool, burritoFoodBool, pizzaFoodBool, chickenFoodBool, hamburgerFoodBool, jajangmyeonFoodBool, jjambbongFoodBool, malatangFoodBool, ricenoodlesFoodBool, sandwichFoodBool, saladFoodBool]
+        let trueCount = foodBools.filter { $0 == true }.count
+
+        if  trueCount == 0 {
             let alert = UIAlertController(title: "메뉴를 한가지 이상 선택해주세요", message: "밥피티가 맛있는 집을 추천해드립니다.", preferredStyle: .alert)
             DispatchQueue.main.async {
                 let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -293,6 +296,23 @@ class MainViewController: UIViewController {
             subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
             
             self.present(alert, animated: true)
+            
+        } else if trueCount > 10 {
+            let alertTooMany = UIAlertController(title: "메뉴를 너무 많이 선택했습니다.", message: "10개 이하로 선택하실 수 있습니다.", preferredStyle: .alert)
+            DispatchQueue.main.async {
+                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+                alertTooMany.customViewAlert(customView, image: "RobotError")
+            }
+            
+            let action = UIAlertAction(title: "확인", style: .default)
+            action.setValue(UIColor.black, forKey: "titleTextColor")
+            alertTooMany.addAction(action)
+            
+            let subview = (alertTooMany.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
+            subview.layer.cornerRadius = 30
+            subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
+            
+            self.present(alertTooMany, animated: true)
         }
         
         save = []
@@ -428,37 +448,6 @@ extension MainViewController {
         labelName.text = labelString
     }
     
-    func buttonShadow(button: UIButton, width: Int, height: Int, opacity: Float, radius: CGFloat) {
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOffset = CGSize(width: width, height: height)
-        button.layer.shadowOpacity = opacity
-        button.layer.shadowRadius = radius
-    }
-    
-    func makeDesignedFoodButton(buttonName: UIButton, imageName: String, titleName: String) {
-        let image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
-        buttonName.setImage(image, for: .normal)
-        buttonName.setTitle(titleName, for: .normal)
-        var config = UIButton.Configuration.plain()
-        config.imagePadding = 5
-        config.imagePlacement = .top
-        buttonName.configuration = config
-        buttonName.tintColor = UIColorFromHex(hexString: "FA7070")
-        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
-    }
-    
-    func makeNoImageButton(buttonName: UIButton, radius: CGFloat, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
-        var config = UIButton.Configuration.filled()
-        config.background.cornerRadius = radius
-        config.baseBackgroundColor = UIColorFromHex(hexString: backgroundUIColorString)
-        config.baseForegroundColor = UIColorFromHex(hexString: foreGroundUIColorString)
-        var titleContainer = AttributeContainer()
-        titleContainer.font = UIFont.boldSystemFont(ofSize: titleSize)
-        config.attributedTitle = AttributedString(titleName, attributes: titleContainer)
-        buttonName.configuration = config
-        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
-    }
-    
     func designButton() {
         makeDesignedFoodButton(buttonName: soupFoodButtonLabel, imageName: "Soup", titleName: "찌개")
         makeDesignedFoodButton(buttonName: meatFoodButtonLabel, imageName: "Meat", titleName: "고기")
@@ -486,15 +475,15 @@ extension MainViewController {
 
 // MARK: - Objective-C Function
 extension MainViewController {
-    @objc func buttonTouchDown(button: UIButton) {
-        UIView.animate(withDuration: 0.2) {
-            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-        }
-    }
-    
-    @objc func buttonTouchUp(button: UIButton) {
-        UIView.animate(withDuration: 0.2) {
-            button.transform = CGAffineTransform.identity
-        }
-    }
+//    @objc func buttonTouchDown(button: UIButton) {
+//        UIView.animate(withDuration: 0.2) {
+//            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+//        }
+//    }
+//    
+//    @objc func buttonTouchUp(button: UIButton) {
+//        UIView.animate(withDuration: 0.2) {
+//            button.transform = CGAffineTransform.identity
+//        }
+//    }
 }

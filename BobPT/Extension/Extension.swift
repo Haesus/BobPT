@@ -77,6 +77,49 @@ extension UIViewController {
         
         return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
     }
+    
+    func buttonShadow(button: UIButton, width: Int, height: Int, opacity: Float, radius: CGFloat) {
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: width, height: height)
+        button.layer.shadowOpacity = opacity
+        button.layer.shadowRadius = radius
+    }
+    
+    func makeDesignedFoodButton(buttonName: UIButton, imageName: String, titleName: String) {
+        let image = UIImage(named: imageName)?.resizeImage(size: CGSize(width: 60, height: 50))
+        buttonName.setImage(image, for: .normal)
+        buttonName.setTitle(titleName, for: .normal)
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 5
+        config.imagePlacement = .top
+        buttonName.configuration = config
+        buttonName.tintColor = UIColorFromHex(hexString: "FA7070")
+        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
+    }
+    
+    func makeNoImageButton(buttonName: UIButton, radius: CGFloat, backgroundUIColorString: String, foreGroundUIColorString: String, titleSize: CGFloat, titleName: String) {
+        var config = UIButton.Configuration.filled()
+        config.background.cornerRadius = radius
+        config.baseBackgroundColor = UIColorFromHex(hexString: backgroundUIColorString)
+        config.baseForegroundColor = UIColorFromHex(hexString: foreGroundUIColorString)
+        var titleContainer = AttributeContainer()
+        titleContainer.font = UIFont.boldSystemFont(ofSize: titleSize)
+        config.attributedTitle = AttributedString(titleName, attributes: titleContainer)
+        buttonName.configuration = config
+        buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
+    }
+
+    @objc func buttonTouchDown(button: UIButton) {
+        UIView.animate(withDuration: 0.2) {
+            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }
+    }
+    
+    @objc func buttonTouchUp(button: UIButton) {
+        UIView.animate(withDuration: 0.2) {
+            button.transform = CGAffineTransform.identity
+        }
+    }
 }
 
 // MARK: - extension UIAlertController
