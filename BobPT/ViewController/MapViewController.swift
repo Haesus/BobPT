@@ -24,6 +24,11 @@ class MapViewController: UIViewController {
     @IBOutlet weak var bobPTMapView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageUpload()
+        mapViewLoad(x: receivedData?.mapx, y: receivedData?.mapy)
+    }
+    
+    func imageUpload(){
         restaurantImage.image = UIImage(named: "restaurant")
         locationImage.image = UIImage(named: "location")
         self.button.layer.masksToBounds = true
@@ -43,15 +48,7 @@ class MapViewController: UIViewController {
             view.addSubview(button)
             
         }
-        guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let mapVC = uvc as? MapViewController else {return}
-                
-        guard let receivedData else {return}
-        let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
-        let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
-        mapViewLoad(x: coordinateY, y: coordinateX)
-        let naverBtnOut = UIButton()
-        naverBtnOut.addTarget(self, action: #selector(naverAppBtn), for: .touchUpInside)
-        self.view.addSubview(naverBtnOut)
+
     }
 //    @objc func buttonTouchDown() {
 //            UIView.animate(withDuration: 0.2) {
@@ -65,8 +62,12 @@ class MapViewController: UIViewController {
 //            }
 //        }
     
-    func mapViewLoad(x:Double, y:Double){
-        let latLng = NMGLatLng(lat: x, lng: y)
+    func mapViewLoad(x:String?, y:String?){
+        guard let receivedData else {return}
+        let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
+        let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
+        
+        let latLng = NMGLatLng(lat: coordinateY, lng: coordinateX)
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -92,9 +93,9 @@ class MapViewController: UIViewController {
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        datasource.title = receivedData?.title ?? " "
+        datasource.title = receivedData.title
         infoWindow.open(with: destinationMarker)
-        localAddress.text = receivedData?.address
+        localAddress.text = receivedData.address
         
         
     }
