@@ -10,20 +10,45 @@ import NMapsMap
 
 class MapViewController: UIViewController {
     
-    @IBOutlet weak var restaurantImage: UIImageView!
-    @IBOutlet weak var button: UIButton!
-    var receivedData : Restaurant?
     var userLatitude : Double?
     var userLongitude : Double?
     var userLocation : CLLocation?
+    var receivedData : Restaurant?
     
-    
+    @IBOutlet weak var restaurantImage: UIImageView!
+    @IBOutlet weak var button: UIButton!
     @IBOutlet weak var locationImage: UIImageView!
     @IBOutlet weak var naverBtnOut: UIButton!
     @IBOutlet weak var localAddress: UILabel!
     @IBOutlet weak var bobPTMapView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageUpload()
+        mapViewLoad(x: receivedData?.mapx, y: receivedData?.mapy)
+    }
+    
+    @IBAction func naverAppBtn(_ sender: Any) {
+        guard let searchQueryTitle = receivedData?.title,
+              let searchQueryCategory = receivedData?.category.split(separator: ">").first,
+              let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "nmap://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&appname=BobPT"),
+              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8") else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        } else {
+            UIApplication.shared.open(appStoreURL)
+        }
+    }
+}
+
+// MARK: - View Load Function
+extension MapViewController {
+    func imageUpload() {
         restaurantImage.image = UIImage(named: "restaurant")
         locationImage.image = UIImage(named: "location")
         self.button.layer.masksToBounds = true
@@ -41,32 +66,15 @@ class MapViewController: UIViewController {
             button.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
                     button.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
             view.addSubview(button)
-            
         }
-        guard let uvc = self.storyboard?.instantiateViewController(identifier: "MapViewController"), let mapVC = uvc as? MapViewController else {return}
-                
+    }
+    
+    func mapViewLoad(x:String?, y:String?) {
         guard let receivedData else {return}
         let coordinateX = (Double(receivedData.mapx) ?? 0)/10000000
         let coordinateY = (Double(receivedData.mapy) ?? 0)/10000000
-        mapViewLoad(x: coordinateY, y: coordinateX)
-        let naverBtnOut = UIButton()
-        naverBtnOut.addTarget(self, action: #selector(naverAppBtn), for: .touchUpInside)
-        self.view.addSubview(naverBtnOut)
-    }
-//    @objc func buttonTouchDown() {
-//            UIView.animate(withDuration: 0.2) {
-//                self.button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95) // 버튼을 5% 줄임
-//            }
-//        }
-//
-//        @objc func buttonTouchUp() {
-//            UIView.animate(withDuration: 0.2) {
-//                self.button.transform = CGAffineTransform.identity // 원래 크기로 복원
-//            }
-//        }
-    
-    func mapViewLoad(x:Double, y:Double){
-        let latLng = NMGLatLng(lat: x, lng: y)
+        
+        let latLng = NMGLatLng(lat: coordinateY, lng: coordinateX)
         let mapView = NMFMapView(frame: bobPTMapView.bounds)
         bobPTMapView.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -92,36 +100,8 @@ class MapViewController: UIViewController {
         
         let infoWindow = NMFInfoWindow()
         let datasource = NMFInfoWindowDefaultTextSource.data()
-        datasource.title = receivedData?.title ?? " "
+        datasource.title = receivedData.title
         infoWindow.open(with: destinationMarker)
-        localAddress.text = receivedData?.address
-        
-        
-    }
-    
-    @IBAction func naverAppBtn(_ sender: Any) {
-        guard let searchQueryTitle = receivedData?.title,
-              let searchQueryCategory = receivedData?.category.split(separator: ">").first,
-              let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: "nmap://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&appname=BobPT"),
-              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8") else {
-            return
-        }
-        
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
-        } else {
-            UIApplication.shared.open(appStoreURL)
-        }
+        localAddress.text = receivedData.address
     }
 }
-
-extension UIImage {
-    func resized(to size: CGSize) -> UIImage {
-        return UIGraphicsImageRenderer(size: size).image { _ in
-            draw(in: CGRect(origin: .zero, size: size))
-        }
-    }
-}
-

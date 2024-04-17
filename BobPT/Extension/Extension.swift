@@ -46,6 +46,12 @@ extension Bundle {
 
 // MARK: - extension UIImage
 extension UIImage {
+    func resized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
+    
     func resizeImage(size: CGSize) -> UIImage {
         let originalSize = self.size
         let ratio: CGFloat = {
@@ -108,7 +114,7 @@ extension UIViewController {
         buttonName.configuration = config
         buttonShadow(button: buttonName, width: 3, height: 2, opacity: 0.5, radius: 4)
     }
-
+    
     @objc func buttonTouchDown(button: UIButton) {
         UIView.animate(withDuration: 0.2) {
             button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
