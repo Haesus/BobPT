@@ -34,7 +34,7 @@ class MapViewController: UIViewController {
               let encodedQueryTitle = searchQueryTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodedQueryCategory = searchQueryCategory.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "nmap://search?query=\(encodedQueryTitle),\(encodedQueryCategory)&appname=BobPT"),
-              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8") else {
+              let appStoreURL = URL(string: "https://itunes.apple.com/app/id311867728?mt=8") else {
             return
         }
         
