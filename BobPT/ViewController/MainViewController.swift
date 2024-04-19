@@ -277,9 +277,6 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func resultViewButtonAction(_ sender: Any) {
-//        let foodBools = [soupFoodBool, meatFoodBool, sushiFoodBool, ramenFoodBool, kimbapFoodBool, burritoFoodBool, pizzaFoodBool, chickenFoodBool, hamburgerFoodBool, jajangmyeonFoodBool, jjambbongFoodBool, malatangFoodBool, ricenoodlesFoodBool, sandwichFoodBool, saladFoodBool]
-//        let trueCount = foodBools.filter { $0 == true }.count
-
         if selectedFood.count > 10 {
             let alert = UIAlertController(title: "선택된 메뉴가 너무 많습니다.", message: "10개 이하를 골라주세요.", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "확인", style: .cancel)
@@ -294,43 +291,27 @@ class MainViewController: UIViewController {
             present(alert, animated: true)
         }
         
-//        if  trueCount == 0 {
-//            let alert = UIAlertController(title: "메뉴를 한가지 이상 선택해주세요", message: "밥피티가 맛있는 집을 추천해드립니다.", preferredStyle: .alert)
-//            DispatchQueue.main.async {
-//                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
-//                alert.customViewAlert(customView, image: "RobotError")
-//            }
-//            
-//            let action = UIAlertAction(title: "확인", style: .default)
-//            action.setValue(UIColor.black, forKey: "titleTextColor")
-//            alert.addAction(action)
-//            
-//            let subview = (alert.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
-//            subview.layer.cornerRadius = 30
-//            subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
-//            
-//            self.present(alert, animated: true)
-//            
-//        } else if trueCount > 10 {
-//            let alertTooMany = UIAlertController(title: "메뉴를 너무 많이 선택했습니다.", message: "10개 이하로 선택하실 수 있습니다.", preferredStyle: .alert)
-//            DispatchQueue.main.async {
-//                let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
-//                alertTooMany.customViewAlert(customView, image: "RobotError")
-//            }
-//            
-//            let action = UIAlertAction(title: "확인", style: .default)
-//            action.setValue(UIColor.black, forKey: "titleTextColor")
-//            alertTooMany.addAction(action)
-//            
-//            let subview = (alertTooMany.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
-//            subview.layer.cornerRadius = 30
-//            subview.backgroundColor = UIColorFromHex(hexString: "FEFDED")
-//            
-//            self.present(alertTooMany, animated: true)
-//        }
-        
         save = []
         guard let userLocation else {
+            let authorizationStatus: CLAuthorizationStatus = locationManager.authorizationStatus
+            switch authorizationStatus {
+                case .notDetermined, .denied, .restricted:
+                    let requestLocationServiceAlert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.", preferredStyle: .alert)
+                    let goSetting = UIAlertAction(title: "설정으로 이동", style: .destructive) { _ in
+                        if let appSetting = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(appSetting)
+                        }
+                    }
+                    let cancel = UIAlertAction(title: "취소", style: .default)
+                    requestLocationServiceAlert.addAction(cancel)
+                    requestLocationServiceAlert.addAction(goSetting)
+                    
+                    present(requestLocationServiceAlert, animated: true)
+                case .authorizedWhenInUse:
+                    locationManager.startUpdatingLocation()
+                default:
+                    print("Default")
+            }
             return
         }
         
@@ -485,19 +466,4 @@ extension MainViewController {
         
         makeNoImageButton(buttonName: nextViewButton, radius: 10, backgroundUIColorString: "FA7070", foreGroundUIColorString: "FEFDED", titleSize: 30, titleName: "음식점 추천 받기")
     }
-}
-
-// MARK: - Objective-C Function
-extension MainViewController {
-//    @objc func buttonTouchDown(button: UIButton) {
-//        UIView.animate(withDuration: 0.2) {
-//            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-//        }
-//    }
-//    
-//    @objc func buttonTouchUp(button: UIButton) {
-//        UIView.animate(withDuration: 0.2) {
-//            button.transform = CGAffineTransform.identity
-//        }
-//    }
 }
