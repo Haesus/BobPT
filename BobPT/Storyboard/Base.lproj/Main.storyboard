@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jGm-fT-5oS">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -213,8 +214,8 @@
                                     <action selector="chickenFoodButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="azK-n4-DPL"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGF-av-kP1">
-                                <rect key="frame" x="24.999999999999996" y="108" width="41.666666666666657" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 위치" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGF-av-kP1">
+                                <rect key="frame" x="25.000000000000004" y="108" width="63.333333333333343" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="7ZH-iL-aBm"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="70" id="l7H-eA-viR"/>
@@ -224,7 +225,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJ0-v4-ThY">
-                                <rect key="frame" x="76.666666666666671" y="108" width="30" height="30"/>
+                                <rect key="frame" x="98.333333333333329" y="108" width="29.999999999999986" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lJ0-v4-ThY" secondAttribute="height" multiplier="1:1" id="1Y6-uh-B2e"/>
                                 </constraints>
