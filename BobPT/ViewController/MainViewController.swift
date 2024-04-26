@@ -15,7 +15,7 @@ class MainViewController: UIViewController {
     // TODO: - 사용자와 매장 사이의 거리 계산하기 위해 필요...
     var latitude: Double?
     var longitude: Double?
-    var userLocation: String?
+    var userLocation: String = "서초구"
     var selectedFood: [String] = []
     var save: [Root] = []
     
@@ -93,28 +93,28 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func researchLocationButtonAction(_ sender: Any) {
-        guard let userLocation else {
-            let authorizationStatus: CLAuthorizationStatus = locationManager.authorizationStatus
-            switch authorizationStatus {
-                case .notDetermined, .denied, .restricted:
-                    let requestLocationServiceAlert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.", preferredStyle: .alert)
-                    let goSetting = UIAlertAction(title: "설정으로 이동", style: .destructive) { _ in
-                        if let appSetting = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(appSetting)
-                        }
-                    }
-                    let cancel = UIAlertAction(title: "취소", style: .default)
-                    requestLocationServiceAlert.addAction(cancel)
-                    requestLocationServiceAlert.addAction(goSetting)
-                    
-                    present(requestLocationServiceAlert, animated: true)
-                case .authorizedWhenInUse:
-                    locationManager.startUpdatingLocation()
-                default:
-                    print("Default")
-            }
-            return
-        }
+//        guard let userLocation else {
+//            let authorizationStatus: CLAuthorizationStatus = locationManager.authorizationStatus
+//            switch authorizationStatus {
+//                case .notDetermined, .denied, .restricted:
+//                    let requestLocationServiceAlert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.", preferredStyle: .alert)
+//                    let goSetting = UIAlertAction(title: "설정으로 이동", style: .destructive) { _ in
+//                        if let appSetting = URL(string: UIApplication.openSettingsURLString) {
+//                            UIApplication.shared.open(appSetting)
+//                        }
+//                    }
+//                    let cancel = UIAlertAction(title: "취소", style: .default)
+//                    requestLocationServiceAlert.addAction(cancel)
+//                    requestLocationServiceAlert.addAction(goSetting)
+//                    
+//                    present(requestLocationServiceAlert, animated: true)
+//                case .authorizedWhenInUse:
+//                    locationManager.startUpdatingLocation()
+//                default:
+//                    print("Default")
+//            }
+//            return
+//        }
         
         self.labelDesign(labelName: self.locationLabel, labelString: self.userLocation)
     }
@@ -315,37 +315,37 @@ class MainViewController: UIViewController {
         }
         
         save = []
-        guard let userLocation else {
-            let authorizationStatus: CLAuthorizationStatus = locationManager.authorizationStatus
-            switch authorizationStatus {
-                case .notDetermined, .denied, .restricted, .authorizedWhenInUse:
-                    let requestLocationServiceAlert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.", preferredStyle: .alert)
-                    let goSetting = UIAlertAction(title: "설정으로 이동", style: .destructive) { _ in
-                        if let appSetting = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(appSetting)
-                        }
-                    }
-                    let cancel = UIAlertAction(title: "취소", style: .default)
-                    requestLocationServiceAlert.addAction(cancel)
-                    requestLocationServiceAlert.addAction(goSetting)
-                    
-                    present(requestLocationServiceAlert, animated: true)
-                default:
-                    let requestLocationServiceAlert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.", preferredStyle: .alert)
-                    let goSetting = UIAlertAction(title: "설정으로 이동", style: .destructive) { _ in
-                        if let appSetting = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(appSetting)
-                        }
-                    }
-                    let cancel = UIAlertAction(title: "취소", style: .default)
-                    requestLocationServiceAlert.addAction(cancel)
-                    requestLocationServiceAlert.addAction(goSetting)
-                    
-                    present(requestLocationServiceAlert, animated: true)
-                    print("Default")
-            }
-            return
-        }
+//        guard let userLocation else {
+//            let authorizationStatus: CLAuthorizationStatus = locationManager.authorizationStatus
+//            switch authorizationStatus {
+//                case .notDetermined, .denied, .restricted, .authorizedWhenInUse:
+//                    let requestLocationServiceAlert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.", preferredStyle: .alert)
+//                    let goSetting = UIAlertAction(title: "설정으로 이동", style: .destructive) { _ in
+//                        if let appSetting = URL(string: UIApplication.openSettingsURLString) {
+//                            UIApplication.shared.open(appSetting)
+//                        }
+//                    }
+//                    let cancel = UIAlertAction(title: "취소", style: .default)
+//                    requestLocationServiceAlert.addAction(cancel)
+//                    requestLocationServiceAlert.addAction(goSetting)
+//                    
+//                    present(requestLocationServiceAlert, animated: true)
+//                default:
+//                    let requestLocationServiceAlert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.", preferredStyle: .alert)
+//                    let goSetting = UIAlertAction(title: "설정으로 이동", style: .destructive) { _ in
+//                        if let appSetting = URL(string: UIApplication.openSettingsURLString) {
+//                            UIApplication.shared.open(appSetting)
+//                        }
+//                    }
+//                    let cancel = UIAlertAction(title: "취소", style: .default)
+//                    requestLocationServiceAlert.addAction(cancel)
+//                    requestLocationServiceAlert.addAction(goSetting)
+//                    
+//                    present(requestLocationServiceAlert, animated: true)
+//                    print("Default")
+//            }
+//            return
+//        }
         
         let dispatchGroup = DispatchGroup()
         for i in 0..<selectedFood.count {

@@ -44,6 +44,12 @@ class MapViewController: UIViewController {
             UIApplication.shared.open(appStoreURL)
         }
     }
+    
+    @IBAction func appleMapButton(_ sender: Any) {
+        if let url = URL(string: "map://maps.apple.com") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
 }
 
 // MARK: - View Load Function
@@ -60,11 +66,11 @@ extension MapViewController {
             config.image = resizedImage
             config.showsActivityIndicator = false
             button.configuration = config
-
+            
             button.setImage(resizedImage, for: .normal)
             button.imageView?.contentMode = .scaleAspectFit
             button.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
-                    button.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
+            button.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
             view.addSubview(button)
         }
     }
