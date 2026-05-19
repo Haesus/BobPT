@@ -13,6 +13,9 @@ let target: Target = .target(
   sources: [
     "Sources/**"
   ],
+  resources: [
+    "Resources/**"
+  ],
   settings: .targetSettings(product: .staticFramework)
 )
 
