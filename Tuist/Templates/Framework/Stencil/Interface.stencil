@@ -1,0 +1,12 @@
+//
+//  {{ name }}Interface.swift
+//  {{ name }}
+//
+//  Created by {{ author }} on {{ nowDate }}.
+//
+
+import Foundation
+
+public struct {{ name }}Interface {
+  public init() {}
+}

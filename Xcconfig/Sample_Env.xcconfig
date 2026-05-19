@@ -1,0 +1,8 @@
+// Add local-only values here (API keys, secrets, per-developer overrides).
+// This file is ignored by git.
+
+// Example
+// API_BASE_URL = https://api.example.com
+// KTOR_API_URL = http:/$()/Ktor.api.example.com
+// API_BASE_URL =
+// OPENAI_API_KEY = YOUR_KEY_HERE

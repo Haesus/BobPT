@@ -1,0 +1,8 @@
+#include "../Shared.xcconfig"
+#include "../Env.xcconfig"
+
+// Example values only. Replace with your own.
+MARKETING_VERSION = 0.0.2
+CURRENT_PROJECT_VERSION = 1
+DEVELOPMENT_TEAM = YOUR_TEAM_ID
+APP_NAME = Bob-PT

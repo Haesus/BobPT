@@ -1,0 +1,147 @@
+# 이 파일은 fastlane.tools 설정을 담고 있습니다
+# 문서는 https://docs.fastlane.tools 에서 확인할 수 있습니다
+# 액션 목록: https://docs.fastlane.tools/actions
+# 플러그인 목록: https://docs.fastlane.tools/plugins/available-plugins
+#
+# ⚠️ 주의: 아래 주석은 "무엇을 하는지"와 "어떤 값이 필요한지"를 빠르게 파악하도록 돕기 위한 설명입니다.
+#        실제 값들은 대부분 GitHub Secrets/ENV 또는 프로젝트 설정에 따라 달라집니다.
+#        (예시 값은 모두 주석으로만 제공됩니다.)
+
+# fastlane이 자동으로 업데이트되길 원한다면 아래 줄의 주석을 해제하세요
+# update_fastlane
+
+# ------------------------------------------------------------
+# 기본 플랫폼 지정
+# - iOS 이외에 :mac, :android 등을 지정할 수도 있습니다.
+# ------------------------------------------------------------
+default_platform(:ios)
+
+# ------------------------------------------------------------
+# iOS 플랫폼 전용 Lane 정의 블록
+# ------------------------------------------------------------
+platform :ios do
+
+  # ----------------------------------------------------------
+  # Lane: beta
+  # - 역할: TestFlight로 베타 빌드 업로드
+  # - 트리거: 로컬/CI에서 `fastlane beta` 실행
+  # ----------------------------------------------------------
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    # TODO: 새 프로젝트의 Bundle Identifier로 교체하세요.
+    # - Tuist/ProjectDescriptionHelpers/AppEnv.swift와 fastlane/Matchfile의 app_identifier 목록과 동일해야 합니다.
+    # - GitHub Actions에서는 TUIST_BUILD_CONFIG=DEV|BETA|RELEASE로 배포 대상을 고릅니다.
+    build_config = (ENV["TUIST_BUILD_CONFIG"] || "BETA").upcase
+    case build_config
+    when "DEV"
+      bundle_id = ENV["APP_IDENTIFIER_DEV"] || "com.kibwa.BobPT.dev"
+    when "BETA"
+      bundle_id = ENV["APP_IDENTIFIER_BETA"] || "com.kibwa.BobPT.beta"
+    when "RELEASE"
+      bundle_id = ENV["APP_IDENTIFIER_RELEASE"] || "com.kibwa.BobPT"
+    else
+      UI.user_error!("Unsupported TUIST_BUILD_CONFIG: #{build_config}")
+    end
+
+    scheme_name = "BobPT_#{build_config}"
+    configuration_name = build_config
+    profile_name = "match AppStore #{bundle_id}"
+
+    # --------------------------------------------------------
+    # 1) App Store Connect API Key 설정
+    #    - 목적: Apple ID/2FA 없이도 TestFlight 업로드가 가능하게 함
+    #    - 필요한 ENV (GitHub Secrets 권장):
+    #      ASC_KEY_ID        → 예: "ABC123XYZ9" (App Store Connect Keys 화면의 Key ID)
+    #      ASC_ISSUER_ID     → 예: "69b8…." (App Store Connect Keys 화면의 Issuer ID, UUID)
+    #      ASC_API_KEY_BASE64 → .p8 파일 내용을 base64 인코딩한 값 (GitHub Actions에서 파일로 복원)
+    #    - key_filepath      → 로컬 또는 CI의 .p8 파일 경로
+    #      • 예: "~/AuthKey_#{ENV['ASC_KEY_ID']}.p8"
+    #      • CI에서 파일이 없다면, base64 ENV를 디코드해 임시 파일로 저장하는 방식도 사용합니다.
+    #        (예: ASC_API_KEY_BASE64 → Base64.decode64 후 파일 생성)
+    # --------------------------------------------------------
+    api_key = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: File.expand_path("~/AuthKey_#{ENV['ASC_KEY_ID']}.p8")
+    )
+
+    # --------------------------------------------------------
+    # 2) 코드사인 자격 로드(match)
+    #    - 목적: 배포용(앱스토어) 인증서/프로비저닝을 암호화된 git 레포에서 가져옴
+    #    - 필요한 ENV:
+    #      MATCH_GIT_URL_SSH  → TODO: 인증서 저장소 SSH URL, 예: "git@github.com:org/certificates-ios.git"
+    #      MATCH_GIT_BRANCH   → 예: "main" || "master" (레포 브랜치)
+    #      MATCH_PASSWORD     → match 저장소 암호화 비밀번호
+    #      MATCH_SSH_PRIVATE_KEY → CI에서 인증서 저장소에 접근할 SSH private key를 base64 인코딩한 값
+    #    - readonly: true     → CI에서는 읽기 전용이 안전
+    #    - 사전 준비: 로컬에서 한 번 `fastlane match appstore`로 발급/푸시 완료되어 있어야 함
+    # --------------------------------------------------------
+    match(
+      type: "appstore",
+      readonly: true,
+      git_url: ENV["MATCH_GIT_URL_SSH"],     # 예: git@github.com:tag-dev/certificates-ios.git
+      git_branch: ENV["MATCH_GIT_BRANCH"],   # 예: main / master
+      app_identifier: bundle_id
+    )
+
+    # --------------------------------------------------------
+    # 3) 빌드 번호 증가 전략
+    #    - 시간 기반 빌드번호(초 단위) — 예: 20250925_122532 → 20250925122532 (14자리, Apple 제한 18자리 이내)
+    # 시간 기반 빌드번호(UTC+09:00 고정, 한국 표준시)
+    # GitHub Actions 러너가 어떤 타임존에서 돌아가더라도 동일하게 적용됨
+    time_build = (Time.now.getlocal('+09:00')).strftime('%Y%m%d%H%M%S').to_i
+
+    # 원격/로컬/시간값 중 가장 큰 값으로 설정하여 "반드시 증가" 조건을 보장
+    # - 병렬 빌드나 타임존 이슈로 과거 값이 나올 수 있어 max 사용
+    # override = ENV['BUILD_NUMBER_OVERRIDE']&.to_i
+    # remote = (latest_testflight_build_number(app_identifier: bundle_id) || 0).to_i
+    # local  = (get_build_number(xcodeproj: 'Projects/App/BobPT/BobPT.xcodeproj') || '0').to_i
+    # candidates = [time_build, remote, local]
+    # candidates << override if override && override > 0
+    # next_build = candidates.max
+
+    # 실제 프로젝트의 빌드 번호를 next_build로 세팅
+    increment_build_number(
+      xcodeproj: "Projects/App/BobPT/BobPT.xcodeproj",
+      build_number: time_build
+    )
+
+    # --------------------------------------------------------
+    # 4) 앱 빌드
+    #    - workspace  → Tuist가 생성한 워크스페이스명 (예: "BobPT.xcworkspace")
+    #    - scheme     → 공유(Shared)된 스킴명 (예: "BobPT_DEV")
+    #    - configuration → DEV / BETA / RELEASE 중 선택
+    #    - export_method → "app-store" (배포용)
+    #    - export_options.provisioningProfiles 매핑:
+    #        { "<번들ID>" => "match AppStore <번들ID>" }
+    #      • match가 생성하는 프로파일명 규칙과 일치해야 합니다.
+    # --------------------------------------------------------
+    build_app(
+      workspace: "BobPT.xcworkspace",
+      scheme: scheme_name,
+      configuration: configuration_name,
+      export_method: "app-store",
+      xcargs: "CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution' PROVISIONING_PROFILE_SPECIFIER='#{profile_name}'",
+      export_options: {
+        provisioningProfiles: {
+          bundle_id => profile_name
+        }
+      }
+    )
+
+    # --------------------------------------------------------
+    # 5) TestFlight 업로드
+    #    - api_key: 위에서 생성한 App Store Connect API Key 객체
+    #    - 자주 쓰는 옵션 예:
+    #      skip_waiting_for_build_processing: true → 처리 대기 생략(빠른 종료)
+    #      distribute_external: false             → 외부 테스터 자동 배포 여부
+    #      changelog: "..."                       → 빌드 노트(커밋 메시지 등)
+    # --------------------------------------------------------
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+      #, distribute_external: false
+      #, changelog: `git log -1 --pretty=%B`.strip
+    )
+  end
+end
