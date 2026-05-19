@@ -28,8 +28,8 @@ public struct NaverSearchService: Sendable {
     public init() {}
 
     public func search(location: String, food: FoodCategory) async throws -> [Restaurant] {
-        guard let idKey = Bundle.main.idKey,
-              let secretKey = Bundle.main.secretKey else {
+        guard let idKey = Bundle.main.idKey.validAPIKey,
+              let secretKey = Bundle.main.secretKey.validAPIKey else {
             throw NaverSearchError.missingAPIKey
         }
 
@@ -44,19 +44,25 @@ public struct NaverSearchService: Sendable {
             "X-Naver-Client-Secret": secretKey
         ]
 
-        let root: Root = try await withCheckedThrowingContinuation { continuation in
-            AF.request(endPoint, method: .get, parameters: params, headers: headers)
-                .responseDecodable(of: Root.self) { response in
-                    switch response.result {
-                    case .success(let root):
-                        continuation.resume(returning: root)
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
+        let response: NaverSearchResponse
+        do {
+            response = try await withCheckedThrowingContinuation { continuation in
+                AF.request(endPoint, method: .get, parameters: params, headers: headers)
+                    .validate(statusCode: 200..<300)
+                    .responseDecodable(of: NaverSearchResponse.self) { response in
+                        switch response.result {
+                        case .success(let response):
+                            continuation.resume(returning: response)
+                        case .failure(let error):
+                            continuation.resume(throwing: error)
+                        }
                     }
-                }
+            }
+        } catch {
+            throw NaverSearchError.requestFailed
         }
 
-        return root.items.map { restaurant in
+        return response.items.map { restaurant in
             Restaurant(
                 title: restaurant.title,
                 link: restaurant.link,
@@ -65,9 +71,34 @@ public struct NaverSearchService: Sendable {
                 address: restaurant.address,
                 mapx: restaurant.mapx,
                 mapy: restaurant.mapy,
-                date: restaurant.date,
                 imageString: food.imageName
             )
         }
+    }
+}
+
+private struct NaverSearchResponse: Decodable, Sendable {
+    let items: [NaverRestaurant]
+}
+
+private struct NaverRestaurant: Decodable, Sendable {
+    let title: String
+    let link: String
+    let category: String
+    let description: String
+    let address: String
+    let mapx: String
+    let mapy: String
+}
+
+private extension Optional where Wrapped == String {
+    var validAPIKey: String? {
+        guard let value = self?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !value.isEmpty,
+              !value.hasPrefix("$(") else {
+            return nil
+        }
+
+        return value
     }
 }

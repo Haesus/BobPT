@@ -20,8 +20,7 @@ extension InfoPlist {
             "nmap"
           ],
           "LSRequiresIPhoneOS": true,
-          "NMFClientId": "547b2kcc2r",
-          "NMFNcpKeyId": "547b2kcc2r",
+          "NMFNcpKeyId": "$(NAVER_MAP_CLIENT_ID)",
           "NSLocationAlwaysAndWhenInUseUsageDescription": "사용자의 위치 정보를 가져와 메뉴를 추천해드릴게요.",
           "NSLocationWhenInUseUsageDescription": "사용자의 위치 정보를 통해 메뉴를 추천합니다.",
           "SECRET_KEY": "$(SECRET_KEY)",

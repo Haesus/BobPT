@@ -45,11 +45,3 @@ public struct Restaurant: Codable, Identifiable, Sendable {
         self.imageString = imageString
     }
 }
-
-public struct Root: Codable, Sendable {
-    public var items: [Restaurant]
-
-    public init(items: [Restaurant]) {
-        self.items = items
-    }
-}
