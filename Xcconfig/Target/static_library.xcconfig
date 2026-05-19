@@ -4,7 +4,7 @@
 // instead.
 //
 
-#include "../Shared.xcconfig"
+#include "../shared.xcconfig"
 
 // Disable code signing for successful device builds with Xcode 8. Frameworks do
 // need to be signed, but they don't need to be signed at compile time because

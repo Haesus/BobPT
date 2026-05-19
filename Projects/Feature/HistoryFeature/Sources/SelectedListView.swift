@@ -1,6 +1,6 @@
 //
 //  SelectedListView.swift
-//  BobPT
+//  HistoryFeature
 //
 //  Created by Codex on 5/19/26.
 //
@@ -11,10 +11,14 @@ import BobPTDomain
 import DesignSystem
 import Utils
 
-struct SelectedListView: View {
+public struct SelectedListView: View {
     @ObservedObject var store: SelectedRestaurantStore
 
-    var body: some View {
+    public init(store: SelectedRestaurantStore) {
+        self.store = store
+    }
+
+    public var body: some View {
         Group {
             if store.restaurants.isEmpty {
                 VStack(spacing: 18) {

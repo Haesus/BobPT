@@ -1,6 +1,6 @@
 //
 //  LottieLaunchView.swift
-//  BobPT
+//  RecommendationFeature
 //
 //  Created by Codex on 5/19/26.
 //

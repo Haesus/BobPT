@@ -1,6 +1,6 @@
 //
 //  MainView.swift
-//  BobPT
+//  RecommendationFeature
 //
 //  Created by Codex on 5/19/26.
 //
@@ -11,7 +11,6 @@ import BobPTDomain
 import DesignSystem
 
 public struct MainView: View {
-    @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
     @StateObject private var locationProvider = LocationProvider()
     @ObservedObject private var selectedStore: SelectedRestaurantStore
     @State private var selectedFoods: Set<FoodCategory> = []
@@ -84,7 +83,6 @@ public struct MainView: View {
                 .transition(.opacity)
             }
         }
-        .preferredColorScheme(appearanceMode.colorScheme)
     }
 
     private var locationHeader: some View {

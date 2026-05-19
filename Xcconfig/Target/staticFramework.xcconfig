@@ -4,7 +4,7 @@
 // instead.
 //
 
-#include "../Shared.xcconfig"
+#include "../shared.xcconfig"
 
 // Disable code signing for static frameworks as they do not need to be signed
 CODE_SIGNING_REQUIRED = NO

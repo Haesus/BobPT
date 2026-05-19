@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UIKit
-import BobPTFeature
 
 @main
 struct BobPTApp: App {
@@ -15,7 +14,7 @@ struct BobPTApp: App {
 
     var body: some Scene {
         WindowGroup {
-            BobPTRootView()
+            RootTabView()
         }
     }
 }

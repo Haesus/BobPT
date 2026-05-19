@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  BobPT
+//  SettingsFeature
 //
 //  Created by Codex on 5/19/26.
 //
@@ -10,12 +10,14 @@ import SwiftUI
 import BobPTDomain
 import DesignSystem
 
-struct SettingsView: View {
-    @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
+public struct SettingsView: View {
     @State private var showsMailComposer = false
     @State private var opensMailSettingsAlert = false
+    @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         List {
             Picker("화면 모드", selection: $appearanceMode) {
                 ForEach(DesignSystem.AppearanceMode.allCases) { mode in

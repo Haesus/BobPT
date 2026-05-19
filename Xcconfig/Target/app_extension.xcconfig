@@ -4,7 +4,7 @@
 // a configuration file for a specific type of target.
 //
 
-#include "../Shared.xcconfig"
+#include "../shared.xcconfig"
 
 // Xcode needs this to find archived headers if SKIP_INSTALL is set
 HEADER_SEARCH_PATHS = $(inherited) $(OBJROOT)/UninstalledProducts/include

@@ -1,21 +1,22 @@
 //
-//  BobPTRootView.swift
-//  BobPTFeature
+//  RootTabView.swift
+//  BobPT
 //
-//  Created by Codex on 5/19/26.
+//  Created by Codex on 5/20/26.
 //
 
 import SwiftUI
 import BobPTCore
 import DesignSystem
+import HistoryFeature
+import RecommendationFeature
+import SettingsFeature
 
-public struct BobPTRootView: View {
+struct RootTabView: View {
     @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
     @StateObject private var selectedStore = SelectedRestaurantStore()
 
-    public init() {}
-
-    public var body: some View {
+    var body: some View {
         TabView {
             NavigationStack {
                 MainView(selectedStore: selectedStore)

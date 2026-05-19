@@ -21,7 +21,11 @@ let appTarget: Target = .target(
     privacyManifest: .bobPT
   ),
   dependencies: [
-    .project(target: "BobPTFeature", path: "../../Feature/BobPTFeature")
+    .project(target: "BobPTCore", path: "../../Core/BobPTCore"),
+    .project(target: "DesignSystem", path: "../../Shared/DesignSystem"),
+    .project(target: "RecommendationFeature", path: "../../Feature/RecommendationFeature"),
+    .project(target: "HistoryFeature", path: "../../Feature/HistoryFeature"),
+    .project(target: "SettingsFeature", path: "../../Feature/SettingsFeature")
   ],
   settings: .targetSettings(product: .app)
 )

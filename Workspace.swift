@@ -4,7 +4,9 @@ let workspace = Workspace(
   name: "BobPT",
   projects: [
     "Projects/App/BobPT",
-    "Projects/Feature/BobPTFeature",
+    "Projects/Feature/RecommendationFeature",
+    "Projects/Feature/HistoryFeature",
+    "Projects/Feature/SettingsFeature",
     "Projects/Core/BobPTCore",
     "Projects/Domain/BobPTDomain",
     "Projects/Shared/DesignSystem",
