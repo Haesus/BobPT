@@ -5,8 +5,8 @@
 ## User settings
 xcuserdata/
 *.xcconfig
-!Xcconfig/**/*.xcconfig
-Xcconfig/Env.xcconfig
+!Xcconfig/Sample*.xcconfig
+!Xcconfig/**/Sample*.xcconfig
 .env
 
 # Tuist generated outputs
