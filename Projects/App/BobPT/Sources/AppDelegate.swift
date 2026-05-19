@@ -15,9 +15,7 @@ struct BobPTApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                MainView()
-            }
+            BobPTRootView()
         }
     }
 }

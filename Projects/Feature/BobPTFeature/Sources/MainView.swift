@@ -13,7 +13,7 @@ import DesignSystem
 public struct MainView: View {
     @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
     @StateObject private var locationProvider = LocationProvider()
-    @StateObject private var selectedStore = SelectedRestaurantStore()
+    @ObservedObject private var selectedStore: SelectedRestaurantStore
     @State private var selectedFoods: Set<FoodCategory> = []
     @State private var recommendationResult: RecommendationResult?
     @State private var isSearching = false
@@ -23,7 +23,9 @@ public struct MainView: View {
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 14), count: 3)
     private let searchService = NaverSearchService()
 
-    public init() {}
+    public init(selectedStore: SelectedRestaurantStore) {
+        self.selectedStore = selectedStore
+    }
 
     public var body: some View {
         ZStack {
@@ -38,22 +40,18 @@ public struct MainView: View {
                 .padding(20)
             }
             .navigationTitle("Bob-PT")
-            .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    NavigationLink {
-                        SelectedListView(store: selectedStore)
-                    } label: {
-                        Image(systemName: "list.bullet")
-                    }
-
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Image(systemName: "gearshape")
+            .navigationDestination(isPresented: Binding(
+                get: { recommendationResult != nil },
+                set: { isActive in
+                    if !isActive {
+                        recommendationResult = nil
                     }
                 }
+            )) {
+                if let recommendationResult {
+                    ResultView(result: recommendationResult, store: selectedStore)
+                }
             }
-            .background(recommendationLink)
             .alert("알림", isPresented: Binding(
                 get: { alertMessage != nil },
                 set: { if !$0 { alertMessage = nil } }
@@ -140,26 +138,6 @@ public struct MainView: View {
         }
         .buttonStyle(.bobPTPrimary)
         .disabled(isSearching)
-    }
-
-    private var recommendationLink: some View {
-        NavigationLink(
-            isActive: Binding(
-                get: { recommendationResult != nil },
-                set: { isActive in
-                    if !isActive {
-                        recommendationResult = nil
-                    }
-                }
-            )
-        ) {
-            if let recommendationResult {
-                ResultView(result: recommendationResult, store: selectedStore)
-            }
-        } label: {
-            EmptyView()
-        }
-        .hidden()
     }
 
     private func recommendRestaurants() async {
