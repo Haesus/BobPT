@@ -7,14 +7,14 @@
 
 import Lottie
 import SwiftUI
-import BobPTShare
+import DesignSystem
 
 struct LottieLaunchView: UIViewRepresentable {
     let completion: () -> Void
 
     func makeUIView(context: Context) -> LottieAnimationView {
         let view = LottieAnimationView(name: "LaunchScreen")
-        view.backgroundColor = UIColor(BobPTTheme.background)
+        view.backgroundColor = UIColor(DesignSystem.Colors.background)
         view.contentMode = .scaleAspectFit
         view.loopMode = .playOnce
         view.play { _ in

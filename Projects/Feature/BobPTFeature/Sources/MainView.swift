@@ -8,9 +8,10 @@
 import SwiftUI
 import BobPTCore
 import BobPTDomain
-import BobPTShare
+import DesignSystem
 
 public struct MainView: View {
+    @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
     @StateObject private var locationProvider = LocationProvider()
     @StateObject private var selectedStore = SelectedRestaurantStore()
     @State private var selectedFoods: Set<FoodCategory> = []
@@ -26,7 +27,7 @@ public struct MainView: View {
 
     public var body: some View {
         ZStack {
-            BobPTTheme.background.ignoresSafeArea()
+            DesignSystem.Colors.background.ignoresSafeArea()
 
             ScrollView {
                 VStack(spacing: 24) {
@@ -69,9 +70,10 @@ public struct MainView: View {
 
             if isSearching {
                 ProgressView("음식점을 찾는 중")
+                    .foregroundStyle(DesignSystem.Colors.text)
                     .padding(20)
-                    .background(.regularMaterial)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .background(DesignSystem.Colors.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.large, style: .continuous))
             }
 
             if showsLaunchAnimation {
@@ -84,6 +86,7 @@ public struct MainView: View {
                 .transition(.opacity)
             }
         }
+        .preferredColorScheme(appearanceMode.colorScheme)
     }
 
     private var locationHeader: some View {
@@ -91,10 +94,10 @@ public struct MainView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text("현재 위치")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
                 Text(locationProvider.userLocation)
                     .font(.system(size: 28, weight: .bold))
-                    .foregroundStyle(BobPTTheme.primary)
+                    .foregroundStyle(DesignSystem.Colors.primary)
             }
 
             Spacer()
@@ -105,8 +108,8 @@ public struct MainView: View {
                 Image(systemName: "location.fill")
                     .font(.title2)
                     .frame(width: 44, height: 44)
-                    .background(BobPTTheme.secondary)
-                    .foregroundStyle(BobPTTheme.text)
+                    .background(DesignSystem.Colors.selectedSurface)
+                    .foregroundStyle(DesignSystem.Colors.accent)
                     .clipShape(Circle())
             }
             .accessibilityLabel("위치 다시 가져오기")
@@ -135,7 +138,7 @@ public struct MainView: View {
         } label: {
             Text(isSearching ? "추천 준비 중" : "음식점 추천 받기")
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(.bobPTPrimary)
         .disabled(isSearching)
     }
 
@@ -223,10 +226,13 @@ private struct FoodButton: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 92)
-            .foregroundStyle(isSelected ? .gray : BobPTTheme.primary)
-            .background(Color.white.opacity(0.55))
-            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            .shadow(color: .black.opacity(0.15), radius: 4, x: 3, y: 2)
+            .foregroundStyle(isSelected ? DesignSystem.Colors.accent : DesignSystem.Colors.text)
+            .background(isSelected ? DesignSystem.Colors.selectedSurface : DesignSystem.Colors.surface)
+            .overlay {
+                RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous)
+                    .stroke(isSelected ? DesignSystem.Colors.accent : DesignSystem.Colors.border, lineWidth: 1)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous))
         }
         .buttonStyle(.plain)
         .accessibilityLabel(food.rawValue)

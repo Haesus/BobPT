@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import BobPTShare
+import Utils
 
 public struct Restaurant: Codable, Identifiable, Sendable {
     public var id: String {

@@ -6,6 +6,7 @@
 xcuserdata/
 *.xcconfig
 !Xcconfig/**/*.xcconfig
+Xcconfig/Env.xcconfig
 .env
 
 # Tuist generated outputs

@@ -7,7 +7,8 @@ let workspace = Workspace(
     "Projects/Feature/BobPTFeature",
     "Projects/Core/BobPTCore",
     "Projects/Domain/BobPTDomain",
-    "Projects/Share/BobPTShare"
+    "Projects/Shared/DesignSystem",
+    "Projects/Shared/Utils"
   ],
   additionalFiles: [
     "Xcconfig/**"

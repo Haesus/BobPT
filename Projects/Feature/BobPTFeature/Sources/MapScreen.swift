@@ -9,7 +9,8 @@ import CoreLocation
 import NMapsMap
 import SwiftUI
 import BobPTDomain
-import BobPTShare
+import DesignSystem
+import Utils
 
 struct MapScreen: View {
     let restaurant: Restaurant
@@ -30,7 +31,7 @@ struct MapScreen: View {
                         .lineLimit(1)
                     Text(restaurant.address)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(DesignSystem.Colors.secondaryText)
                         .lineLimit(2)
                 }
 
@@ -59,7 +60,7 @@ struct MapScreen: View {
                             .font(.headline)
                     }
                 }
-                .buttonStyle(PrimaryButtonStyle())
+                .buttonStyle(.bobPTPrimary)
 
                 Button {
                     openAppleMap()
@@ -69,12 +70,12 @@ struct MapScreen: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
                 }
-                .buttonStyle(.bordered)
+                .buttonStyle(.bobPTSecondary)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .background(BobPTTheme.background.ignoresSafeArea())
+        .background(DesignSystem.Colors.background.ignoresSafeArea())
         .navigationTitle("지도")
         .navigationBarTitleDisplayMode(.inline)
     }

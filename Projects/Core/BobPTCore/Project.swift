@@ -16,7 +16,7 @@ let target: Target = .target(
   ],
   dependencies: [
     .project(target: "BobPTDomain", path: "../../Domain/BobPTDomain"),
-    .project(target: "BobPTShare", path: "../../Share/BobPTShare"),
+    .project(target: "Utils", path: "../../Shared/Utils"),
     .SPMTarget.alamofire
   ],
   settings: .targetSettings(product: .staticFramework)

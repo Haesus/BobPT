@@ -8,26 +8,38 @@
 import MessageUI
 import SwiftUI
 import BobPTDomain
-import BobPTShare
+import DesignSystem
 
 struct SettingsView: View {
+    @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
     @State private var showsMailComposer = false
     @State private var opensMailSettingsAlert = false
 
     var body: some View {
         List {
+            Picker("화면 모드", selection: $appearanceMode) {
+                ForEach(DesignSystem.AppearanceMode.allCases) { mode in
+                    Text(mode.title)
+                        .tag(mode)
+                }
+            }
+            .pickerStyle(.menu)
+            .listRowBackground(DesignSystem.Colors.surface)
+
             HStack {
                 Text("버전")
                 Spacer()
                 Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
             }
+            .listRowBackground(DesignSystem.Colors.surface)
 
             NavigationLink {
                 DeveloperView()
             } label: {
                 Text("개발자 정보")
             }
+            .listRowBackground(DesignSystem.Colors.surface)
 
             Button {
                 if MFMailComposeViewController.canSendMail() {
@@ -37,11 +49,12 @@ struct SettingsView: View {
                 }
             } label: {
                 Text("건의사항")
-                    .foregroundStyle(BobPTTheme.text)
+                    .foregroundStyle(DesignSystem.Colors.text)
             }
+            .listRowBackground(DesignSystem.Colors.surface)
         }
         .scrollContentBackground(.hidden)
-        .background(BobPTTheme.background)
+        .background(DesignSystem.Colors.background)
         .navigationTitle("설정")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showsMailComposer) {
@@ -64,7 +77,7 @@ struct DeveloperView: View {
                             .resizable()
                             .scaledToFill()
                     default:
-                        Color.gray.opacity(0.2)
+                        DesignSystem.Colors.selectedSurface
                     }
                 }
                 .frame(width: 52, height: 52)
@@ -78,9 +91,10 @@ struct DeveloperView: View {
                 }
             }
             .padding(.vertical, 6)
+            .listRowBackground(DesignSystem.Colors.surface)
         }
         .scrollContentBackground(.hidden)
-        .background(BobPTTheme.background)
+        .background(DesignSystem.Colors.background)
         .navigationTitle("개발자 정보")
         .navigationBarTitleDisplayMode(.inline)
     }

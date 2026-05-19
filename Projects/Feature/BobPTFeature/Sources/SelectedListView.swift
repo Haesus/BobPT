@@ -8,7 +8,8 @@
 import SwiftUI
 import BobPTCore
 import BobPTDomain
-import BobPTShare
+import DesignSystem
+import Utils
 
 struct SelectedListView: View {
     @ObservedObject var store: SelectedRestaurantStore
@@ -24,10 +25,10 @@ struct SelectedListView: View {
 
                     Text("저장된 추천 장소가 없습니다.")
                         .font(.headline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(DesignSystem.Colors.secondaryText)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(BobPTTheme.background)
+                .background(DesignSystem.Colors.background)
             } else {
                 List {
                     ForEach(store.restaurants) { restaurant in
@@ -43,15 +44,16 @@ struct SelectedListView: View {
                                     .lineLimit(1)
                                 Text(restaurant.date.htmlEscaped)
                                     .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(DesignSystem.Colors.secondaryText)
                             }
                         }
                         .padding(.vertical, 8)
+                        .listRowBackground(DesignSystem.Colors.surface)
                     }
                     .onDelete(perform: store.delete)
                 }
                 .scrollContentBackground(.hidden)
-                .background(BobPTTheme.background)
+                .background(DesignSystem.Colors.background)
             }
         }
         .navigationTitle("추천 기록")

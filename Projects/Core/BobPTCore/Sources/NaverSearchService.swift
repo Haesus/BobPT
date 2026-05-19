@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 import BobPTDomain
-import BobPTShare
+import Utils
 
 public enum NaverSearchError: LocalizedError, Sendable {
     case missingAPIKey

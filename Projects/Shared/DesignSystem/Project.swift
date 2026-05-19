@@ -1,7 +1,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let targetName = "BobPTShare"
+let targetName = "DesignSystem"
 
 let target: Target = .target(
   name: targetName,

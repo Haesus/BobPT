@@ -14,7 +14,7 @@ let target: Target = .target(
     "Sources/**"
   ],
   dependencies: [
-    .project(target: "BobPTShare", path: "../../Share/BobPTShare")
+    .project(target: "Utils", path: "../../Shared/Utils")
   ],
   settings: .targetSettings(product: .staticFramework)
 )

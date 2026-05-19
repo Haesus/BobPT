@@ -8,7 +8,8 @@
 import SwiftUI
 import BobPTCore
 import BobPTDomain
-import BobPTShare
+import DesignSystem
+import Utils
 
 struct ResultView: View {
     let result: RecommendationResult
@@ -21,7 +22,7 @@ struct ResultView: View {
 
             Text("오늘의 추천장소는")
                 .font(.title2.weight(.semibold))
-                .foregroundStyle(BobPTTheme.text)
+                .foregroundStyle(DesignSystem.Colors.text)
 
             if let restaurant {
                 Image(restaurant.imageString ?? "Default")
@@ -33,11 +34,11 @@ struct ResultView: View {
                     .font(.system(size: 34, weight: .bold))
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.55)
-                    .foregroundStyle(BobPTTheme.primary)
+                    .foregroundStyle(DesignSystem.Colors.text)
 
                 Text("맛있게 드세요!")
                     .font(.title2.weight(.semibold))
-                    .foregroundStyle(BobPTTheme.text)
+                    .foregroundStyle(DesignSystem.Colors.accent)
 
                 Spacer()
 
@@ -50,12 +51,12 @@ struct ResultView: View {
                 } label: {
                     Text("지도로 위치 확인하기")
                 }
-                .buttonStyle(PrimaryButtonStyle())
+                .buttonStyle(.bobPTPrimary)
             }
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(BobPTTheme.background.ignoresSafeArea())
+        .background(DesignSystem.Colors.background.ignoresSafeArea())
         .navigationTitle("추천 결과")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
