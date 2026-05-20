@@ -69,86 +69,130 @@ jobs:
         with:
           script: |
             const issue = context.payload.issue;
-            const text = `${issue.title}\n${issue.body || ""}`.toLowerCase();
+            const title = issue.title.toLowerCase();
+            const body = (issue.body || "").toLowerCase();
+            const text = `${title}\n${body}`;
             const labels = new Set(["status: needs-triage"]);
+            const titleType = issue.title.match(/^\[([^\]]+)\]/);
+            const typeByPrefix = {
+              feat: "type: feature",
+              feature: "type: feature",
+              fix: "type: bug",
+              bug: "type: bug",
+              hotfix: "type: bug",
+              refactor: "type: refactor",
+              design: "type: design",
+              docs: "type: docs",
+              test: "type: test",
+              chore: "type: chore",
+              ci: "type: ci"
+            };
+
+            if (titleType) {
+              const typeLabel = typeByPrefix[titleType[1].trim().toLowerCase()];
+              if (typeLabel) {
+                labels.add(typeLabel);
+              }
+            }
+
+            const includesAny = (patterns) => patterns.some((pattern) => text.includes(pattern));
+            const matchesAny = (patterns) => patterns.some((pattern) => pattern.test(text));
 
             const rules = [
               {
                 label: "type: bug",
-                patterns: ["bug", "fix", "hotfix", "오류", "에러", "버그", "크래시", "crash", "동작 안"]
+                includes: ["오류", "에러", "버그", "크래시", "동작 안"],
+                matches: [/\bbug\b/, /\bfix\b/, /\bhotfix\b/, /\bcrash\b/]
               },
               {
                 label: "type: feature",
-                patterns: ["feature", "feat", "기능", "추가", "개선", "요청"]
+                includes: ["기능 추가", "기능 요청"],
+                matches: [/\bfeature\b/, /\bfeat\b/]
               },
               {
                 label: "type: refactor",
-                patterns: ["refactor", "리팩토링", "구조", "정리"]
+                includes: ["리팩토링"],
+                matches: [/\brefactor\b/]
               },
               {
                 label: "type: design",
-                patterns: ["design", "ui", "ux", "디자인", "화면", "색상", "다크모드", "라이트모드"]
+                includes: ["디자인", "화면", "색상", "다크모드", "라이트모드"],
+                matches: [/\bdesign\b/, /\bui\b/, /\bux\b/]
               },
               {
                 label: "type: docs",
-                patterns: ["docs", "document", "readme", "문서", "가이드"]
+                includes: ["문서", "가이드"],
+                matches: [/\bdocs\b/, /\bdocument\b/, /\breadme\b/]
               },
               {
                 label: "type: test",
-                patterns: ["test", "테스트", "검증"]
+                includes: ["테스트"],
+                matches: [/\btest\b/]
               },
               {
                 label: "type: ci",
-                patterns: ["ci", "actions", "github actions", "workflow", "reviewdog", "swiftlint", "자동화"]
+                includes: ["자동화"],
+                matches: [/\bci\b/, /\bactions\b/, /\bgithub actions\b/, /\bworkflow\b/, /\breviewdog\b/, /\bswiftlint\b/]
               },
               {
                 label: "area: app",
-                patterns: ["app", "앱", "진입점", "탭"]
+                includes: ["앱", "진입점", "하단 탭", "탭바"],
+                matches: [/\bapp\b/]
               },
               {
                 label: "area: feature",
-                patterns: ["feature", "화면", "추천", "기록", "설정"]
+                includes: ["추천 화면", "기록 화면", "설정 화면"],
+                matches: [/\bfeature\b/]
               },
               {
                 label: "area: core",
-                patterns: ["core", "api", "service", "네이버", "검색", "위치"]
+                includes: ["네이버", "검색", "위치"],
+                matches: [/\bcore\b/, /\bapi\b/, /\bservice\b/]
               },
               {
                 label: "area: domain",
-                patterns: ["domain", "model", "모델", "카테고리"]
+                includes: ["모델", "카테고리"],
+                matches: [/\bdomain\b/, /\bmodel\b/]
               },
               {
                 label: "area: design-system",
-                patterns: ["designsystem", "design system", "디자인 시스템", "컬러", "색상"]
+                includes: ["디자인 시스템", "컬러", "색상"],
+                matches: [/\bdesignsystem\b/, /\bdesign system\b/]
               },
               {
                 label: "area: tuist",
-                patterns: ["tuist", "workspace", "project.swift", "모듈"]
+                includes: ["모듈"],
+                matches: [/\btuist\b/, /\bworkspace\b/, /\bproject\.swift\b/]
               },
               {
                 label: "area: config",
-                patterns: ["xcconfig", "환경변수", "env", "설정값", "키값"]
+                includes: ["환경변수", "설정값", "키값"],
+                matches: [/\bxcconfig\b/, /\benv\b/]
               },
               {
                 label: "area: release",
-                patterns: ["fastlane", "배포", "release", "testflight", "xcode cloud"]
+                includes: ["배포"],
+                matches: [/\bfastlane\b/, /\brelease\b/, /\btestflight\b/, /\bxcode cloud\b/]
               },
               {
                 label: "risk: security",
-                patterns: ["secret", "token", "password", "api key", "apikey", "client secret", "보안", "비밀", "토큰"]
+                includes: ["보안", "비밀", "토큰"],
+                matches: [/\bsecret\b/, /\bsecrets\b/, /\btoken\b/, /\bpassword\b/, /\bapi key\b/, /\bapikey\b/, /\bclient secret\b/]
               },
               {
                 label: "risk: breaking-change",
-                patterns: ["breaking", "호환", "마이그레이션", "삭제"]
+                includes: ["호환성 깨", "breaking change"],
+                matches: [/\bbreaking\b/]
               },
               {
                 label: "priority: high",
-                patterns: ["urgent", "critical", "blocker", "긴급", "치명", "높음"]
+                includes: ["긴급", "치명"],
+                matches: [/\burgent\b/, /\bcritical\b/, /\bblocker\b/]
               }
             ];
 
             for (const rule of rules) {
-              if (rule.patterns.some((pattern) => text.includes(pattern))) {
+              if (includesAny(rule.includes || []) || matchesAny(rule.matches || [])) {
                 labels.add(rule.label);
               }
             }

@@ -1,0 +1,134 @@
+name: Fastlane Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+  workflow_dispatch:
+    inputs:
+      build_config:
+        description: "Tuist build config to deploy"
+        required: true
+        default: "RELEASE"
+        type: choice
+        options:
+          - DEV
+          - BETA
+          - RELEASE
+
+concurrency:
+  group: fastlane-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy to TestFlight
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    env:
+      TUIST_BUILD_CONFIG: ${{ github.event_name == 'workflow_dispatch' && inputs.build_config || 'RELEASE' }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      ID_KEY: ${{ secrets.ID_KEY }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
+      APP_IDENTIFIER_DEV: ${{ secrets.APP_IDENTIFIER_DEV }}
+      APP_IDENTIFIER_BETA: ${{ secrets.APP_IDENTIFIER_BETA }}
+      APP_IDENTIFIER_RELEASE: ${{ secrets.APP_IDENTIFIER_RELEASE }}
+      FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
+      FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
+      DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_API_KEY_BASE64: ${{ secrets.ASC_API_KEY_BASE64 }}
+      MATCH_GIT_URL_SSH: ${{ secrets.MATCH_GIT_URL_SSH }}
+      MATCH_GIT_BRANCH: ${{ secrets.MATCH_GIT_BRANCH }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      MATCH_SSH_PRIVATE_KEY: ${{ secrets.MATCH_SSH_PRIVATE_KEY }}
+      FASTLANE_SKIP_UPDATE_CHECK: "1"
+      FASTLANE_HIDE_CHANGELOG: "1"
+      FASTLANE_OPT_OUT_USAGE: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate deployment secrets
+        run: |
+          required_envs=(
+            "ID_KEY"
+            "SECRET_KEY"
+            "NAVER_MAP_CLIENT_ID"
+            "FASTLANE_APPLE_ID"
+            "FASTLANE_ITC_TEAM_ID"
+            "DEVELOPMENT_TEAM"
+            "ASC_KEY_ID"
+            "ASC_ISSUER_ID"
+            "ASC_API_KEY_BASE64"
+            "MATCH_GIT_URL_SSH"
+            "MATCH_GIT_BRANCH"
+            "MATCH_PASSWORD"
+            "MATCH_SSH_PRIVATE_KEY"
+          )
+
+          missing_envs=()
+          for env_name in "${required_envs[@]}"; do
+            if [ -z "${!env_name}" ]; then
+              missing_envs+=("$env_name")
+            fi
+          done
+
+          if [ ${#missing_envs[@]} -gt 0 ]; then
+            printf 'Missing required secrets or env values:\n'
+            printf -- '- %s\n' "${missing_envs[@]}"
+            exit 1
+          fi
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Set up Tuist
+        run: |
+          curl -Ls https://install.tuist.io | bash
+          echo "$HOME/.tuist/bin" >> "$GITHUB_PATH"
+
+      - name: Set up App Store Connect API key
+        run: |
+          printf '%s' "$ASC_API_KEY_BASE64" | base64 --decode > "$HOME/AuthKey_${ASC_KEY_ID}.p8"
+          chmod 600 "$HOME/AuthKey_${ASC_KEY_ID}.p8"
+
+      - name: Set up match SSH key
+        run: |
+          mkdir -p "$HOME/.ssh"
+          printf '%s' "$MATCH_SSH_PRIVATE_KEY" | base64 --decode > "$HOME/.ssh/match_key"
+          chmod 600 "$HOME/.ssh/match_key"
+          ssh-keyscan github.com >> "$HOME/.ssh/known_hosts"
+          echo "GIT_SSH_COMMAND=ssh -i $HOME/.ssh/match_key -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
+
+      - name: Write env.xcconfig
+        run: |
+          {
+            printf 'API_BASE_URL = %s\n' "$API_BASE_URL"
+            printf 'ID_KEY = %s\n' "$ID_KEY"
+            printf 'SECRET_KEY = %s\n' "$SECRET_KEY"
+            printf 'NAVER_MAP_CLIENT_ID = %s\n' "$NAVER_MAP_CLIENT_ID"
+          } > Xcconfig/env.xcconfig
+
+      - name: Install Tuist dependencies
+        run: tuist install
+
+      - name: Generate Tuist workspace
+        run: |
+          TUIST_ROOT_DIR="$PWD" TUIST_BUILD_CONFIG="$(echo "$TUIST_BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')" tuist generate --no-open
+
+      - name: Deploy with fastlane
+        run: bundle exec fastlane ios beta
