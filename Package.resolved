@@ -1,0 +1,42 @@
+{
+  "originHash" : "7914a6e958f5fb3912de24a73f0072a2de7393213dbc470b13d03f18e39336f6",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "7595cbcf59809f9977c5f6378500de2ad73b7ddb",
+        "version" : "5.12.0"
+      }
+    },
+    {
+      "identity" : "lottie-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "state" : {
+        "revision" : "69faaefa7721fba9e434a52c16adf4329c9084db",
+        "version" : "4.6.0"
+      }
+    },
+    {
+      "identity" : "spm-nmapsgeometry",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/navermaps/SPM-NMapsGeometry.git",
+      "state" : {
+        "revision" : "436d5e2e684f557faf5ef5862fd6633a42d7af11",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "spm-nmapsmap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/navermaps/SPM-NMapsMap.git",
+      "state" : {
+        "revision" : "d527147b0bf31260166a7063e3ed854a03f8239c",
+        "version" : "3.23.2"
+      }
+    }
+  ],
+  "version" : 3
+}

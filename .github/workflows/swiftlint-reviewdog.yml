@@ -1,0 +1,50 @@
+name: SwiftLint
+
+on:
+  pull_request:
+    paths:
+      - "**/*.swift"
+      - ".swiftlint.yml"
+      - ".github/workflows/swiftlint-reviewdog.yml"
+      - "scripts/swiftlint_to_rdjson.py"
+
+jobs:
+  swiftlint:
+    name: SwiftLint
+    runs-on: macos-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install reviewdog
+        uses: reviewdog/action-setup@v1
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Run SwiftLint with reviewdog
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          swiftlint lint --config .swiftlint.yml --reporter json > swiftlint-report.json
+          swiftlint_exit_code=$?
+          set -e
+
+          python3 scripts/swiftlint_to_rdjson.py swiftlint-report.json swiftlint-rdjson.json
+
+          reviewdog \
+            -f=rdjson \
+            -name="SwiftLint 코드 규칙 검사" \
+            -reporter=github-pr-review \
+            -filter-mode=added \
+            -level=warning \
+            -fail-level=none \
+            < swiftlint-rdjson.json
+
+          exit $swiftlint_exit_code

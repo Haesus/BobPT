@@ -1,0 +1,28 @@
+#############################################################
+# Appfile: fastlane 설정 - 앱 ID, 계정, 팀 정보 정의
+#############################################################
+# 참고 문서:
+# https://docs.fastlane.tools/advanced/#appfile
+
+# TODO: RELEASE 앱 번들 ID로 교체하세요.
+# - Tuist/ProjectDescriptionHelpers/AppEnv.swift의 release bundleId와 동일해야 합니다.
+# - 예시: "com.company.myapp"
+app_identifier(ENV["APP_IDENTIFIER_RELEASE"] || "com.kibwa.BobPT")
+
+# TODO: Apple Developer/App Store Connect 계정 이메일을 GitHub Secrets의 FASTLANE_APPLE_ID에 넣으세요.
+# - 로컬 fallback 값은 새 프로젝트에 맞게 교체하거나 제거하세요.
+# - 예시: "developer@company.com"
+apple_id(ENV["FASTLANE_APPLE_ID"] || "developer@example.com")
+
+# TODO: App Store Connect Team ID로 교체하세요.
+# - 숫자형 ID입니다.
+# - 확인 위치: App Store Connect > Users and Access > Team 정보
+# - 예시: "123456789"
+itc_team_id(ENV["FASTLANE_ITC_TEAM_ID"] || "YOUR_ITC_TEAM_ID")
+
+# TODO: Apple Developer Team ID로 교체하세요.
+# - 문자/숫자 혼합 ID입니다.
+# - Xcconfig/Project/*.xcconfig의 DEVELOPMENT_TEAM과 동일해야 합니다.
+# - 확인 위치: developer.apple.com > Membership > Team ID
+# - 예시: "1ABC2D345E"
+team_id(ENV["DEVELOPMENT_TEAM"] || "3TGR3P459K")

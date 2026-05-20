@@ -1,0 +1,9 @@
+// Add local-only values here (API keys, secrets, per-developer overrides).
+// Copy this file to Env.xcconfig and fill in local values.
+
+// Example
+// API_BASE_URL = https://api.example.com
+API_BASE_URL =
+ID_KEY =
+SECRET_KEY =
+NAVER_MAP_CLIENT_ID =
