@@ -6,6 +6,7 @@ on:
       - "**/*.swift"
       - ".swiftlint.yml"
       - ".github/workflows/swiftlint-reviewdog.yml"
+      - "scripts/swiftlint_to_rdjson.py"
 
 jobs:
   swiftlint:
@@ -31,16 +32,19 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set +e
-          swiftlint lint --config .swiftlint.yml --reporter checkstyle > swiftlint-report.xml
+          swiftlint lint --config .swiftlint.yml --reporter json > swiftlint-report.json
           swiftlint_exit_code=$?
+          set -e
+
+          python3 scripts/swiftlint_to_rdjson.py swiftlint-report.json swiftlint-rdjson.json
 
           reviewdog \
-            -f=checkstyle \
-            -name="SwiftLint" \
+            -f=rdjson \
+            -name="SwiftLint 코드 규칙 검사" \
             -reporter=github-pr-review \
             -filter-mode=added \
             -level=warning \
             -fail-level=none \
-            < swiftlint-report.xml
+            < swiftlint-rdjson.json
 
           exit $swiftlint_exit_code
