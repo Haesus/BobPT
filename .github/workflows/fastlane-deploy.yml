@@ -3,11 +3,20 @@ name: Fastlane Deploy
 on:
   pull_request:
     branches:
+      - dev
       - main
     types:
       - closed
   workflow_dispatch:
     inputs:
+      deploy_target:
+        description: "Deployment target"
+        required: true
+        default: "testflight"
+        type: choice
+        options:
+          - testflight
+          - app_store_prepare
       build_config:
         description: "Tuist build config to deploy"
         required: true
@@ -27,12 +36,13 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to TestFlight
+    name: Deploy app
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: macos-26
     timeout-minutes: 60
 
     env:
+      DEPLOY_TARGET: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_target || (github.base_ref == 'dev' && 'testflight' || 'app_store_prepare') }}
       TUIST_BUILD_CONFIG: ${{ github.event_name == 'workflow_dispatch' && inputs.build_config || 'RELEASE' }}
       API_BASE_URL: ${{ secrets.API_BASE_URL }}
       ID_KEY: ${{ secrets.ID_KEY }}
@@ -78,6 +88,8 @@ jobs:
             "ID_KEY"
             "SECRET_KEY"
             "NAVER_MAP_CLIENT_ID"
+            "APP_IDENTIFIER_BETA"
+            "APP_IDENTIFIER_RELEASE"
             "FASTLANE_APPLE_ID"
             "FASTLANE_ITC_TEAM_ID"
             "DEVELOPMENT_TEAM"
@@ -142,4 +154,16 @@ jobs:
           TUIST_ROOT_DIR="$PWD" TUIST_BUILD_CONFIG="$(echo "$TUIST_BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')" tuist generate --no-open
 
       - name: Deploy with fastlane
-        run: bundle exec fastlane ios beta
+        run: |
+          case "$DEPLOY_TARGET" in
+            testflight)
+              bundle exec fastlane ios beta
+              ;;
+            app_store_prepare)
+              bundle exec fastlane ios prepare_app_store
+              ;;
+            *)
+              printf 'Unsupported DEPLOY_TARGET: %s\n' "$DEPLOY_TARGET"
+              exit 1
+              ;;
+          esac
