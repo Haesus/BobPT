@@ -21,19 +21,10 @@ default_platform(:ios)
 # ------------------------------------------------------------
 platform :ios do
 
-  # ----------------------------------------------------------
-  # Lane: beta
-  # - 역할: TestFlight로 베타 빌드 업로드
-  # - 트리거: 로컬/CI에서 `fastlane beta` 실행
-  # ----------------------------------------------------------
-  desc "Push a new beta build to TestFlight"
-  lane :beta do
+  private_lane :archive_app do |options|
     setup_ci if ENV["CI"]
 
-    # TODO: 새 프로젝트의 Bundle Identifier로 교체하세요.
-    # - Tuist/ProjectDescriptionHelpers/AppEnv.swift와 fastlane/Matchfile의 app_identifier 목록과 동일해야 합니다.
-    # - GitHub Actions에서는 TUIST_BUILD_CONFIG=DEV|BETA|RELEASE로 배포 대상을 고릅니다.
-    build_config = (ENV["TUIST_BUILD_CONFIG"] || "BETA").upcase
+    build_config = (options[:build_config] || ENV["TUIST_BUILD_CONFIG"] || "BETA").upcase
     case build_config
     when "DEV"
       bundle_id = ENV["APP_IDENTIFIER_DEV"] || "com.kibwa.BobPT.dev"
@@ -131,6 +122,22 @@ platform :ios do
       }
     )
 
+    {
+      api_key: api_key,
+      bundle_id: bundle_id,
+      build_number: time_build
+    }
+  end
+
+  # ----------------------------------------------------------
+  # Lane: beta
+  # - 역할: TestFlight로 베타 빌드 업로드
+  # - 트리거: dev 머지 또는 로컬/CI에서 `fastlane ios beta` 실행
+  # ----------------------------------------------------------
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    archive_context = archive_app(build_config: ENV["TUIST_BUILD_CONFIG"] || "BETA")
+
     # --------------------------------------------------------
     # 5) TestFlight 업로드
     #    - api_key: 위에서 생성한 App Store Connect API Key 객체
@@ -140,10 +147,32 @@ platform :ios do
     #      changelog: "..."                       → 빌드 노트(커밋 메시지 등)
     # --------------------------------------------------------
     upload_to_testflight(
-      api_key: api_key,
+      api_key: archive_context[:api_key],
       skip_waiting_for_build_processing: true
       #, distribute_external: false
       #, changelog: `git log -1 --pretty=%B`.strip
+    )
+  end
+
+  # ----------------------------------------------------------
+  # Lane: prepare_app_store
+  # - 역할: RELEASE 빌드를 App Store Connect에 업로드
+  # - 심사 제출은 하지 않고, App Store Connect에서 수동으로 추가 정보를 입력할 수 있게 준비
+  # - 트리거: main 머지 또는 로컬/CI에서 `fastlane ios prepare_app_store` 실행
+  # ----------------------------------------------------------
+  desc "Upload a release build to App Store Connect without submitting for review"
+  lane :prepare_app_store do
+    archive_context = archive_app(build_config: "RELEASE")
+
+    upload_to_app_store(
+      api_key: archive_context[:api_key],
+      app_identifier: archive_context[:bundle_id],
+      submit_for_review: false,
+      skip_metadata: true,
+      skip_screenshots: true,
+      force: true,
+      run_precheck_before_submit: false,
+      precheck_include_in_app_purchases: false
     )
   end
 end
