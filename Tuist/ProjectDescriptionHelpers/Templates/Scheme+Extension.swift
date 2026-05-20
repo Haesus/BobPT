@@ -23,24 +23,24 @@ extension Scheme {
 
     // 환경 설정(dev / prod)에 따라 RunAction 구성 분기
     switch config {
-      case .dev:
-        // DEV 환경: 디버깅 로그 활성화, 런타임 환경변수 적용
-        runAction = .runAction(
-          configuration: config.configurationName,
-          executable: target,
-          arguments: .arguments(
-            environmentVariables: [
-              "OS_ACTIVITY_MODE": .environmentVariable(value: "enable", isEnabled: true),
-              "IDEPreferLogStreaming": .environmentVariable(value: "YES", isEnabled: true)
-            ]
-          )
+    case .dev:
+      // DEV 환경: 디버깅 로그 활성화, 런타임 환경변수 적용
+      runAction = .runAction(
+        configuration: config.configurationName,
+        executable: target,
+        arguments: .arguments(
+          environmentVariables: [
+            "OS_ACTIVITY_MODE": .environmentVariable(value: "enable", isEnabled: true),
+            "IDEPreferLogStreaming": .environmentVariable(value: "YES", isEnabled: true)
+          ]
         )
-      case .release:
-        // RELEASE 환경: 별도 런타임 설정 없이 기본 실행
-        runAction = .runAction(configuration: config.configurationName, executable: target)
-      case .beta:
-        // BETA 환경: 베타 테스트 사용자용으로 RELEASE와 동일하게 실행
-        runAction = .runAction(configuration: config.configurationName, executable: target)
+      )
+    case .release:
+      // RELEASE 환경: 별도 런타임 설정 없이 기본 실행
+      runAction = .runAction(configuration: config.configurationName, executable: target)
+    case .beta:
+      // BETA 환경: 베타 테스트 사용자용으로 RELEASE와 동일하게 실행
+      runAction = .runAction(configuration: config.configurationName, executable: target)
     }
 
     // 구성된 실행/빌드/아카이브/프로파일/분석 액션을 포함한 스킴 생성

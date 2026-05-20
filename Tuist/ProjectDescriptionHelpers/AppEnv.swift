@@ -9,7 +9,7 @@ import Foundation
 import ProjectDescription
 import UtilityPlugin
 
-/// MARK: - App Environment Configuration
+// MARK: - App Environment Configuration
 /// 전체 프로젝트에서 공통으로 사용하는 환경값들을 정의한 enum
 /// Tuist 프로젝트 전역 설정에서 반복되는 값을 중앙에서 관리
 public enum AppEnv {
@@ -43,13 +43,13 @@ public enum AppEnv {
   /// 모듈 이름을 기반으로 소문자 + 알파벳/숫자/점 문자만 허용하도록 정제 후
   /// 형태로 bundle identifier 생성
   public static func moduleBundleId(name: String) -> String {
-        // 모듈 이름을 소문자로 변환
+    // 모듈 이름을 소문자로 변환
     var moduleName = name.lowercased()
-        // 번들 ID에 허용할 수 있는 문자 집합 정의
+    // 번들 ID에 허용할 수 있는 문자 집합 정의
     let validCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789.")
-        // 허용되지 않는 문자 제거 → 유효한 문자열로 정제
+    // 허용되지 않는 문자 제거 → 유효한 문자열로 정제
     moduleName = moduleName.components(separatedBy: validCharacters.inverted).joined(separator: "")
-        // 최종 번들 ID 규칙에 맞게 조합하여 반환
+    // 최종 번들 ID 규칙에 맞게 조합하여 반환
     return "\(bundleId).\(moduleName)"
   }
 }
