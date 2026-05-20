@@ -9,6 +9,7 @@ xcuserdata/
 !Xcconfig/**/*.xcconfig
 Xcconfig/env.xcconfig
 .env
+.secrets.local
 
 # Tuist generated outputs
 BobPT.xcworkspace/
