@@ -1,0 +1,161 @@
+name: Labels
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/labels.json"
+      - ".github/labeler.yml"
+      - ".github/workflows/labels.yml"
+      - "scripts/sync_github_labels.py"
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - edited
+    paths:
+      - "**"
+  issues:
+    types:
+      - opened
+      - edited
+      - reopened
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  sync-labels:
+    name: Sync labels
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync GitHub labels
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/sync_github_labels.py .github/labels.json --prune
+
+  pull-request-labeler:
+    name: Label pull request
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Apply changed-file labels
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+          sync-labels: false
+
+  issue-labeler:
+    name: Label issue
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Apply issue labels
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const text = `${issue.title}\n${issue.body || ""}`.toLowerCase();
+            const labels = new Set(["status: needs-triage"]);
+
+            const rules = [
+              {
+                label: "type: bug",
+                patterns: ["bug", "fix", "hotfix", "오류", "에러", "버그", "크래시", "crash", "동작 안"]
+              },
+              {
+                label: "type: feature",
+                patterns: ["feature", "feat", "기능", "추가", "개선", "요청"]
+              },
+              {
+                label: "type: refactor",
+                patterns: ["refactor", "리팩토링", "구조", "정리"]
+              },
+              {
+                label: "type: design",
+                patterns: ["design", "ui", "ux", "디자인", "화면", "색상", "다크모드", "라이트모드"]
+              },
+              {
+                label: "type: docs",
+                patterns: ["docs", "document", "readme", "문서", "가이드"]
+              },
+              {
+                label: "type: test",
+                patterns: ["test", "테스트", "검증"]
+              },
+              {
+                label: "type: ci",
+                patterns: ["ci", "actions", "github actions", "workflow", "reviewdog", "swiftlint", "자동화"]
+              },
+              {
+                label: "area: app",
+                patterns: ["app", "앱", "진입점", "탭"]
+              },
+              {
+                label: "area: feature",
+                patterns: ["feature", "화면", "추천", "기록", "설정"]
+              },
+              {
+                label: "area: core",
+                patterns: ["core", "api", "service", "네이버", "검색", "위치"]
+              },
+              {
+                label: "area: domain",
+                patterns: ["domain", "model", "모델", "카테고리"]
+              },
+              {
+                label: "area: design-system",
+                patterns: ["designsystem", "design system", "디자인 시스템", "컬러", "색상"]
+              },
+              {
+                label: "area: tuist",
+                patterns: ["tuist", "workspace", "project.swift", "모듈"]
+              },
+              {
+                label: "area: config",
+                patterns: ["xcconfig", "환경변수", "env", "설정값", "키값"]
+              },
+              {
+                label: "area: release",
+                patterns: ["fastlane", "배포", "release", "testflight", "xcode cloud"]
+              },
+              {
+                label: "risk: security",
+                patterns: ["secret", "token", "password", "api key", "apikey", "client secret", "보안", "비밀", "토큰"]
+              },
+              {
+                label: "risk: breaking-change",
+                patterns: ["breaking", "호환", "마이그레이션", "삭제"]
+              },
+              {
+                label: "priority: high",
+                patterns: ["urgent", "critical", "blocker", "긴급", "치명", "높음"]
+              }
+            ];
+
+            for (const rule of rules) {
+              if (rule.patterns.some((pattern) => text.includes(pattern))) {
+                labels.add(rule.label);
+              }
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: Array.from(labels)
+            });

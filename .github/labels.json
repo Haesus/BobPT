@@ -1,0 +1,157 @@
+[
+  {
+    "name": "type: feature",
+    "color": "0E8A16",
+    "description": "새 기능 추가 또는 기존 기능 확장 작업입니다."
+  },
+  {
+    "name": "type: bug",
+    "color": "D73A4A",
+    "description": "오류, 크래시, 잘못된 동작을 수정하는 작업입니다."
+  },
+  {
+    "name": "type: refactor",
+    "color": "6F42C1",
+    "description": "동작 변경 없이 구조, 책임, 코드 품질을 개선하는 작업입니다."
+  },
+  {
+    "name": "type: design",
+    "color": "D93F0B",
+    "description": "UI, 화면 구성, 색상, 디자인 시스템 관련 작업입니다."
+  },
+  {
+    "name": "type: docs",
+    "color": "0075CA",
+    "description": "README, 문서, 주석성 문서 변경 작업입니다."
+  },
+  {
+    "name": "type: test",
+    "color": "BFDADC",
+    "description": "테스트 추가, 수정, 검증 코드 관련 작업입니다."
+  },
+  {
+    "name": "type: chore",
+    "color": "C5DEF5",
+    "description": "기능 변경이 아닌 설정, 정리, 유지보수 작업입니다."
+  },
+  {
+    "name": "type: ci",
+    "color": "FBCA04",
+    "description": "GitHub Actions, 자동화, CI/CD 관련 작업입니다."
+  },
+  {
+    "name": "area: app",
+    "color": "1D76DB",
+    "description": "앱 진입점, 앱 타깃, 전역 조립 구조 관련 변경입니다."
+  },
+  {
+    "name": "area: feature",
+    "color": "1D76DB",
+    "description": "Feature 모듈 또는 사용자 화면 흐름 관련 변경입니다."
+  },
+  {
+    "name": "area: core",
+    "color": "5319E7",
+    "description": "Core 모듈, 서비스, 저장소, 시스템 연동 관련 변경입니다."
+  },
+  {
+    "name": "area: domain",
+    "color": "B60205",
+    "description": "Domain 모델, 비즈니스 타입, 핵심 데이터 구조 변경입니다."
+  },
+  {
+    "name": "area: design-system",
+    "color": "D93F0B",
+    "description": "Shared DesignSystem 모듈, 토큰, 스타일, 색상 자산 변경입니다."
+  },
+  {
+    "name": "area: shared-utils",
+    "color": "C2E0C6",
+    "description": "Shared Utils 모듈과 공용 유틸리티 변경입니다."
+  },
+  {
+    "name": "area: tuist",
+    "color": "5319E7",
+    "description": "Tuist 프로젝트 생성, 모듈 설정, 템플릿 관련 변경입니다."
+  },
+  {
+    "name": "area: config",
+    "color": "F9D0C4",
+    "description": "xcconfig, gitignore, 환경 설정 파일 관련 변경입니다."
+  },
+  {
+    "name": "area: release",
+    "color": "FEF2C0",
+    "description": "fastlane, 배포, 서명, 릴리즈 자동화 관련 변경입니다."
+  },
+  {
+    "name": "area: github",
+    "color": "000000",
+    "description": "GitHub 템플릿, 워크플로, 라벨 자동화 관련 변경입니다."
+  },
+  {
+    "name": "priority: high",
+    "color": "B60205",
+    "description": "우선순위가 높아 빠른 확인이 필요한 작업입니다."
+  },
+  {
+    "name": "priority: medium",
+    "color": "FBCA04",
+    "description": "일반적인 우선순위로 처리할 작업입니다."
+  },
+  {
+    "name": "priority: low",
+    "color": "C5DEF5",
+    "description": "우선순위가 낮거나 여유 있게 처리해도 되는 작업입니다."
+  },
+  {
+    "name": "status: needs-triage",
+    "color": "E4E669",
+    "description": "아직 분류나 우선순위 판단이 필요한 항목입니다."
+  },
+  {
+    "name": "status: blocked",
+    "color": "D73A4A",
+    "description": "외부 의존성, 의사결정, 선행 작업 때문에 막힌 항목입니다."
+  },
+  {
+    "name": "status: in-progress",
+    "color": "1D76DB",
+    "description": "현재 작업이 진행 중인 항목입니다."
+  },
+  {
+    "name": "status: ready-for-review",
+    "color": "0E8A16",
+    "description": "리뷰 가능한 상태의 항목입니다."
+  },
+  {
+    "name": "risk: breaking-change",
+    "color": "B60205",
+    "description": "기존 동작, API, 설정 호환성을 깨뜨릴 수 있는 변경입니다."
+  },
+  {
+    "name": "risk: needs-manual-test",
+    "color": "FBCA04",
+    "description": "자동 검증 외에 실제 기기나 수동 확인이 필요한 변경입니다."
+  },
+  {
+    "name": "risk: security",
+    "color": "D73A4A",
+    "description": "보안, 인증, 비밀값, 권한과 관련된 민감 변경입니다."
+  },
+  {
+    "name": "dependencies",
+    "color": "0366D6",
+    "description": "외부 의존성, 패키지, SDK 변경과 관련된 작업입니다."
+  },
+  {
+    "name": "spm",
+    "color": "0366D6",
+    "description": "Swift Package Manager 의존성 또는 패키지 설정 변경입니다."
+  },
+  {
+    "name": "third-party",
+    "color": "7057FF",
+    "description": "외부 서비스, SDK, 서드파티 연동 관련 작업입니다."
+  }
+]
