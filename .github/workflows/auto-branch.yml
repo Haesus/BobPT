@@ -1,0 +1,122 @@
+name: Auto Branch
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  create-branch:
+    name: Create branch from issue
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build branch metadata
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          BASE_BRANCH: ${{ vars.DEV_BASE_BRANCH || 'dev' }}
+        run: |
+          python3 <<'PY' >> "$GITHUB_ENV"
+          import os
+          import re
+          import unicodedata
+
+          issue_number = os.environ["ISSUE_NUMBER"]
+          issue_title = os.environ["ISSUE_TITLE"]
+          base_branch = os.environ["BASE_BRANCH"]
+
+          type_map = {
+              "FEAT": "feat",
+              "FEATURE": "feat",
+              "FIX": "fix",
+              "BUG": "fix",
+              "HOTFIX": "hotfix",
+              "REFACTOR": "refactor",
+              "DESIGN": "design",
+              "STYLE": "style",
+              "DOCS": "docs",
+              "TEST": "test",
+              "CHORE": "chore",
+              "CI": "chore",
+          }
+
+          match = re.match(r"^\[([^\]]+)\]\s*(.*)$", issue_title)
+          raw_type = match.group(1).strip().upper() if match else "ISSUE"
+          title_body = match.group(2).strip() if match else issue_title
+          branch_type = type_map.get(raw_type, raw_type.lower())
+
+          normalized = unicodedata.normalize("NFKD", title_body).encode("ascii", "ignore").decode("ascii")
+          slug = re.sub(r"[^a-zA-Z0-9]+", "-", normalized).strip("-").lower()
+          slug = re.sub(r"-+", "-", slug)
+          slug = slug[:50].strip("-")
+
+          branch_name = f"{branch_type}/issue-{issue_number}"
+          if slug:
+              branch_name = f"{branch_type}/{slug}-{issue_number}"
+
+          print(f"BRANCH_NAME={branch_name}")
+          print(f"BASE_BRANCH={base_branch}")
+          PY
+
+      - name: Create linked branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue develop "$ISSUE_NUMBER" \
+            --name "$BRANCH_NAME" \
+            --base "$BASE_BRANCH" \
+            --repo "${{ github.repository }}"
+
+      - name: Comment on issue
+        uses: actions/github-script@v8
+        env:
+          BRANCH_NAME: ${{ env.BRANCH_NAME }}
+          BASE_BRANCH: ${{ env.BASE_BRANCH }}
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const branchName = process.env.BRANCH_NAME;
+            const baseBranch = process.env.BASE_BRANCH;
+            const messages = [
+              { text: `코드 요정이 새 작업 브랜치를 만들어두었습니다. 이름은 \`${branchName}\` 입니다.`, weight: 5 },
+              { text: `로봇이 새 작업 구역을 준비했습니다. 브랜치는 \`${branchName}\` 입니다.`, weight: 4 },
+              { text: `작업 로켓이 발사되며 \`${branchName}\` 브랜치를 남겼습니다.`, weight: 4 },
+              { text: `마법책을 열자 \`${branchName}\` 브랜치가 튀어나왔습니다.`, weight: 3 },
+              { text: `마술사가 모자를 열자 \`${branchName}\` 브랜치가 나왔습니다.`, weight: 2 },
+              { text: `나무가 흔들리더니 \`${branchName}\` 브랜치가 하나 떨어졌습니다.`, weight: 1 }
+            ];
+
+            function pickWeighted(items) {
+              const total = items.reduce((sum, item) => sum + item.weight, 0);
+              let cursor = Math.random() * total;
+
+              for (const item of items) {
+                cursor -= item.weight;
+                if (cursor < 0) {
+                  return item.text;
+                }
+              }
+
+              return items[items.length - 1].text;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: [
+                pickWeighted(messages),
+                ``,
+                `- 브랜치: \`${branchName}\``,
+                `- 기준 브랜치: \`${baseBranch}\``
+              ].join("\n")
+            });
