@@ -57,7 +57,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Validate deployment secrets
         run: |
@@ -97,9 +97,7 @@ jobs:
           bundler-cache: true
 
       - name: Set up Tuist
-        run: |
-          curl -Ls https://install.tuist.io | bash
-          echo "$HOME/.tuist/bin" >> "$GITHUB_PATH"
+        uses: jdx/mise-action@v2
 
       - name: Set up App Store Connect API key
         run: |
