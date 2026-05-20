@@ -92,21 +92,32 @@ public struct DeveloperProfile: Identifiable, Sendable {
     public let githubURL: URL
     public let avatarURL: URL
 
+    public init?(name: String, githubURLString: String, avatarURLString: String) {
+        guard let githubURL = URL(string: githubURLString),
+              let avatarURL = URL(string: avatarURLString) else {
+            return nil
+        }
+
+        self.name = name
+        self.githubURL = githubURL
+        self.avatarURL = avatarURL
+    }
+
     public static let all: [DeveloperProfile] = [
         DeveloperProfile(
             name: "윤해수",
-            githubURL: URL(string: "https://github.com/Haesus")!,
-            avatarURL: URL(string: "https://avatars.githubusercontent.com/u/111691629?v=4")!
+            githubURLString: "https://github.com/Haesus",
+            avatarURLString: "https://avatars.githubusercontent.com/u/111691629?v=4"
         ),
         DeveloperProfile(
             name: "강희창",
-            githubURL: URL(string: "https://github.com/saul1113")!,
-            avatarURL: URL(string: "https://avatars.githubusercontent.com/u/163959713?v=4")!
+            githubURLString: "https://github.com/saul1113",
+            avatarURLString: "https://avatars.githubusercontent.com/u/163959713?v=4"
         ),
         DeveloperProfile(
             name: "홍진웅",
-            githubURL: URL(string: "https://github.com/elphabaa")!,
-            avatarURL: URL(string: "https://avatars.githubusercontent.com/u/112241396?v=4")!
+            githubURLString: "https://github.com/elphabaa",
+            avatarURLString: "https://avatars.githubusercontent.com/u/112241396?v=4"
         )
-    ]
+    ].compactMap { $0 }
 }

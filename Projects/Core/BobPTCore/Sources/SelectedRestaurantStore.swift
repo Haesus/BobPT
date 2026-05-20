@@ -39,13 +39,17 @@ public final class SelectedRestaurantStore: ObservableObject {
 
     public func delete(at offsets: IndexSet) {
         for offset in offsets.sorted(by: >) {
+            guard restaurants.indices.contains(offset) else {
+                continue
+            }
+
             restaurants.remove(at: offset)
         }
         save()
     }
 
     private var fileURL: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first ?? FileManager.default.temporaryDirectory)
             .appendingPathComponent(filename)
     }
 
@@ -63,6 +67,6 @@ public final class SelectedRestaurantStore: ObservableObject {
             return
         }
 
-        try? data.write(to: fileURL)
+        try? data.write(to: fileURL, options: .atomic)
     }
 }

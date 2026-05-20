@@ -16,6 +16,7 @@ struct MapScreen: View {
     let restaurant: Restaurant
     let userLatitude: Double?
     let userLongitude: Double?
+    @State private var alertMessage: String?
 
     var body: some View {
         VStack(spacing: 18) {
@@ -40,12 +41,20 @@ struct MapScreen: View {
             .padding(.horizontal, 20)
             .padding(.top, 12)
 
-            NaverMapView(
-                restaurant: restaurant,
-                userLatitude: userLatitude,
-                userLongitude: userLongitude
-            )
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            if let destinationCoordinate {
+                NaverMapView(
+                    restaurant: restaurant,
+                    destinationCoordinate: destinationCoordinate,
+                    userLatitude: userLatitude,
+                    userLongitude: userLongitude
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                Text("지도 좌표를 불러오지 못했습니다.")
+                    .font(.headline)
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
 
             VStack(spacing: 12) {
                 Button {
@@ -78,10 +87,37 @@ struct MapScreen: View {
         .background(DesignSystem.Colors.background.ignoresSafeArea())
         .navigationTitle("지도")
         .navigationBarTitleDisplayMode(.inline)
+        .alert("알림", isPresented: Binding(
+            get: { alertMessage != nil },
+            set: { if !$0 { alertMessage = nil } }
+        )) {
+            Button("확인", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "")
+        }
+    }
+
+    private var destinationCoordinate: CLLocationCoordinate2D? {
+        guard let mapX = Double(restaurant.mapx),
+              let mapY = Double(restaurant.mapy) else {
+            return nil
+        }
+
+        let longitude = mapX / 10_000_000
+        let latitude = mapY / 10_000_000
+
+        guard (-90...90).contains(latitude),
+              (-180...180).contains(longitude),
+              latitude != 0,
+              longitude != 0 else {
+            return nil
+        }
+
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 
     private func openNaverMap() {
-        guard let queryTitle = restaurant.title.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+        guard let queryTitle = restaurant.title.htmlEscaped.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let category = restaurant.category.split(separator: ">").first,
               let queryCategory = String(category).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "nmap://search?query=\(queryTitle),\(queryCategory)&appname=BobPT"),
@@ -97,12 +133,16 @@ struct MapScreen: View {
     }
 
     private func openAppleMap() {
-        let coordinateX = (Double(restaurant.mapx) ?? 0) / 10_000_000
-        let coordinateY = (Double(restaurant.mapy) ?? 0) / 10_000_000
-        let urlString = "http://maps.apple.com/?ll=\(coordinateY),\(coordinateX)&q=\(restaurant.title)"
+        guard let destinationCoordinate else {
+            alertMessage = "지도 좌표가 없어 Apple Map을 열 수 없습니다."
+            return
+        }
+
+        let urlString = "http://maps.apple.com/?ll=\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)&q=\(restaurant.title.htmlEscaped)"
 
         guard let encoded = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: encoded) else {
+            alertMessage = "지도 앱을 열 수 없습니다."
             return
         }
 
@@ -112,6 +152,7 @@ struct MapScreen: View {
 
 struct NaverMapView: UIViewRepresentable {
     let restaurant: Restaurant
+    let destinationCoordinate: CLLocationCoordinate2D
     let userLatitude: Double?
     let userLongitude: Double?
 
@@ -123,6 +164,7 @@ struct NaverMapView: UIViewRepresentable {
         context.coordinator.update(
             mapView: mapView,
             restaurant: restaurant,
+            destinationCoordinate: destinationCoordinate,
             userLatitude: userLatitude,
             userLongitude: userLongitude
         )
@@ -137,10 +179,16 @@ struct NaverMapView: UIViewRepresentable {
         private let destinationMarker = NMFMarker()
         private let infoWindow = NMFInfoWindow()
 
-        func update(mapView: NMFMapView, restaurant: Restaurant, userLatitude: Double?, userLongitude: Double?) {
+        func update(
+            mapView: NMFMapView,
+            restaurant: Restaurant,
+            destinationCoordinate: CLLocationCoordinate2D,
+            userLatitude: Double?,
+            userLongitude: Double?
+        ) {
             let destination = NMGLatLng(
-                lat: (Double(restaurant.mapy) ?? 0) / 10_000_000,
-                lng: (Double(restaurant.mapx) ?? 0) / 10_000_000
+                lat: destinationCoordinate.latitude,
+                lng: destinationCoordinate.longitude
             )
             let userLocation = CLLocation(
                 latitude: userLatitude ?? 37.494529,
