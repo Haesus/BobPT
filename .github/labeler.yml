@@ -1,0 +1,125 @@
+"type: ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+          - "scripts/swiftlint_to_rdjson.py"
+
+"type: docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+          - "README.md"
+
+"type: design":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/Shared/DesignSystem/**"
+          - "Projects/**/Resources/**/*.xcassets/**"
+          - "Projects/**/Resources/**/*.storyboard"
+
+"type: test":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*Tests/**"
+          - "**/*UITests/**"
+          - "**/*Test*.swift"
+
+"type: chore":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".gitignore"
+          - "Makefile"
+          - "Gemfile"
+          - "Gemfile.lock"
+
+"area: app":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/App/**"
+
+"area: feature":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/Feature/**"
+
+"area: core":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/Core/**"
+
+"area: domain":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/Domain/**"
+
+"area: design-system":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/Shared/DesignSystem/**"
+
+"area: shared-utils":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/Shared/Utils/**"
+
+"area: tuist":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Tuist/**"
+          - "Tuist.swift"
+          - "Workspace.swift"
+          - "Package.swift"
+          - "Plugins/**"
+          - "Projects/**/Project.swift"
+
+"area: config":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Xcconfig/**"
+          - ".gitignore"
+          - ".swiftlint.yml"
+
+"area: release":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "fastlane/**"
+
+"area: github":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+"dependencies":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Package.swift"
+          - "Package.resolved"
+          - "Gemfile"
+          - "Gemfile.lock"
+
+"spm":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Package.swift"
+          - "Package.resolved"
+
+"third-party":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Package.swift"
+          - "Package.resolved"
+          - "Projects/**/MapScreen.swift"
+
+"risk: security":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Xcconfig/**"
+          - "Tuist/ProjectDescriptionHelpers/InfoPlist/**"
+          - ".github/workflows/**"
+
+"risk: needs-manual-test":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Projects/Feature/**/Sources/**/*.swift"
+          - "Projects/App/**"
+          - "Projects/**/Resources/**"
