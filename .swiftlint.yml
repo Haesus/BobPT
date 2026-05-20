@@ -1,0 +1,25 @@
+included:
+  - Projects
+  - Package.swift
+  - Workspace.swift
+  - Tuist
+
+excluded:
+  - .build
+  - BobPT.xcodeproj
+  - BobPT.xcworkspace
+  - fastlane
+
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+  - function_body_length
+  - type_body_length
+  - file_length
+
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+
+reporter: xcode
