@@ -28,6 +28,8 @@ platform :ios do
   # ----------------------------------------------------------
   desc "Push a new beta build to TestFlight"
   lane :beta do
+    setup_ci(provider: "github_actions") if ENV["CI"]
+
     # TODO: 새 프로젝트의 Bundle Identifier로 교체하세요.
     # - Tuist/ProjectDescriptionHelpers/AppEnv.swift와 fastlane/Matchfile의 app_identifier 목록과 동일해야 합니다.
     # - GitHub Actions에서는 TUIST_BUILD_CONFIG=DEV|BETA|RELEASE로 배포 대상을 고릅니다.
