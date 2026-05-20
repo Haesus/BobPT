@@ -61,10 +61,10 @@ jobs:
 
       - name: Select Xcode 26
         run: |
-          xcode_path="$(find /Applications -maxdepth 1 -type d -name 'Xcode_26*.app' | sort | tail -n 1)"
+          xcode_path="$(find /Applications -maxdepth 1 -type d -name 'Xcode_26*.app' ! -name '*beta*' | sort | tail -n 1)"
 
           if [ -z "$xcode_path" ]; then
-            printf 'Xcode 26 is required but was not found.\n'
+            printf 'Stable Xcode 26 is required but was not found.\n'
             find /Applications -maxdepth 1 -type d -name 'Xcode*.app' -print
             exit 1
           fi
