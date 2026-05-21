@@ -15,8 +15,10 @@ let target: Target = .target(
     "Sources/**"
   ],
   dependencies: [
+    .project(target: "BobPTCore", path: "../../Core/BobPTCore"),
     .project(target: "BobPTDomain", path: "../../Domain/BobPTDomain"),
-    .project(target: "DesignSystem", path: "../../Shared/DesignSystem")
+    .project(target: "DesignSystem", path: "../../Shared/DesignSystem"),
+    .project(target: "FeedbackUI", path: "../../Shared/FeedbackUI")
   ],
   settings: .targetSettings(product: .staticFramework)
 )

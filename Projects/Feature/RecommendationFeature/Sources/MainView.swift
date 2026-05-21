@@ -9,23 +9,28 @@ import SwiftUI
 import BobPTCore
 import BobPTDomain
 import DesignSystem
+import FeedbackUI
 
 public struct MainView: View {
     @StateObject private var locationProvider = LocationProvider()
     @ObservedObject private var selectedStore: SelectedRestaurantStore
+    @ObservedObject private var authStore: AuthSessionStore
     @State private var selectedFoods: Set<FoodCategory> = []
     @State private var recommendationResult: RecommendationResult?
     @State private var isSearching = false
     @State private var alertMessage: String?
+    @State private var toastMessage: String?
     @State private var showsLaunchAnimation = true
     @State private var launchAnimationDidFinish = false
     @State private var hasRequestedInitialLocation = false
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 14), count: 3)
     private let searchService = NaverSearchService()
+    private let backendService = BobPTBackendService()
 
-    public init(selectedStore: SelectedRestaurantStore) {
+    public init(selectedStore: SelectedRestaurantStore, authStore: AuthSessionStore) {
         self.selectedStore = selectedStore
+        self.authStore = authStore
     }
 
     public var body: some View {
@@ -50,17 +55,10 @@ public struct MainView: View {
                 }
             )) {
                 if let recommendationResult {
-                    ResultView(result: recommendationResult, store: selectedStore)
+                    ResultView(result: recommendationResult, store: selectedStore, authStore: authStore)
                 }
             }
-            .alert("알림", isPresented: Binding(
-                get: { alertMessage != nil },
-                set: { if !$0 { alertMessage = nil } }
-            )) {
-                Button("확인", role: .cancel) {}
-            } message: {
-                Text(alertMessage ?? "")
-            }
+            .bobPTAlert(message: $alertMessage)
             .disabled(isSearching)
             .task {
                 selectedStore.load()
@@ -79,9 +77,10 @@ public struct MainView: View {
                     return
                 }
 
-                alertMessage = message
+                toastMessage = message
                 locationProvider.clearErrorMessage()
             }
+            .bobPTToast(message: $toastMessage)
 
             if isSearching {
                 ProgressView("음식점을 찾는 중")
@@ -189,6 +188,23 @@ public struct MainView: View {
             guard !restaurants.isEmpty else {
                 alertMessage = "추천 가능한 음식점을 찾지 못했습니다."
                 return
+            }
+
+            if authStore.isSignedIn {
+                do {
+                    try await backendService.saveRecommendation(
+                        restaurants: restaurants,
+                        foodCategories: Array(selectedFoods),
+                        location: locationName,
+                        latitude: locationProvider.latitude,
+                        longitude: locationProvider.longitude,
+                        accessToken: authStore.accessToken
+                    )
+                } catch BackendServiceError.unauthorized {
+                    authStore.signOut(message: "로그인이 만료되어 추천 기록은 기기에만 표시됩니다.")
+                } catch {
+                    toastMessage = "추천 기록을 서버에 저장하지 못했습니다. 추천 결과는 계속 확인할 수 있습니다."
+                }
             }
 
             recommendationResult = RecommendationResult(

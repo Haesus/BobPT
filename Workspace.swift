@@ -10,6 +10,7 @@ let workspace = Workspace(
     "Projects/Core/BobPTCore",
     "Projects/Domain/BobPTDomain",
     "Projects/Shared/DesignSystem",
+    "Projects/Shared/FeedbackUI",
     "Projects/Shared/Utils"
   ],
   additionalFiles: [

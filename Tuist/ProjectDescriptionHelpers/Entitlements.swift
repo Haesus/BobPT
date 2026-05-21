@@ -15,10 +15,9 @@ extension Entitlements {
     /// 앱 타겟에서 사용될 Entitlements 정의
     /// - Note: 애플 로그인, Push Notifications, Keychain Sharing 등 필요한 권한을 이곳에 추가
     public static var app: Entitlements {
-      // 현재는 빈 권한 설정
-      // 필요 시 ["com.apple.developer.applesignin": .boolean(true)] 같은 키들을 추가
-      return .dictionary([:])
-      // 애플로그인, 푸시알림 등등
+      return .dictionary([
+        "com.apple.developer.applesignin": .array([.string("Default")])
+      ])
     }
   }
 }

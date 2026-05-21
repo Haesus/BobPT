@@ -20,9 +20,11 @@ let appTarget: Target = .target(
     ],
     privacyManifest: .bobPT
   ),
+  entitlements: Entitlements.BobPT.app,
   dependencies: [
     .project(target: "BobPTCore", path: "../../Core/BobPTCore"),
     .project(target: "DesignSystem", path: "../../Shared/DesignSystem"),
+    .project(target: "FeedbackUI", path: "../../Shared/FeedbackUI"),
     .project(target: "RecommendationFeature", path: "../../Feature/RecommendationFeature"),
     .project(target: "HistoryFeature", path: "../../Feature/HistoryFeature"),
     .project(target: "SettingsFeature", path: "../../Feature/SettingsFeature")

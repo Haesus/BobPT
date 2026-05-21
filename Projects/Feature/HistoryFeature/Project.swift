@@ -18,6 +18,7 @@ let target: Target = .target(
     .project(target: "BobPTCore", path: "../../Core/BobPTCore"),
     .project(target: "BobPTDomain", path: "../../Domain/BobPTDomain"),
     .project(target: "DesignSystem", path: "../../Shared/DesignSystem"),
+    .project(target: "FeedbackUI", path: "../../Shared/FeedbackUI"),
     .project(target: "Utils", path: "../../Shared/Utils")
   ],
   settings: .targetSettings(product: .staticFramework)

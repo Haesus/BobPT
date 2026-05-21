@@ -14,6 +14,7 @@ extension InfoPlist {
           "CFBundlePackageType": "APPL",
           "CFBundleShortVersionString": "$(MARKETING_VERSION)",
           "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
+          "API_BASE_URL": "$(API_BASE_URL)",
           "ID_KEY": "$(ID_KEY)",
           "ITSAppUsesNonExemptEncryption": false,
           "LSApplicationQueriesSchemes": [

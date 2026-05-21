@@ -10,6 +10,7 @@ import NMapsMap
 import SwiftUI
 import BobPTDomain
 import DesignSystem
+import FeedbackUI
 import Utils
 
 struct MapScreen: View {
@@ -87,14 +88,7 @@ struct MapScreen: View {
         .background(DesignSystem.Colors.background.ignoresSafeArea())
         .navigationTitle("지도")
         .navigationBarTitleDisplayMode(.inline)
-        .alert("알림", isPresented: Binding(
-            get: { alertMessage != nil },
-            set: { if !$0 { alertMessage = nil } }
-        )) {
-            Button("확인", role: .cancel) {}
-        } message: {
-            Text(alertMessage ?? "")
-        }
+        .bobPTAlert(message: $alertMessage)
     }
 
     private var destinationCoordinate: CLLocationCoordinate2D? {

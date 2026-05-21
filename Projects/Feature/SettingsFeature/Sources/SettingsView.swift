@@ -6,19 +6,66 @@
 //
 
 import MessageUI
+import AuthenticationServices
 import SwiftUI
+import BobPTCore
 import BobPTDomain
 import DesignSystem
+import FeedbackUI
 
 public struct SettingsView: View {
+    @ObservedObject private var authStore: AuthSessionStore
     @State private var showsMailComposer = false
     @State private var opensMailSettingsAlert = false
+    @State private var alertMessage: String?
+    @State private var toastMessage: String?
+    @State private var isSigningIn = false
     @AppStorage(DesignSystem.AppearanceMode.storageKey) private var appearanceMode = DesignSystem.AppearanceMode.system
 
-    public init() {}
+    public init(authStore: AuthSessionStore) {
+        self.authStore = authStore
+    }
 
     public var body: some View {
         List {
+            Section("계정") {
+                if let user = authStore.session?.user {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(user.displayName ?? user.email ?? "Apple 계정")
+                            .font(.headline)
+                        Text("로그인됨")
+                            .font(.subheadline)
+                            .foregroundStyle(DesignSystem.Colors.secondaryText)
+                    }
+                    .listRowBackground(DesignSystem.Colors.surface)
+
+                    Button(role: .destructive) {
+                        authStore.signOut(message: "로그아웃되었습니다.")
+                    } label: {
+                        Text("로그아웃")
+                    }
+                    .listRowBackground(DesignSystem.Colors.surface)
+                } else {
+                    ZStack {
+                        SignInWithAppleButton(.continue) { request in
+                            request.requestedScopes = [.fullName, .email]
+                        } onCompletion: { result in
+                            handleAppleSignIn(result)
+                        }
+                        .signInWithAppleButtonStyle(.black)
+                        .opacity(isSigningIn ? 0.35 : 1)
+                        .disabled(isSigningIn)
+
+                        if isSigningIn {
+                            ProgressView()
+                                .tint(.white)
+                        }
+                    }
+                    .frame(height: 44)
+                    .listRowBackground(DesignSystem.Colors.surface)
+                }
+            }
+
             Picker("화면 모드", selection: $appearanceMode) {
                 ForEach(DesignSystem.AppearanceMode.allCases) { mode in
                     Text(mode.title)
@@ -62,8 +109,47 @@ public struct SettingsView: View {
         .sheet(isPresented: $showsMailComposer) {
             MailComposeView()
         }
-        .alert("메일 계정을 설정해주세요", isPresented: $opensMailSettingsAlert) {
-            Button("확인", role: .cancel) {}
+        .bobPTAlert(title: "메일 계정을 설정해주세요", isPresented: $opensMailSettingsAlert)
+        .bobPTAlert(message: $alertMessage)
+        .bobPTToast(message: $toastMessage)
+    }
+
+    private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
+        switch result {
+        case .success(let authorization):
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                  let tokenData = credential.identityToken,
+                  let identityToken = String(data: tokenData, encoding: .utf8) else {
+                alertMessage = "Apple 로그인 정보를 확인하지 못했습니다."
+                return
+            }
+
+            let name = PersonNameComponentsFormatter().string(from: credential.fullName ?? PersonNameComponents())
+            isSigningIn = true
+            Task { @MainActor in
+                defer {
+                    isSigningIn = false
+                }
+
+                do {
+                    try await authStore.signInWithApple(
+                        identityToken: identityToken,
+                        fullName: name.isEmpty ? nil : name
+                    )
+                    toastMessage = "로그인되었습니다."
+                } catch let error as BackendServiceError {
+                    alertMessage = error.errorDescription ?? "로그인에 실패했습니다."
+                } catch {
+                    alertMessage = "로그인에 실패했습니다."
+                }
+            }
+        case .failure(let error):
+            if let authorizationError = error as? ASAuthorizationError,
+               authorizationError.code == .canceled {
+                return
+            }
+
+            alertMessage = "Apple 로그인을 완료하지 못했습니다."
         }
     }
 }

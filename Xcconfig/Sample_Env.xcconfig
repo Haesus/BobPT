@@ -2,7 +2,7 @@
 // Copy this file to Env.xcconfig and fill in local values.
 
 // Example
-// API_BASE_URL = https://api.example.com
+// API_BASE_URL = https:/$()/tagcloud.synology.me:3000/bobpt
 API_BASE_URL =
 ID_KEY =
 SECRET_KEY =
