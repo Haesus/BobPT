@@ -41,11 +41,6 @@ public final class LocationProvider: NSObject, ObservableObject {
     }
 
     private func startUpdatingLocation() {
-        guard CLLocationManager.locationServicesEnabled() else {
-            errorMessage = "위치 서비스가 꺼져 있어 기본 지역으로 추천합니다."
-            return
-        }
-
         manager.startUpdatingLocation()
     }
 }
@@ -54,7 +49,9 @@ extension LocationProvider: CLLocationManagerDelegate {
     public nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
-            manager.startUpdatingLocation()
+            Task { @MainActor in
+                self.startUpdatingLocation()
+            }
         case .denied, .restricted:
             Task { @MainActor in
                 self.errorMessage = "위치 권한이 꺼져 있어 기본 지역으로 추천합니다."

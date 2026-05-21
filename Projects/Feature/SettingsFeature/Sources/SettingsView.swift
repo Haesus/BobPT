@@ -33,6 +33,14 @@ public struct SettingsView: View {
 
     public var body: some View {
         List {
+#if DEV
+            Section("DEV 진단") {
+                devDiagnosticRow(title: "카카오 키 suffix", value: kakaoKeySuffix)
+                devDiagnosticRow(title: "카카오 스킴", value: kakaoCallbackScheme)
+                devDiagnosticRow(title: "카카오 launch", value: "CustomScheme")
+            }
+#endif
+
             Section("계정") {
                 if let user = authStore.session?.user {
                     VStack(alignment: .leading, spacing: 6) {
@@ -119,6 +127,15 @@ public struct SettingsView: View {
             }
             .listRowBackground(DesignSystem.Colors.surface)
 
+#if DEV
+            NavigationLink {
+                APILogView()
+            } label: {
+                Text("API 로그")
+            }
+            .listRowBackground(DesignSystem.Colors.surface)
+#endif
+
             Button {
                 if MFMailComposeViewController.canSendMail() {
                     showsMailComposer = true
@@ -142,6 +159,39 @@ public struct SettingsView: View {
         .bobPTAlert(message: $alertMessage)
         .bobPTToast(message: $toastMessage)
     }
+
+#if DEV
+    private func devDiagnosticRow(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(DesignSystem.Colors.secondaryText)
+
+            Text(value)
+                .font(.caption.monospaced())
+                .textSelection(.enabled)
+                .foregroundStyle(DesignSystem.Colors.text)
+        }
+        .padding(.vertical, 4)
+        .listRowBackground(DesignSystem.Colors.surface)
+    }
+
+    private var kakaoKeySuffix: String {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String else {
+            return "-"
+        }
+
+        return String(key.suffix(6))
+    }
+
+    private var kakaoCallbackScheme: String {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String else {
+            return "-"
+        }
+
+        return "kakao\(key)://oauth"
+    }
+#endif
 
     private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
         switch result {
@@ -185,26 +235,54 @@ public struct SettingsView: View {
     private func handleKakaoSignIn() {
         isSigningIn = true
 
+        let isKakaoTalkAvailable = UserApi.isKakaoTalkLoginAvailable()
+        NetworkLogger.logEvent(
+            category: "SocialAuth",
+            title: "Kakao sign-in started",
+            metadata: [
+                "isKakaoTalkAvailable": String(isKakaoTalkAvailable),
+                "bundleId": Bundle.main.bundleIdentifier ?? "-",
+                "launchMethod": "CustomScheme"
+            ]
+        )
+
         let completion: (OAuthToken?, Error?) -> Void = { oauthToken, error in
             Task { @MainActor in
                 if let error {
+                    NetworkLogger.logEvent(
+                        category: "SocialAuth",
+                        title: "Kakao completion error",
+                        metadata: [:],
+                        error: error
+                    )
                     isSigningIn = false
                     alertMessage = error.localizedDescription
                     return
                 }
 
                 guard let accessToken = oauthToken?.accessToken else {
+                    NetworkLogger.logEvent(
+                        category: "SocialAuth",
+                        title: "Kakao completion without access token"
+                    )
                     isSigningIn = false
                     alertMessage = "카카오 로그인 정보를 확인하지 못했습니다."
                     return
                 }
 
+                NetworkLogger.logEvent(
+                    category: "SocialAuth",
+                    title: "Kakao completion success",
+                    metadata: [
+                        "accessTokenSuffix": String(accessToken.suffix(6))
+                    ]
+                )
                 await completeSocialSignIn(provider: .kakao, accessToken: accessToken, idToken: nil)
             }
         }
 
-        if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk(completion: completion)
+        if isKakaoTalkAvailable {
+            UserApi.shared.loginWithKakaoTalk(launchMethod: .CustomScheme, completion: completion)
         } else {
             UserApi.shared.loginWithKakaoAccount(completion: completion)
         }
@@ -425,6 +503,161 @@ struct DeveloperView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
+#if DEV
+struct APILogView: View {
+    @State private var entries: [NetworkLogEntry] = []
+
+    var body: some View {
+        List {
+            diagnosticsSection
+
+            if entries.isEmpty {
+                Text("수집된 API 로그가 없습니다.")
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
+                    .listRowBackground(DesignSystem.Colors.surface)
+            } else {
+                ForEach(entries) { entry in
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(entry.category)
+                            .font(.headline)
+
+                        Text(entry.timestamp.formatted(date: .omitted, time: .standard))
+                            .font(.caption)
+                            .foregroundStyle(DesignSystem.Colors.secondaryText)
+
+                        logSection(title: "Request", content: requestText(for: entry))
+                        logSection(title: "Response", content: responseText(for: entry))
+
+                        if let errorMessage = entry.errorMessage {
+                            logSection(title: "Error", content: errorMessage)
+                        }
+                    }
+                    .padding(.vertical, 8)
+                    .listRowBackground(DesignSystem.Colors.surface)
+                }
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(DesignSystem.Colors.background)
+        .navigationTitle("API 로그")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            let stream = await NetworkLogStore.shared.stream()
+
+            for await nextEntries in stream {
+                entries = nextEntries
+            }
+        }
+        .toolbar {
+            if !entries.isEmpty {
+                Button("삭제") {
+                    Task {
+                        await NetworkLogStore.shared.clear()
+                    }
+                }
+            }
+        }
+    }
+
+    private var diagnosticsSection: some View {
+        Section("런타임 진단") {
+            diagnosticsRow(title: "앱 번들 ID", value: Bundle.main.bundleIdentifier ?? "-")
+            diagnosticsRow(title: "카카오 키 suffix", value: kakaoKeySuffix)
+            diagnosticsRow(title: "카카오 스킴", value: kakaoCallbackScheme)
+            diagnosticsRow(title: "Google Client ID", value: googleClientID)
+        }
+        .listRowBackground(DesignSystem.Colors.surface)
+    }
+
+    @ViewBuilder
+    private func logSection(title: String, content: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(DesignSystem.Colors.secondaryText)
+
+            Text(content)
+                .font(.caption.monospaced())
+                .textSelection(.enabled)
+                .foregroundStyle(DesignSystem.Colors.text)
+        }
+    }
+
+    private func requestText(for entry: NetworkLogEntry) -> String {
+        var lines = [
+            "\(entry.method) \(entry.url)"
+        ]
+
+        if !entry.requestHeaders.isEmpty {
+            lines.append("Headers: \(formatted(entry.requestHeaders))")
+        }
+
+        if let requestBody = entry.requestBody {
+            lines.append("Body:\n\(requestBody)")
+        }
+
+        return lines.joined(separator: "\n")
+    }
+
+    private func responseText(for entry: NetworkLogEntry) -> String {
+        var lines = [
+            "Status: \(entry.statusCode.map(String.init) ?? "-")"
+        ]
+
+        if !entry.responseHeaders.isEmpty {
+            lines.append("Headers: \(formatted(entry.responseHeaders))")
+        }
+
+        if let responseBody = entry.responseBody {
+            lines.append("Body:\n\(responseBody)")
+        }
+
+        return lines.joined(separator: "\n")
+    }
+
+    private func formatted(_ dictionary: [String: String]) -> String {
+        dictionary
+            .sorted { $0.key < $1.key }
+            .map { "\($0.key): \($0.value)" }
+            .joined(separator: "\n")
+    }
+
+    private func diagnosticsRow(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(DesignSystem.Colors.secondaryText)
+
+            Text(value)
+                .font(.caption.monospaced())
+                .textSelection(.enabled)
+                .foregroundStyle(DesignSystem.Colors.text)
+        }
+        .padding(.vertical, 4)
+    }
+
+    private var kakaoKeySuffix: String {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String else {
+            return "-"
+        }
+
+        return String(key.suffix(6))
+    }
+
+    private var kakaoCallbackScheme: String {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String else {
+            return "-"
+        }
+
+        return "kakao\(key)://oauth"
+    }
+
+    private var googleClientID: String {
+        Bundle.main.object(forInfoDictionaryKey: "GIDClientID") as? String ?? "-"
+    }
+}
+#endif
 
 struct MailComposeView: UIViewControllerRepresentable {
     @Environment(\.dismiss) private var dismiss

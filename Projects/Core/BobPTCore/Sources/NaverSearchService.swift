@@ -50,6 +50,14 @@ public struct NaverSearchService: Sendable {
                 AF.request(endPoint, method: .get, parameters: params, headers: headers)
                     .validate(statusCode: 200..<300)
                     .responseDecodable(of: NaverSearchResponse.self) { response in
+                        NetworkLogger.log(
+                            category: "NaverSearchService.search",
+                            request: response.request,
+                            response: response.response,
+                            responseData: response.data,
+                            error: response.error
+                        )
+
                         switch response.result {
                         case .success(let response):
                             continuation.resume(returning: response)
