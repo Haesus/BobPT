@@ -14,7 +14,10 @@ import Utils
 struct ResultView: View {
     let result: RecommendationResult
     @ObservedObject var store: SelectedRestaurantStore
+    @ObservedObject var authStore: AuthSessionStore
     @State private var restaurant: Restaurant?
+    @State private var toastMessage: String?
+    private let backendService = BobPTBackendService()
 
     var body: some View {
         VStack(spacing: 28) {
@@ -59,13 +62,32 @@ struct ResultView: View {
         .background(DesignSystem.Colors.background.ignoresSafeArea())
         .navigationTitle("추천 결과")
         .navigationBarTitleDisplayMode(.inline)
+        .bobPTToast(message: $toastMessage)
         .onAppear {
             guard restaurant == nil, let selected = result.restaurants.randomElement() else {
                 return
             }
 
             restaurant = selected
-            store.insert(selected)
+            if let accessToken = authStore.accessToken {
+                Task {
+                    do {
+                        try await backendService.saveSelection(selected, accessToken: accessToken)
+                    } catch BackendServiceError.unauthorized {
+                        await MainActor.run {
+                            authStore.signOut(message: "로그인이 만료되어 추천 장소를 기기에 저장했습니다.")
+                            store.insert(selected)
+                        }
+                    } catch {
+                        await MainActor.run {
+                            store.insert(selected)
+                            toastMessage = "서버 저장에 실패해 추천 장소를 기기에 저장했습니다."
+                        }
+                    }
+                }
+            } else {
+                store.insert(selected)
+            }
         }
     }
 }

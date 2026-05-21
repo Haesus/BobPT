@@ -37,4 +37,8 @@ public extension Bundle {
     var secretKey: String? {
         return infoDictionary?["SECRET_KEY"] as? String
     }
+
+    var apiBaseURL: String? {
+        return infoDictionary?["API_BASE_URL"] as? String
+    }
 }
