@@ -71,6 +71,38 @@ public struct BobPTBackendService: Sendable {
         return response.data
     }
 
+    public func signInWithSocial(
+        provider: SocialLoginProvider,
+        accessToken: String?,
+        idToken: String?,
+        authorizationCode: String? = nil,
+        redirectURI: String? = nil,
+        fullName: String? = nil,
+        email: String? = nil
+    ) async throws -> AuthSession {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/\(provider.rawValue)")
+        let body = SocialLoginRequest(
+            accessToken: accessToken,
+            idToken: idToken,
+            authorizationCode: authorizationCode,
+            redirectURI: redirectURI,
+            fullName: fullName,
+            email: email
+        )
+        let response: APIResponse<AuthSession> = try await requestDecodable(
+            endpoint,
+            method: .post,
+            parameters: body,
+            headers: nil
+        )
+
+        return response.data
+    }
+
     public func fetchSelections(accessToken: String) async throws -> [SavedRestaurant] {
         guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
             throw BackendServiceError.missingBaseURL
@@ -215,6 +247,12 @@ public struct AuthUser: Codable, Identifiable, Sendable {
     public let displayName: String?
 }
 
+public enum SocialLoginProvider: String, CaseIterable, Sendable {
+    case kakao
+    case naver
+    case google
+}
+
 public struct SavedRestaurant: Identifiable, Sendable {
     public let id: String
     public let restaurant: Restaurant
@@ -229,6 +267,15 @@ private struct EmptyRequest: Encodable {}
 private struct AppleLoginRequest: Encodable, Sendable {
     let identityToken: String
     let fullName: String?
+}
+
+private struct SocialLoginRequest: Encodable, Sendable {
+    let accessToken: String?
+    let idToken: String?
+    let authorizationCode: String?
+    let redirectURI: String?
+    let fullName: String?
+    let email: String?
 }
 
 private struct RecommendationSaveRequest: Encodable, Sendable {
