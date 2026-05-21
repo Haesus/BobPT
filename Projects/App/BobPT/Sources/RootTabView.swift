@@ -8,6 +8,7 @@
 import SwiftUI
 import BobPTCore
 import DesignSystem
+import FeedbackUI
 import HistoryFeature
 import RecommendationFeature
 import SettingsFeature
@@ -56,6 +57,13 @@ struct RootTabView: View {
 
             toastMessage = message
             authStore.feedbackMessage = nil
+        }
+        .onChange(of: authStore.isSignedIn) { isSignedIn in
+            guard isSignedIn else {
+                return
+            }
+
+            toastMessage = nil
         }
     }
 }

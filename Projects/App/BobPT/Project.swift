@@ -24,6 +24,7 @@ let appTarget: Target = .target(
   dependencies: [
     .project(target: "BobPTCore", path: "../../Core/BobPTCore"),
     .project(target: "DesignSystem", path: "../../Shared/DesignSystem"),
+    .project(target: "FeedbackUI", path: "../../Shared/FeedbackUI"),
     .project(target: "RecommendationFeature", path: "../../Feature/RecommendationFeature"),
     .project(target: "HistoryFeature", path: "../../Feature/HistoryFeature"),
     .project(target: "SettingsFeature", path: "../../Feature/SettingsFeature")

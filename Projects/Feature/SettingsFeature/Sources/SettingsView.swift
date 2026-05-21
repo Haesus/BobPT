@@ -11,6 +11,7 @@ import SwiftUI
 import BobPTCore
 import BobPTDomain
 import DesignSystem
+import FeedbackUI
 
 public struct SettingsView: View {
     @ObservedObject private var authStore: AuthSessionStore
@@ -108,26 +109,9 @@ public struct SettingsView: View {
         .sheet(isPresented: $showsMailComposer) {
             MailComposeView()
         }
-        .alert("메일 계정을 설정해주세요", isPresented: $opensMailSettingsAlert) {
-            Button("확인", role: .cancel) {}
-        }
-        .alert("알림", isPresented: Binding(
-            get: { alertMessage != nil },
-            set: { if !$0 { alertMessage = nil } }
-        )) {
-            Button("확인", role: .cancel) {}
-        } message: {
-            Text(alertMessage ?? "")
-        }
+        .bobPTAlert(title: "메일 계정을 설정해주세요", isPresented: $opensMailSettingsAlert)
+        .bobPTAlert(message: $alertMessage)
         .bobPTToast(message: $toastMessage)
-        .onChange(of: authStore.feedbackMessage) { message in
-            guard let message else {
-                return
-            }
-
-            toastMessage = message
-            authStore.feedbackMessage = nil
-        }
     }
 
     private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {

@@ -9,6 +9,7 @@ import SwiftUI
 import BobPTCore
 import BobPTDomain
 import DesignSystem
+import FeedbackUI
 import Utils
 
 public struct SelectedListView: View {
@@ -76,14 +77,7 @@ public struct SelectedListView: View {
         .toolbar {
             EditButton()
         }
-        .alert("알림", isPresented: Binding(
-            get: { alertMessage != nil },
-            set: { if !$0 { alertMessage = nil } }
-        )) {
-            Button("확인", role: .cancel) {}
-        } message: {
-            Text(alertMessage ?? "")
-        }
+        .bobPTAlert(message: $alertMessage)
         .bobPTToast(message: $toastMessage)
         .onAppear {
             load()

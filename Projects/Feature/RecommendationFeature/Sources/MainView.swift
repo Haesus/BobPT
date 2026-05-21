@@ -9,6 +9,7 @@ import SwiftUI
 import BobPTCore
 import BobPTDomain
 import DesignSystem
+import FeedbackUI
 
 public struct MainView: View {
     @StateObject private var locationProvider = LocationProvider()
@@ -57,14 +58,7 @@ public struct MainView: View {
                     ResultView(result: recommendationResult, store: selectedStore, authStore: authStore)
                 }
             }
-            .alert("알림", isPresented: Binding(
-                get: { alertMessage != nil },
-                set: { if !$0 { alertMessage = nil } }
-            )) {
-                Button("확인", role: .cancel) {}
-            } message: {
-                Text(alertMessage ?? "")
-            }
+            .bobPTAlert(message: $alertMessage)
             .disabled(isSearching)
             .task {
                 selectedStore.load()
@@ -85,14 +79,6 @@ public struct MainView: View {
 
                 toastMessage = message
                 locationProvider.clearErrorMessage()
-            }
-            .onChange(of: authStore.feedbackMessage) { message in
-                guard let message else {
-                    return
-                }
-
-                toastMessage = message
-                authStore.feedbackMessage = nil
             }
             .bobPTToast(message: $toastMessage)
 
