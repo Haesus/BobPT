@@ -44,6 +44,14 @@ public struct BobPTBackendService: Sendable {
             )
                 .validate(statusCode: 200..<300)
                 .response { response in
+                    NetworkLogger.log(
+                        category: "BobPTBackendService.saveRecommendation",
+                        request: response.request,
+                        response: response.response,
+                        responseData: response.data,
+                        error: response.error
+                    )
+
                     switch response.result {
                     case .success:
                         continuation.resume()
@@ -153,6 +161,14 @@ public struct BobPTBackendService: Sendable {
             )
             .validate(statusCode: 200..<300)
             .response { response in
+                NetworkLogger.log(
+                    category: "BobPTBackendService.saveSelection",
+                    request: response.request,
+                    response: response.response,
+                    responseData: response.data,
+                    error: response.error
+                )
+
                 switch response.result {
                 case .success:
                     continuation.resume()
@@ -174,6 +190,14 @@ public struct BobPTBackendService: Sendable {
             AF.request(endpoint, method: .delete, headers: authorizationHeaders(accessToken: accessToken))
                 .validate(statusCode: 200..<300)
                 .response { response in
+                    NetworkLogger.log(
+                        category: "BobPTBackendService.deleteSelection",
+                        request: response.request,
+                        response: response.response,
+                        responseData: response.data,
+                        error: response.error
+                    )
+
                     switch response.result {
                     case .success:
                         continuation.resume()
@@ -194,6 +218,14 @@ public struct BobPTBackendService: Sendable {
             AF.request(url, method: method, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers)
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: T.self) { response in
+                    NetworkLogger.log(
+                        category: "BobPTBackendService.\(method.rawValue) \(url.lastPathComponent)",
+                        request: response.request,
+                        response: response.response,
+                        responseData: response.data,
+                        error: response.error
+                    )
+
                     switch response.result {
                     case .success(let value):
                         continuation.resume(returning: value)
