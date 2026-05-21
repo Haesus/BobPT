@@ -122,7 +122,7 @@ jobs:
           bundler-cache: true
 
       - name: Set up Tuist
-        uses: jdx/mise-action@v2
+        uses: jdx/mise-action@v3
 
       - name: Set up App Store Connect API key
         run: |
