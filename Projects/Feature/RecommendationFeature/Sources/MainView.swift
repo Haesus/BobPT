@@ -18,6 +18,8 @@ public struct MainView: View {
     @State private var isSearching = false
     @State private var alertMessage: String?
     @State private var showsLaunchAnimation = true
+    @State private var launchAnimationDidFinish = false
+    @State private var hasRequestedInitialLocation = false
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 14), count: 3)
     private let searchService = NaverSearchService()
@@ -61,8 +63,24 @@ public struct MainView: View {
             }
             .disabled(isSearching)
             .task {
-                locationProvider.requestLocation()
                 selectedStore.load()
+            }
+            .task(id: launchAnimationDidFinish) {
+                guard launchAnimationDidFinish, !hasRequestedInitialLocation else {
+                    return
+                }
+
+                hasRequestedInitialLocation = true
+                try? await Task.sleep(for: .milliseconds(350))
+                locationProvider.requestLocation()
+            }
+            .onChange(of: locationProvider.errorMessage) { message in
+                guard launchAnimationDidFinish, let message else {
+                    return
+                }
+
+                alertMessage = message
+                locationProvider.clearErrorMessage()
             }
 
             if isSearching {
@@ -78,6 +96,7 @@ public struct MainView: View {
                     withAnimation(.easeOut(duration: 0.3)) {
                         showsLaunchAnimation = false
                     }
+                    launchAnimationDidFinish = true
                 }
                 .ignoresSafeArea()
                 .transition(.opacity)
@@ -154,10 +173,11 @@ public struct MainView: View {
 
         do {
             var restaurants: [Restaurant] = []
+            let locationName = locationProvider.userLocation
             try await withThrowingTaskGroup(of: [Restaurant].self) { group in
                 for food in selectedFoods {
                     group.addTask {
-                        try await searchService.search(location: locationProvider.userLocation, food: food)
+                        try await searchService.search(location: locationName, food: food)
                     }
                 }
 
