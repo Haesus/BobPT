@@ -13,6 +13,10 @@ public extension TargetDependency {
   // Project.swift에서 `.SPMTarget.xxx` 형태로 간단하고 안전하게 가져다 쓸 수 있도록 구성한 파일입니다.
   enum SPMTarget {
     public static let alamofire: TargetDependency = .external(name: "Alamofire")
+    public static let googleSignIn: TargetDependency = .external(name: "GoogleSignIn")
+    public static let kakaoSDKAuth: TargetDependency = .external(name: "KakaoSDKAuth")
+    public static let kakaoSDKCommon: TargetDependency = .external(name: "KakaoSDKCommon")
+    public static let kakaoSDKUser: TargetDependency = .external(name: "KakaoSDKUser")
     public static let lottie: TargetDependency = .external(name: "Lottie")
     public static let nMapsMap: TargetDependency = .external(name: "NMapsMap")
   }

@@ -27,7 +27,10 @@ let appTarget: Target = .target(
     .project(target: "FeedbackUI", path: "../../Shared/FeedbackUI"),
     .project(target: "RecommendationFeature", path: "../../Feature/RecommendationFeature"),
     .project(target: "HistoryFeature", path: "../../Feature/HistoryFeature"),
-    .project(target: "SettingsFeature", path: "../../Feature/SettingsFeature")
+    .project(target: "SettingsFeature", path: "../../Feature/SettingsFeature"),
+    .SPMTarget.googleSignIn,
+    .SPMTarget.kakaoSDKAuth,
+    .SPMTarget.kakaoSDKCommon
   ],
   settings: .targetSettings(product: .app)
 )

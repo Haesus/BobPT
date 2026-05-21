@@ -61,6 +61,28 @@ public final class AuthSessionStore: ObservableObject {
         keychain.save(session)
     }
 
+    public func signInWithSocial(
+        provider: SocialLoginProvider,
+        accessToken: String?,
+        idToken: String?,
+        authorizationCode: String? = nil,
+        redirectURI: String? = nil,
+        fullName: String? = nil,
+        email: String? = nil
+    ) async throws {
+        let session = try await backendService.signInWithSocial(
+            provider: provider,
+            accessToken: accessToken,
+            idToken: idToken,
+            authorizationCode: authorizationCode,
+            redirectURI: redirectURI,
+            fullName: fullName,
+            email: email
+        )
+        self.session = session
+        keychain.save(session)
+    }
+
     public func signOut(message: String? = nil) {
         session = nil
         keychain.delete()
