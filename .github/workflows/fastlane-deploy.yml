@@ -34,9 +34,6 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 jobs:
   deploy:
     name: Deploy app
@@ -125,7 +122,12 @@ jobs:
           bundler-cache: true
 
       - name: Set up Tuist
-        uses: jdx/mise-action@v3
+        run: |
+          brew install mise
+          echo "$HOME/.local/share/mise/shims" >> "$GITHUB_PATH"
+          echo "MISE_YES=1" >> "$GITHUB_ENV"
+          echo "MISE_TRUSTED_CONFIG_PATHS=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          MISE_YES=1 MISE_TRUSTED_CONFIG_PATHS="$GITHUB_WORKSPACE" mise install
 
       - name: Set up App Store Connect API key
         run: |
