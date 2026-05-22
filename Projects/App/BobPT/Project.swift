@@ -28,6 +28,8 @@ let appTarget: Target = .target(
     .project(target: "RecommendationFeature", path: "../../Feature/RecommendationFeature"),
     .project(target: "HistoryFeature", path: "../../Feature/HistoryFeature"),
     .project(target: "SettingsFeature", path: "../../Feature/SettingsFeature"),
+    .SPMTarget.appAuth,
+    .SPMTarget.appAuthCore,
     .SPMTarget.googleSignIn,
     .SPMTarget.kakaoSDKAuth,
     .SPMTarget.kakaoSDKCommon

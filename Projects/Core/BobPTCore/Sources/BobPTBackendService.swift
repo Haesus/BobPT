@@ -56,7 +56,7 @@ public struct BobPTBackendService: Sendable {
                     case .success:
                         continuation.resume()
                     case .failure(let error):
-                        continuation.resume(throwing: error.backendServiceError)
+                        continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                     }
                 }
         }
@@ -85,6 +85,7 @@ public struct BobPTBackendService: Sendable {
         idToken: String?,
         authorizationCode: String? = nil,
         redirectURI: String? = nil,
+        state: String? = nil,
         fullName: String? = nil,
         email: String? = nil
     ) async throws -> AuthSession {
@@ -95,9 +96,11 @@ public struct BobPTBackendService: Sendable {
         let endpoint = baseURL.appendingPathComponent("api/auth/\(provider.rawValue)")
         let body = SocialLoginRequest(
             accessToken: accessToken,
-            idToken: idToken,
+            idToken: provider == .google ? nil : idToken,
+            identityToken: provider == .google ? idToken : nil,
             authorizationCode: authorizationCode,
             redirectURI: redirectURI,
+            state: state,
             fullName: fullName,
             email: email
         )
@@ -106,6 +109,91 @@ public struct BobPTBackendService: Sendable {
             method: .post,
             parameters: body,
             headers: nil
+        )
+
+        return response.data
+    }
+
+    public func fetchLinkedSocialIdentities(accessToken: String) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities")
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .get,
+            parameters: Optional<EmptyRequest>.none,
+            headers: authorizationHeaders(accessToken: accessToken)
+        )
+
+        return response.data
+    }
+
+    public func linkAppleIdentity(identityToken: String, fullName: String?, accessToken: String) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities/apple")
+        let body = AppleLoginRequest(identityToken: identityToken, fullName: fullName)
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .post,
+            parameters: body,
+            headers: authorizationHeaders(accessToken: accessToken)
+        )
+
+        return response.data
+    }
+
+    public func linkSocialIdentity(
+        provider: SocialLoginProvider,
+        accessToken socialAccessToken: String?,
+        idToken: String?,
+        authorizationCode: String? = nil,
+        redirectURI: String? = nil,
+        state: String? = nil,
+        fullName: String? = nil,
+        email: String? = nil,
+        currentAccessToken: String
+    ) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities/\(provider.rawValue)")
+        let body = SocialLoginRequest(
+            accessToken: socialAccessToken,
+            idToken: provider == .google ? nil : idToken,
+            identityToken: provider == .google ? idToken : nil,
+            authorizationCode: authorizationCode,
+            redirectURI: redirectURI,
+            state: state,
+            fullName: fullName,
+            email: email
+        )
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .post,
+            parameters: body,
+            headers: authorizationHeaders(accessToken: currentAccessToken)
+        )
+
+        return response.data
+    }
+
+    public func unlinkSocialIdentity(provider: AuthProvider, accessToken: String) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities/\(provider.rawValue)")
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .delete,
+            parameters: Optional<EmptyRequest>.none,
+            headers: authorizationHeaders(accessToken: accessToken)
         )
 
         return response.data
@@ -173,7 +261,7 @@ public struct BobPTBackendService: Sendable {
                 case .success:
                     continuation.resume()
                 case .failure(let error):
-                    continuation.resume(throwing: error.backendServiceError)
+                    continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                 }
             }
         }
@@ -202,7 +290,7 @@ public struct BobPTBackendService: Sendable {
                     case .success:
                         continuation.resume()
                     case .failure(let error):
-                        continuation.resume(throwing: error.backendServiceError)
+                        continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                     }
                 }
         }
@@ -230,7 +318,7 @@ public struct BobPTBackendService: Sendable {
                     case .success(let value):
                         continuation.resume(returning: value)
                     case .failure(let error):
-                        continuation.resume(throwing: error.backendServiceError)
+                        continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                     }
                 }
         }
@@ -245,6 +333,7 @@ public enum BackendServiceError: LocalizedError {
     case serverUnavailable
     case networkUnavailable
     case invalidResponse
+    case message(String)
 
     public var errorDescription: String? {
         switch self {
@@ -262,6 +351,8 @@ public enum BackendServiceError: LocalizedError {
             return "네트워크 연결을 확인해주세요."
         case .invalidResponse:
             return "서버 응답을 처리하지 못했습니다."
+        case .message(let value):
+            return value
         }
     }
 }
@@ -285,6 +376,40 @@ public enum SocialLoginProvider: String, CaseIterable, Sendable {
     case google
 }
 
+public enum AuthProvider: String, CaseIterable, Codable, Identifiable, Sendable {
+    case apple
+    case kakao
+    case naver
+    case google
+
+    public var id: String {
+        rawValue
+    }
+
+    public var displayName: String {
+        switch self {
+        case .apple:
+            return "Apple"
+        case .kakao:
+            return "카카오"
+        case .naver:
+            return "네이버"
+        case .google:
+            return "Google"
+        }
+    }
+}
+
+public struct LinkedSocialIdentity: Codable, Identifiable, Sendable {
+    public var id: String {
+        provider.rawValue
+    }
+
+    public let provider: AuthProvider
+    public let email: String?
+    public let linkedAt: String
+}
+
 public struct SavedRestaurant: Identifiable, Sendable {
     public let id: String
     public let restaurant: Restaurant
@@ -292,6 +417,10 @@ public struct SavedRestaurant: Identifiable, Sendable {
 
 private struct APIResponse<T: Decodable>: Decodable {
     let data: T
+}
+
+private struct APIErrorResponse: Decodable {
+    let message: String?
 }
 
 private struct EmptyRequest: Encodable {}
@@ -304,8 +433,10 @@ private struct AppleLoginRequest: Encodable, Sendable {
 private struct SocialLoginRequest: Encodable, Sendable {
     let accessToken: String?
     let idToken: String?
+    let identityToken: String?
     let authorizationCode: String?
     let redirectURI: String?
+    let state: String?
     let fullName: String?
     let email: String?
 }
@@ -379,7 +510,11 @@ private func authorizationHeaders(accessToken: String?) -> HTTPHeaders? {
 }
 
 private extension AFError {
-    var backendServiceError: Error {
+    func backendServiceError(responseData: Data?) -> Error {
+        if let message = responseData?.loginFailureMessage {
+            return BackendServiceError.message(message)
+        }
+
         if let responseCode {
             switch responseCode {
             case 401:
@@ -405,6 +540,18 @@ private extension AFError {
         }
 
         return self
+    }
+}
+
+private extension Data {
+    var loginFailureMessage: String? {
+        guard let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: self),
+              let message = errorResponse.message,
+              message.contains("로그인에 실패") else {
+            return nil
+        }
+
+        return message
     }
 }
 
