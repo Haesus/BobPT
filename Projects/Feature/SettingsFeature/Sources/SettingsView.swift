@@ -335,7 +335,8 @@ public struct SettingsView: View {
                     accessToken: nil,
                     idToken: nil,
                     authorizationCode: authorizationCode,
-                    redirectURI: redirectURI
+                    redirectURI: redirectURI,
+                    state: state
                 )
             }
         }
@@ -383,6 +384,7 @@ public struct SettingsView: View {
         idToken: String?,
         authorizationCode: String? = nil,
         redirectURI: String? = nil,
+        state: String? = nil,
         fullName: String? = nil,
         email: String? = nil
     ) async {
@@ -397,6 +399,7 @@ public struct SettingsView: View {
                 idToken: idToken,
                 authorizationCode: authorizationCode,
                 redirectURI: redirectURI,
+                state: state,
                 fullName: fullName,
                 email: email
             )

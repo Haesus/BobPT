@@ -56,7 +56,7 @@ public struct BobPTBackendService: Sendable {
                     case .success:
                         continuation.resume()
                     case .failure(let error):
-                        continuation.resume(throwing: error.backendServiceError)
+                        continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                     }
                 }
         }
@@ -85,6 +85,7 @@ public struct BobPTBackendService: Sendable {
         idToken: String?,
         authorizationCode: String? = nil,
         redirectURI: String? = nil,
+        state: String? = nil,
         fullName: String? = nil,
         email: String? = nil
     ) async throws -> AuthSession {
@@ -98,6 +99,7 @@ public struct BobPTBackendService: Sendable {
             idToken: idToken,
             authorizationCode: authorizationCode,
             redirectURI: redirectURI,
+            state: state,
             fullName: fullName,
             email: email
         )
@@ -173,7 +175,7 @@ public struct BobPTBackendService: Sendable {
                 case .success:
                     continuation.resume()
                 case .failure(let error):
-                    continuation.resume(throwing: error.backendServiceError)
+                    continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                 }
             }
         }
@@ -202,7 +204,7 @@ public struct BobPTBackendService: Sendable {
                     case .success:
                         continuation.resume()
                     case .failure(let error):
-                        continuation.resume(throwing: error.backendServiceError)
+                        continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                     }
                 }
         }
@@ -230,7 +232,7 @@ public struct BobPTBackendService: Sendable {
                     case .success(let value):
                         continuation.resume(returning: value)
                     case .failure(let error):
-                        continuation.resume(throwing: error.backendServiceError)
+                        continuation.resume(throwing: error.backendServiceError(responseData: response.data))
                     }
                 }
         }
@@ -245,6 +247,7 @@ public enum BackendServiceError: LocalizedError {
     case serverUnavailable
     case networkUnavailable
     case invalidResponse
+    case message(String)
 
     public var errorDescription: String? {
         switch self {
@@ -262,6 +265,8 @@ public enum BackendServiceError: LocalizedError {
             return "네트워크 연결을 확인해주세요."
         case .invalidResponse:
             return "서버 응답을 처리하지 못했습니다."
+        case .message(let value):
+            return value
         }
     }
 }
@@ -294,6 +299,10 @@ private struct APIResponse<T: Decodable>: Decodable {
     let data: T
 }
 
+private struct APIErrorResponse: Decodable {
+    let message: String?
+}
+
 private struct EmptyRequest: Encodable {}
 
 private struct AppleLoginRequest: Encodable, Sendable {
@@ -306,6 +315,7 @@ private struct SocialLoginRequest: Encodable, Sendable {
     let idToken: String?
     let authorizationCode: String?
     let redirectURI: String?
+    let state: String?
     let fullName: String?
     let email: String?
 }
@@ -379,7 +389,11 @@ private func authorizationHeaders(accessToken: String?) -> HTTPHeaders? {
 }
 
 private extension AFError {
-    var backendServiceError: Error {
+    func backendServiceError(responseData: Data?) -> Error {
+        if let message = responseData?.loginFailureMessage {
+            return BackendServiceError.message(message)
+        }
+
         if let responseCode {
             switch responseCode {
             case 401:
@@ -405,6 +419,18 @@ private extension AFError {
         }
 
         return self
+    }
+}
+
+private extension Data {
+    var loginFailureMessage: String? {
+        guard let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: self),
+              let message = errorResponse.message,
+              message.contains("로그인에 실패") else {
+            return nil
+        }
+
+        return message
     }
 }
 

@@ -67,6 +67,7 @@ public final class AuthSessionStore: ObservableObject {
         idToken: String?,
         authorizationCode: String? = nil,
         redirectURI: String? = nil,
+        state: String? = nil,
         fullName: String? = nil,
         email: String? = nil
     ) async throws {
@@ -76,6 +77,7 @@ public final class AuthSessionStore: ObservableObject {
             idToken: idToken,
             authorizationCode: authorizationCode,
             redirectURI: redirectURI,
+            state: state,
             fullName: fullName,
             email: email
         )
@@ -97,7 +99,7 @@ public final class AuthSessionStore: ObservableObject {
             feedbackMessage = error.errorDescription
         case .networkUnavailable, .serverUnavailable:
             feedbackMessage = error.errorDescription
-        case .forbidden, .notFound, .invalidResponse:
+        case .forbidden, .notFound, .invalidResponse, .message:
             feedbackMessage = "로그인 상태를 확인하지 못했습니다."
         }
     }
