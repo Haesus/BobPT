@@ -20,6 +20,22 @@ default_platform(:ios)
 # iOS 플랫폼 전용 Lane 정의 블록
 # ------------------------------------------------------------
 platform :ios do
+  private_lane :ensure_sign_in_with_apple_capability do |options|
+    bundle_id = options[:bundle_id]
+    UI.user_error!("bundle_id is required") if bundle_id.to_s.empty?
+
+    bundle = Spaceship::ConnectAPI::BundleId.find(bundle_id)
+    UI.user_error!("Bundle ID not found on Apple Developer Portal: #{bundle_id}") unless bundle
+
+    capability_type = Spaceship::ConnectAPI::BundleIdCapability::Type::APPLE_ID_AUTH
+    enabled = bundle.get_capabilities.any? { |capability| capability.is_type?(capability_type) }
+    if enabled
+      UI.message("Sign in with Apple capability is already enabled for #{bundle_id}")
+    else
+      UI.message("Enabling Sign in with Apple capability for #{bundle_id}")
+      bundle.create_capability(capability_type)
+    end
+  end
 
   private_lane :archive_app do |options|
     setup_ci if ENV["CI"]
@@ -58,6 +74,9 @@ platform :ios do
       key_filepath: File.expand_path("~/AuthKey_#{ENV['ASC_KEY_ID']}.p8")
     )
 
+    repair_profiles = ENV["MATCH_REPAIR_PROFILES"] == "1"
+    ensure_sign_in_with_apple_capability(bundle_id: bundle_id) if repair_profiles
+
     # --------------------------------------------------------
     # 2) 코드사인 자격 로드(match)
     #    - 목적: 배포용(앱스토어) 인증서/프로비저닝을 암호화된 git 레포에서 가져옴
@@ -69,8 +88,6 @@ platform :ios do
     #    - readonly: true     → CI에서는 읽기 전용이 안전
     #    - 사전 준비: 로컬에서 한 번 `fastlane match appstore`로 발급/푸시 완료되어 있어야 함
     # --------------------------------------------------------
-    repair_profiles = ENV["MATCH_REPAIR_PROFILES"] == "1"
-
     match(
       type: "appstore",
       readonly: !repair_profiles,
