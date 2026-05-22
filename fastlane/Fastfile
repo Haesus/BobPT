@@ -33,7 +33,20 @@ platform :ios do
       UI.message("Sign in with Apple capability is already enabled for #{bundle_id}")
     else
       UI.message("Enabling Sign in with Apple capability for #{bundle_id}")
-      bundle.create_capability(capability_type)
+      bundle.update_capability(
+        capability_type,
+        enabled: true,
+        settings: [
+          {
+            key: Spaceship::ConnectAPI::BundleIdCapability::Settings::APPLE_ID_AUTH_APP_CONSENT,
+            options: [
+              {
+                key: Spaceship::ConnectAPI::BundleIdCapability::Options::PRIMARY_APP_CONSENT
+              }
+            ]
+          }
+        ]
+      )
     end
   end
 
