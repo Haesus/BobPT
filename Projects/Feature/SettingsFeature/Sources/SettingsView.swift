@@ -41,75 +41,30 @@ public struct SettingsView: View {
             }
 #endif
 
-            Section("계정") {
+            Section {
                 if let user = authStore.session?.user {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(user.displayName ?? user.email ?? "Apple 계정")
-                            .font(.headline)
-                        Text("로그인됨")
-                            .font(.subheadline)
-                            .foregroundStyle(DesignSystem.Colors.secondaryText)
-                    }
-                    .listRowBackground(DesignSystem.Colors.surface)
-
-                    Button(role: .destructive) {
-                        authStore.signOut(message: "로그아웃되었습니다.")
-                    } label: {
-                        Text("로그아웃")
-                    }
-                    .listRowBackground(DesignSystem.Colors.surface)
-
+                    signedInAccountCard(user)
+                        .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
+                        .listRowBackground(Color.clear)
                 } else {
-                    ZStack {
-                        SignInWithAppleButton(.continue) { request in
-                            request.requestedScopes = [.fullName, .email]
-                        } onCompletion: { result in
-                            handleAppleSignIn(result)
-                        }
-                        .signInWithAppleButtonStyle(.black)
-                        .opacity(isSigningIn ? 0.35 : 1)
-                        .disabled(isSigningIn)
-
-                        if isSigningIn {
-                            ProgressView()
-                                .tint(.white)
-                        }
-                    }
-                    .frame(height: 44)
-                    .listRowBackground(DesignSystem.Colors.surface)
-
-                    Button {
-                        handleKakaoSignIn()
-                    } label: {
-                        Label("카카오로 계속하기", systemImage: "message.fill")
-                    }
-                    .disabled(isSigningIn)
-                    .listRowBackground(DesignSystem.Colors.surface)
-
-                    Button {
-                        handleNaverSignIn()
-                    } label: {
-                        Label("네이버로 계속하기", systemImage: "n.circle.fill")
-                    }
-                    .disabled(isSigningIn)
-                    .listRowBackground(DesignSystem.Colors.surface)
-
-                    Button {
-                        handleGoogleSignIn()
-                    } label: {
-                        Label("Google로 계속하기", systemImage: "g.circle.fill")
-                    }
-                    .disabled(isSigningIn)
-                    .listRowBackground(DesignSystem.Colors.surface)
+                    signedOutAccountCard
+                        .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
+                        .listRowBackground(Color.clear)
                 }
+            } header: {
+                Text("계정")
             }
 
             if authStore.isSignedIn {
-                Section("연결된 로그인") {
+                Section {
                     ForEach(AuthProvider.allCases) { provider in
                         linkedIdentityRow(provider)
                             .listRowBackground(DesignSystem.Colors.surface)
                     }
+                } header: {
+                    Text("연결된 로그인")
+                } footer: {
+                    Text("여러 로그인 수단을 연결해두면 같은 계정으로 계속 사용할 수 있습니다.")
                 }
             }
 
@@ -206,14 +161,231 @@ public struct SettingsView: View {
     }
 #endif
 
+    private func signedInAccountCard(_ user: AuthUser) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .center, spacing: 14) {
+                Circle()
+                    .fill(DesignSystem.Colors.primary.opacity(0.14))
+                    .frame(width: 54, height: 54)
+                    .overlay {
+                        Image(systemName: "person.fill")
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundStyle(DesignSystem.Colors.primary)
+                    }
+
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(user.displayName ?? user.email ?? "BobPT 사용자")
+                        .font(.headline)
+                        .foregroundStyle(DesignSystem.Colors.text)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.82)
+
+                    if let email = user.email, email != user.displayName {
+                        Text(email)
+                            .font(.subheadline)
+                            .foregroundStyle(DesignSystem.Colors.secondaryText)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.82)
+                    }
+                }
+
+                Spacer(minLength: 10)
+
+                statusBadge("로그인됨", systemImage: "checkmark.circle.fill")
+            }
+
+            Divider()
+
+            HStack(spacing: 10) {
+                Label("추천 기록 동기화 가능", systemImage: "icloud.and.arrow.up")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
+
+                Spacer()
+
+                Button(role: .destructive) {
+                    authStore.signOut(message: "로그아웃되었습니다.")
+                } label: {
+                    Text("로그아웃")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .buttonStyle(.borderless)
+                .disabled(isSigningIn)
+            }
+        }
+        .padding(16)
+        .background(DesignSystem.Colors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous)
+                .stroke(DesignSystem.Colors.border, lineWidth: 1)
+        }
+    }
+
+    private var signedOutAccountCard: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("로그인하고 BobPT를 이어서 사용하세요")
+                    .font(.title3.weight(.bold))
+                    .foregroundStyle(DesignSystem.Colors.text)
+
+                Text("추천 기록 저장과 계정 연결을 위해 사용하는 로그인 수단을 선택해 주세요.")
+                    .font(.subheadline)
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            VStack(spacing: 10) {
+                appleSignInRow
+
+                socialSignInButton(
+                    provider: .kakao,
+                    title: "카카오로 계속하기",
+                    background: Color(red: 1.0, green: 0.90, blue: 0.0),
+                    foreground: .black
+                ) {
+                    handleKakaoSignIn()
+                }
+
+                socialSignInButton(
+                    provider: .naver,
+                    title: "네이버로 계속하기",
+                    background: Color(red: 0.01, green: 0.78, blue: 0.35),
+                    foreground: .white
+                ) {
+                    handleNaverSignIn()
+                }
+
+                socialSignInButton(
+                    provider: .google,
+                    title: "Google로 계속하기",
+                    background: DesignSystem.Colors.surface,
+                    foreground: DesignSystem.Colors.text,
+                    showsBorder: true
+                ) {
+                    handleGoogleSignIn()
+                }
+            }
+
+            if isSigningIn {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .controlSize(.small)
+
+                    Text("로그인 요청을 처리하고 있습니다.")
+                        .font(.caption)
+                        .foregroundStyle(DesignSystem.Colors.secondaryText)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .padding(16)
+        .background(DesignSystem.Colors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous)
+                .stroke(DesignSystem.Colors.border, lineWidth: 1)
+        }
+    }
+
+    private var appleSignInRow: some View {
+        ZStack {
+            SignInWithAppleButton(.continue) { request in
+                request.requestedScopes = [.fullName, .email]
+            } onCompletion: { result in
+                handleAppleSignIn(result)
+            }
+            .signInWithAppleButtonStyle(.black)
+            .opacity(isSigningIn ? 0.35 : 1)
+            .disabled(isSigningIn)
+
+            if isSigningIn {
+                ProgressView()
+                    .tint(.white)
+            }
+        }
+        .frame(height: 50)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous))
+    }
+
+    private func socialSignInButton(
+        provider: AuthProvider,
+        title: String,
+        background: Color,
+        foreground: Color,
+        showsBorder: Bool = false,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 10) {
+                providerIcon(provider)
+
+                Text(title)
+                    .font(.system(size: 16, weight: .semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.82)
+
+                Spacer(minLength: 0)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .padding(.horizontal, 15)
+            .foregroundStyle(foreground)
+            .background(background)
+            .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous))
+            .overlay {
+                if showsBorder {
+                    RoundedRectangle(cornerRadius: DesignSystem.Radius.medium, style: .continuous)
+                        .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                }
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(isSigningIn)
+        .opacity(isSigningIn ? 0.55 : 1)
+    }
+
+    private func statusBadge(_ title: String, systemImage: String) -> some View {
+        Label(title, systemImage: systemImage)
+            .font(.caption.weight(.bold))
+            .foregroundStyle(DesignSystem.Colors.primary)
+            .padding(.horizontal, 9)
+            .padding(.vertical, 6)
+            .background(DesignSystem.Colors.primary.opacity(0.12))
+            .clipShape(Capsule())
+            .lineLimit(1)
+    }
+
+    @ViewBuilder
+    private func providerIcon(_ provider: AuthProvider) -> some View {
+        switch provider {
+        case .apple, .kakao:
+            Image(systemName: provider.systemImageName)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(provider.tintColor)
+                .frame(width: 24, height: 24)
+        case .naver, .google:
+            Text(provider.shortSymbol)
+                .font(.system(size: 15, weight: .heavy))
+                .foregroundStyle(provider.tintColor)
+                .frame(width: 24, height: 24)
+        }
+    }
+
     @ViewBuilder
     private func linkedIdentityRow(_ provider: AuthProvider) -> some View {
         let isLinked = authStore.linkedIdentities.contains { $0.provider == provider }
 
-        HStack(spacing: 12) {
+        HStack(spacing: 14) {
+            providerIcon(provider)
+                .frame(width: 36, height: 36)
+                .background(provider.tintColor.opacity(0.12))
+                .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.small, style: .continuous))
+
             VStack(alignment: .leading, spacing: 4) {
-                Label(provider.displayName, systemImage: provider.systemImageName)
-                    .font(.body)
+                Text(provider.displayName)
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(DesignSystem.Colors.text)
 
                 Text(isLinked ? "연결됨" : "연결 안 됨")
                     .font(.caption)
@@ -227,8 +399,10 @@ public struct SettingsView: View {
                     unlinkIdentity(provider)
                 } label: {
                     Text("해제")
+                        .font(.subheadline.weight(.semibold))
                 }
                 .disabled(isSigningIn)
+                .buttonStyle(.borderless)
             } else if provider == .apple {
                 SignInWithAppleButton(.continue) { request in
                     request.requestedScopes = [.fullName, .email]
@@ -243,11 +417,13 @@ public struct SettingsView: View {
                     linkIdentity(provider)
                 } label: {
                     Text("연결")
+                        .font(.subheadline.weight(.semibold))
                 }
                 .disabled(isSigningIn)
+                .buttonStyle(.borderless)
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 8)
     }
 
     private func refreshLinkedIdentitiesIfNeeded() async {
@@ -571,6 +747,32 @@ private extension AuthProvider {
             return "n.circle.fill"
         case .google:
             return "g.circle.fill"
+        }
+    }
+
+    var shortSymbol: String {
+        switch self {
+        case .apple:
+            return "A"
+        case .kakao:
+            return "K"
+        case .naver:
+            return "N"
+        case .google:
+            return "G"
+        }
+    }
+
+    var tintColor: Color {
+        switch self {
+        case .apple:
+            return .black
+        case .kakao:
+            return .black
+        case .naver:
+            return Color(red: 0.01, green: 0.78, blue: 0.35)
+        case .google:
+            return Color(red: 0.26, green: 0.52, blue: 0.96)
         }
     }
 }
