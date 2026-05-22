@@ -277,7 +277,7 @@ public struct SettingsView: View {
                         "accessTokenSuffix": String(accessToken.suffix(6))
                     ]
                 )
-                await completeSocialSignIn(provider: .kakao, accessToken: accessToken, idToken: nil)
+                await completeSocialSignIn(provider: .kakao, accessToken: accessToken, idToken: oauthToken?.idToken)
             }
         }
 
