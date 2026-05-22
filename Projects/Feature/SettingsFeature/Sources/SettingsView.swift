@@ -18,6 +18,7 @@ import FeedbackUI
 
 public struct SettingsView: View {
     @ObservedObject private var authStore: AuthSessionStore
+    @Environment(\.colorScheme) private var colorScheme
     @State private var showsMailComposer = false
     @State private var opensMailSettingsAlert = false
     @State private var alertMessage: String?
@@ -261,6 +262,7 @@ public struct SettingsView: View {
                     title: "Google로 계속하기",
                     background: DesignSystem.Colors.surface,
                     foreground: DesignSystem.Colors.text,
+                    iconForeground: AuthProvider.google.brandColor,
                     showsBorder: true
                 ) {
                     handleGoogleSignIn()
@@ -313,12 +315,13 @@ public struct SettingsView: View {
         title: String,
         background: Color,
         foreground: Color,
+        iconForeground: Color? = nil,
         showsBorder: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
             HStack(spacing: 10) {
-                providerIcon(provider)
+                providerIcon(provider, foreground: iconForeground ?? foreground)
 
                 Text(title)
                     .font(.system(size: 16, weight: .semibold))
@@ -357,17 +360,17 @@ public struct SettingsView: View {
     }
 
     @ViewBuilder
-    private func providerIcon(_ provider: AuthProvider) -> some View {
+    private func providerIcon(_ provider: AuthProvider, foreground: Color) -> some View {
         switch provider {
         case .apple, .kakao:
             Image(systemName: provider.systemImageName)
                 .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(provider.tintColor)
+                .foregroundStyle(foreground)
                 .frame(width: 24, height: 24)
         case .naver, .google:
             Text(provider.shortSymbol)
                 .font(.system(size: 15, weight: .heavy))
-                .foregroundStyle(provider.tintColor)
+                .foregroundStyle(foreground)
                 .frame(width: 24, height: 24)
         }
     }
@@ -377,9 +380,9 @@ public struct SettingsView: View {
         let isLinked = authStore.linkedIdentities.contains { $0.provider == provider }
 
         HStack(spacing: 14) {
-            providerIcon(provider)
+            providerIcon(provider, foreground: provider.iconForegroundColor(for: colorScheme))
                 .frame(width: 36, height: 36)
-                .background(provider.tintColor.opacity(0.12))
+                .background(provider.iconBackgroundColor(for: colorScheme))
                 .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Radius.small, style: .continuous))
 
             VStack(alignment: .leading, spacing: 4) {
@@ -763,7 +766,7 @@ private extension AuthProvider {
         }
     }
 
-    var tintColor: Color {
+    var brandColor: Color {
         switch self {
         case .apple:
             return .black
@@ -774,6 +777,32 @@ private extension AuthProvider {
         case .google:
             return Color(red: 0.26, green: 0.52, blue: 0.96)
         }
+    }
+
+    func iconForegroundColor(for colorScheme: ColorScheme) -> Color {
+        switch self {
+        case .apple:
+            return DesignSystem.Colors.text
+        case .kakao:
+            return colorScheme == .dark ? Self.kakaoYellow : .black
+        case .naver, .google:
+            return brandColor
+        }
+    }
+
+    func iconBackgroundColor(for colorScheme: ColorScheme) -> Color {
+        switch self {
+        case .apple:
+            return DesignSystem.Colors.text.opacity(colorScheme == .dark ? 0.18 : 0.08)
+        case .kakao:
+            return iconForegroundColor(for: colorScheme).opacity(colorScheme == .dark ? 0.18 : 0.08)
+        case .naver, .google:
+            return brandColor.opacity(colorScheme == .dark ? 0.20 : 0.12)
+        }
+    }
+
+    private static var kakaoYellow: Color {
+        Color(red: 1.0, green: 0.90, blue: 0.0)
     }
 }
 
