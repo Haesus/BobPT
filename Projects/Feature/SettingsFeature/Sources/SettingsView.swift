@@ -58,6 +58,7 @@ public struct SettingsView: View {
                         Text("로그아웃")
                     }
                     .listRowBackground(DesignSystem.Colors.surface)
+
                 } else {
                     ZStack {
                         SignInWithAppleButton(.continue) { request in
@@ -100,6 +101,15 @@ public struct SettingsView: View {
                     }
                     .disabled(isSigningIn)
                     .listRowBackground(DesignSystem.Colors.surface)
+                }
+            }
+
+            if authStore.isSignedIn {
+                Section("연결된 로그인") {
+                    ForEach(AuthProvider.allCases) { provider in
+                        linkedIdentityRow(provider)
+                            .listRowBackground(DesignSystem.Colors.surface)
+                    }
                 }
             }
 
@@ -158,6 +168,9 @@ public struct SettingsView: View {
         .bobPTAlert(title: "메일 계정을 설정해주세요", isPresented: $opensMailSettingsAlert)
         .bobPTAlert(message: $alertMessage)
         .bobPTToast(message: $toastMessage)
+        .task(id: authStore.isSignedIn) {
+            await refreshLinkedIdentitiesIfNeeded()
+        }
     }
 
 #if DEV
@@ -193,7 +206,65 @@ public struct SettingsView: View {
     }
 #endif
 
-    private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
+    @ViewBuilder
+    private func linkedIdentityRow(_ provider: AuthProvider) -> some View {
+        let isLinked = authStore.linkedIdentities.contains { $0.provider == provider }
+
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Label(provider.displayName, systemImage: provider.systemImageName)
+                    .font(.body)
+
+                Text(isLinked ? "연결됨" : "연결 안 됨")
+                    .font(.caption)
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
+            }
+
+            Spacer()
+
+            if isLinked {
+                Button(role: .destructive) {
+                    unlinkIdentity(provider)
+                } label: {
+                    Text("해제")
+                }
+                .disabled(isSigningIn)
+            } else if provider == .apple {
+                SignInWithAppleButton(.continue) { request in
+                    request.requestedScopes = [.fullName, .email]
+                } onCompletion: { result in
+                    handleAppleSignIn(result, mode: .link)
+                }
+                .signInWithAppleButtonStyle(.black)
+                .frame(width: 112, height: 36)
+                .disabled(isSigningIn)
+            } else {
+                Button {
+                    linkIdentity(provider)
+                } label: {
+                    Text("연결")
+                }
+                .disabled(isSigningIn)
+            }
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func refreshLinkedIdentitiesIfNeeded() async {
+        guard authStore.isSignedIn else {
+            return
+        }
+
+        do {
+            try await authStore.refreshLinkedIdentities()
+        } catch let error as BackendServiceError {
+            alertMessage = error.errorDescription ?? "연결된 로그인 정보를 불러오지 못했습니다."
+        } catch {
+            alertMessage = "연결된 로그인 정보를 불러오지 못했습니다."
+        }
+    }
+
+    private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>, mode: SocialAuthMode = .signIn) {
         switch result {
         case .success(let authorization):
             guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
@@ -211,15 +282,22 @@ public struct SettingsView: View {
                 }
 
                 do {
-                    try await authStore.signInWithApple(
-                        identityToken: identityToken,
-                        fullName: name.isEmpty ? nil : name
-                    )
-                    toastMessage = "로그인되었습니다."
+                    if mode == .signIn {
+                        try await authStore.signInWithApple(
+                            identityToken: identityToken,
+                            fullName: name.isEmpty ? nil : name
+                        )
+                    } else {
+                        try await authStore.linkAppleIdentity(
+                            identityToken: identityToken,
+                            fullName: name.isEmpty ? nil : name
+                        )
+                    }
+                    toastMessage = mode.successMessage
                 } catch let error as BackendServiceError {
-                    alertMessage = error.errorDescription ?? "로그인에 실패했습니다."
+                    alertMessage = error.errorDescription ?? mode.failureMessage
                 } catch {
-                    alertMessage = "로그인에 실패했습니다."
+                    alertMessage = mode.failureMessage
                 }
             }
         case .failure(let error):
@@ -232,7 +310,7 @@ public struct SettingsView: View {
         }
     }
 
-    private func handleKakaoSignIn() {
+    private func handleKakaoSignIn(mode: SocialAuthMode = .signIn) {
         isSigningIn = true
 
         let isKakaoTalkAvailable = UserApi.isKakaoTalkLoginAvailable()
@@ -277,7 +355,7 @@ public struct SettingsView: View {
                         "accessTokenSuffix": String(accessToken.suffix(6))
                     ]
                 )
-                await completeSocialSignIn(provider: .kakao, accessToken: accessToken, idToken: oauthToken?.idToken)
+                await completeSocialAuthentication(provider: .kakao, accessToken: accessToken, idToken: oauthToken?.idToken, mode: mode)
             }
         }
 
@@ -288,7 +366,7 @@ public struct SettingsView: View {
         }
     }
 
-    private func handleNaverSignIn() {
+    private func handleNaverSignIn(mode: SocialAuthMode = .signIn) {
         guard let clientId = Bundle.main.socialLoginValue(for: "NAVER_LOGIN_CLIENT_ID"),
               let urlScheme = Bundle.main.socialLoginValue(for: "NAVER_LOGIN_URL_SCHEME") else {
             alertMessage = "네이버 로그인 설정이 필요합니다."
@@ -330,13 +408,14 @@ public struct SettingsView: View {
                     return
                 }
 
-                await completeSocialSignIn(
+                await completeSocialAuthentication(
                     provider: .naver,
                     accessToken: nil,
                     idToken: nil,
                     authorizationCode: authorizationCode,
                     redirectURI: redirectURI,
-                    state: state
+                    state: state,
+                    mode: mode
                 )
             }
         }
@@ -346,7 +425,7 @@ public struct SettingsView: View {
         session.start()
     }
 
-    private func handleGoogleSignIn() {
+    private func handleGoogleSignIn(mode: SocialAuthMode = .signIn) {
         guard let presentingViewController = UIApplication.shared.rootViewController else {
             alertMessage = "로그인 화면을 열 수 없습니다."
             return
@@ -367,18 +446,19 @@ public struct SettingsView: View {
                     return
                 }
 
-                await completeSocialSignIn(
+                await completeSocialAuthentication(
                     provider: .google,
                     accessToken: user.accessToken.tokenString,
                     idToken: user.idToken?.tokenString,
                     fullName: user.profile?.name,
-                    email: user.profile?.email
+                    email: user.profile?.email,
+                    mode: mode
                 )
             }
         }
     }
 
-    private func completeSocialSignIn(
+    private func completeSocialAuthentication(
         provider: SocialLoginProvider,
         accessToken: String?,
         idToken: String?,
@@ -386,28 +466,111 @@ public struct SettingsView: View {
         redirectURI: String? = nil,
         state: String? = nil,
         fullName: String? = nil,
-        email: String? = nil
+        email: String? = nil,
+        mode: SocialAuthMode = .signIn
     ) async {
         defer {
             isSigningIn = false
         }
 
         do {
-            try await authStore.signInWithSocial(
-                provider: provider,
-                accessToken: accessToken,
-                idToken: idToken,
-                authorizationCode: authorizationCode,
-                redirectURI: redirectURI,
-                state: state,
-                fullName: fullName,
-                email: email
-            )
-            toastMessage = "로그인되었습니다."
+            if mode == .signIn {
+                try await authStore.signInWithSocial(
+                    provider: provider,
+                    accessToken: accessToken,
+                    idToken: idToken,
+                    authorizationCode: authorizationCode,
+                    redirectURI: redirectURI,
+                    state: state,
+                    fullName: fullName,
+                    email: email
+                )
+            } else {
+                try await authStore.linkSocialIdentity(
+                    provider: provider,
+                    accessToken: accessToken,
+                    idToken: idToken,
+                    authorizationCode: authorizationCode,
+                    redirectURI: redirectURI,
+                    state: state,
+                    fullName: fullName,
+                    email: email
+                )
+            }
+            toastMessage = mode.successMessage
         } catch let error as BackendServiceError {
-            alertMessage = error.errorDescription ?? "로그인에 실패했습니다."
+            alertMessage = error.errorDescription ?? mode.failureMessage
         } catch {
-            alertMessage = "로그인에 실패했습니다."
+            alertMessage = mode.failureMessage
+        }
+    }
+
+    private func linkIdentity(_ provider: AuthProvider) {
+        switch provider {
+        case .apple:
+            return
+        case .kakao:
+            handleKakaoSignIn(mode: .link)
+        case .naver:
+            handleNaverSignIn(mode: .link)
+        case .google:
+            handleGoogleSignIn(mode: .link)
+        }
+    }
+
+    private func unlinkIdentity(_ provider: AuthProvider) {
+        isSigningIn = true
+        Task { @MainActor in
+            defer {
+                isSigningIn = false
+            }
+
+            do {
+                try await authStore.unlinkSocialIdentity(provider: provider)
+                toastMessage = "연결을 해제했습니다."
+            } catch let error as BackendServiceError {
+                alertMessage = error.errorDescription ?? "연결 해제에 실패했습니다."
+            } catch {
+                alertMessage = "연결 해제에 실패했습니다."
+            }
+        }
+    }
+}
+
+private enum SocialAuthMode {
+    case signIn
+    case link
+
+    var successMessage: String {
+        switch self {
+        case .signIn:
+            return "로그인되었습니다."
+        case .link:
+            return "계정을 연결했습니다."
+        }
+    }
+
+    var failureMessage: String {
+        switch self {
+        case .signIn:
+            return "로그인에 실패했습니다."
+        case .link:
+            return "계정 연결에 실패했습니다."
+        }
+    }
+}
+
+private extension AuthProvider {
+    var systemImageName: String {
+        switch self {
+        case .apple:
+            return "apple.logo"
+        case .kakao:
+            return "message.fill"
+        case .naver:
+            return "n.circle.fill"
+        case .google:
+            return "g.circle.fill"
         }
     }
 }

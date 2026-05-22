@@ -113,6 +113,90 @@ public struct BobPTBackendService: Sendable {
         return response.data
     }
 
+    public func fetchLinkedSocialIdentities(accessToken: String) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities")
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .get,
+            parameters: Optional<EmptyRequest>.none,
+            headers: authorizationHeaders(accessToken: accessToken)
+        )
+
+        return response.data
+    }
+
+    public func linkAppleIdentity(identityToken: String, fullName: String?, accessToken: String) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities/apple")
+        let body = AppleLoginRequest(identityToken: identityToken, fullName: fullName)
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .post,
+            parameters: body,
+            headers: authorizationHeaders(accessToken: accessToken)
+        )
+
+        return response.data
+    }
+
+    public func linkSocialIdentity(
+        provider: SocialLoginProvider,
+        accessToken socialAccessToken: String?,
+        idToken: String?,
+        authorizationCode: String? = nil,
+        redirectURI: String? = nil,
+        state: String? = nil,
+        fullName: String? = nil,
+        email: String? = nil,
+        currentAccessToken: String
+    ) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities/\(provider.rawValue)")
+        let body = SocialLoginRequest(
+            accessToken: socialAccessToken,
+            idToken: idToken,
+            authorizationCode: authorizationCode,
+            redirectURI: redirectURI,
+            state: state,
+            fullName: fullName,
+            email: email
+        )
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .post,
+            parameters: body,
+            headers: authorizationHeaders(accessToken: currentAccessToken)
+        )
+
+        return response.data
+    }
+
+    public func unlinkSocialIdentity(provider: AuthProvider, accessToken: String) async throws -> [LinkedSocialIdentity] {
+        guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
+            throw BackendServiceError.missingBaseURL
+        }
+
+        let endpoint = baseURL.appendingPathComponent("api/auth/identities/\(provider.rawValue)")
+        let response: APIResponse<[LinkedSocialIdentity]> = try await requestDecodable(
+            endpoint,
+            method: .delete,
+            parameters: Optional<EmptyRequest>.none,
+            headers: authorizationHeaders(accessToken: accessToken)
+        )
+
+        return response.data
+    }
+
     public func fetchSelections(accessToken: String) async throws -> [SavedRestaurant] {
         guard let baseURL = Bundle.main.apiBaseURL.validBaseURL else {
             throw BackendServiceError.missingBaseURL
@@ -288,6 +372,40 @@ public enum SocialLoginProvider: String, CaseIterable, Sendable {
     case kakao
     case naver
     case google
+}
+
+public enum AuthProvider: String, CaseIterable, Codable, Identifiable, Sendable {
+    case apple
+    case kakao
+    case naver
+    case google
+
+    public var id: String {
+        rawValue
+    }
+
+    public var displayName: String {
+        switch self {
+        case .apple:
+            return "Apple"
+        case .kakao:
+            return "카카오"
+        case .naver:
+            return "네이버"
+        case .google:
+            return "Google"
+        }
+    }
+}
+
+public struct LinkedSocialIdentity: Codable, Identifiable, Sendable {
+    public var id: String {
+        provider.rawValue
+    }
+
+    public let provider: AuthProvider
+    public let email: String?
+    public let linkedAt: String
 }
 
 public struct SavedRestaurant: Identifiable, Sendable {

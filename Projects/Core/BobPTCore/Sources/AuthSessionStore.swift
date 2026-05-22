@@ -11,6 +11,7 @@ import Security
 @MainActor
 public final class AuthSessionStore: ObservableObject {
     @Published public private(set) var session: AuthSession?
+    @Published public private(set) var linkedIdentities: [LinkedSocialIdentity] = []
     @Published public var feedbackMessage: String?
 
     private let backendService: BobPTBackendService
@@ -48,6 +49,7 @@ public final class AuthSessionStore: ObservableObject {
             )
             session = updatedSession
             keychain.save(updatedSession)
+            linkedIdentities = try await backendService.fetchLinkedSocialIdentities(accessToken: accessToken)
         } catch let error as BackendServiceError {
             handleSessionValidationError(error)
         } catch {
@@ -59,6 +61,7 @@ public final class AuthSessionStore: ObservableObject {
         let session = try await backendService.signInWithApple(identityToken: identityToken, fullName: fullName)
         self.session = session
         keychain.save(session)
+        linkedIdentities = try await backendService.fetchLinkedSocialIdentities(accessToken: session.accessToken)
     }
 
     public func signInWithSocial(
@@ -83,10 +86,68 @@ public final class AuthSessionStore: ObservableObject {
         )
         self.session = session
         keychain.save(session)
+        linkedIdentities = try await backendService.fetchLinkedSocialIdentities(accessToken: session.accessToken)
+    }
+
+    public func refreshLinkedIdentities() async throws {
+        guard let accessToken else {
+            linkedIdentities = []
+            return
+        }
+
+        linkedIdentities = try await backendService.fetchLinkedSocialIdentities(accessToken: accessToken)
+    }
+
+    public func linkAppleIdentity(identityToken: String, fullName: String?) async throws {
+        guard let accessToken else {
+            throw BackendServiceError.unauthorized
+        }
+
+        linkedIdentities = try await backendService.linkAppleIdentity(
+            identityToken: identityToken,
+            fullName: fullName,
+            accessToken: accessToken
+        )
+    }
+
+    public func linkSocialIdentity(
+        provider: SocialLoginProvider,
+        accessToken socialAccessToken: String?,
+        idToken: String?,
+        authorizationCode: String? = nil,
+        redirectURI: String? = nil,
+        state: String? = nil,
+        fullName: String? = nil,
+        email: String? = nil
+    ) async throws {
+        guard let accessToken else {
+            throw BackendServiceError.unauthorized
+        }
+
+        linkedIdentities = try await backendService.linkSocialIdentity(
+            provider: provider,
+            accessToken: socialAccessToken,
+            idToken: idToken,
+            authorizationCode: authorizationCode,
+            redirectURI: redirectURI,
+            state: state,
+            fullName: fullName,
+            email: email,
+            currentAccessToken: accessToken
+        )
+    }
+
+    public func unlinkSocialIdentity(provider: AuthProvider) async throws {
+        guard let accessToken else {
+            throw BackendServiceError.unauthorized
+        }
+
+        linkedIdentities = try await backendService.unlinkSocialIdentity(provider: provider, accessToken: accessToken)
     }
 
     public func signOut(message: String? = nil) {
         session = nil
+        linkedIdentities = []
         keychain.delete()
         feedbackMessage = message
     }
