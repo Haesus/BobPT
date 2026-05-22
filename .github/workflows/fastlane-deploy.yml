@@ -43,7 +43,7 @@ jobs:
 
     env:
       DEPLOY_TARGET: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_target || (github.base_ref == 'dev' && 'testflight' || 'app_store_prepare') }}
-      TUIST_BUILD_CONFIG: ${{ github.event_name == 'workflow_dispatch' && inputs.build_config || 'RELEASE' }}
+      TUIST_BUILD_CONFIG: ${{ github.event_name == 'workflow_dispatch' && inputs.build_config || (github.base_ref == 'dev' && 'BETA' || 'RELEASE') }}
       API_BASE_URL: ${{ secrets.API_BASE_URL }}
       ID_KEY: ${{ secrets.ID_KEY }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
