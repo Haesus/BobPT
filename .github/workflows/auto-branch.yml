@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build branch metadata
         env:
@@ -58,9 +58,9 @@ jobs:
           slug = re.sub(r"-+", "-", slug)
           slug = slug[:50].strip("-")
 
-          branch_name = f"{branch_type}/issue-{issue_number}"
+          branch_name = f"{branch_type}/{issue_number}"
           if slug:
-              branch_name = f"{branch_type}/{slug}-{issue_number}"
+              branch_name = f"{branch_type}/{issue_number}-{slug}"
 
           print(f"BRANCH_NAME={branch_name}")
           print(f"BASE_BRANCH={base_branch}")
@@ -77,7 +77,7 @@ jobs:
             --repo "${{ github.repository }}"
 
       - name: Comment on issue
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           BRANCH_NAME: ${{ env.BRANCH_NAME }}
           BASE_BRANCH: ${{ env.BASE_BRANCH }}
