@@ -96,7 +96,8 @@ public struct BobPTBackendService: Sendable {
         let endpoint = baseURL.appendingPathComponent("api/auth/\(provider.rawValue)")
         let body = SocialLoginRequest(
             accessToken: accessToken,
-            idToken: idToken,
+            idToken: provider == .google ? nil : idToken,
+            identityToken: provider == .google ? idToken : nil,
             authorizationCode: authorizationCode,
             redirectURI: redirectURI,
             state: state,
@@ -164,7 +165,8 @@ public struct BobPTBackendService: Sendable {
         let endpoint = baseURL.appendingPathComponent("api/auth/identities/\(provider.rawValue)")
         let body = SocialLoginRequest(
             accessToken: socialAccessToken,
-            idToken: idToken,
+            idToken: provider == .google ? nil : idToken,
+            identityToken: provider == .google ? idToken : nil,
             authorizationCode: authorizationCode,
             redirectURI: redirectURI,
             state: state,
@@ -431,6 +433,7 @@ private struct AppleLoginRequest: Encodable, Sendable {
 private struct SocialLoginRequest: Encodable, Sendable {
     let accessToken: String?
     let idToken: String?
+    let identityToken: String?
     let authorizationCode: String?
     let redirectURI: String?
     let state: String?

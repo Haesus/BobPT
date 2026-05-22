@@ -10,6 +10,8 @@ import ProjectDescriptionHelpers
 let packageSettings: PackageSettings = .init(
   productTypes: [
     "Alamofire": .framework,
+    "AppAuth": .framework,
+    "AppAuthCore": .framework,
     "GoogleSignIn": .framework,
     "KakaoSDKAuth": .framework,
     "KakaoSDKCommon": .framework,

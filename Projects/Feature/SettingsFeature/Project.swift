@@ -19,6 +19,8 @@ let target: Target = .target(
     .project(target: "BobPTDomain", path: "../../Domain/BobPTDomain"),
     .project(target: "DesignSystem", path: "../../Shared/DesignSystem"),
     .project(target: "FeedbackUI", path: "../../Shared/FeedbackUI"),
+    .SPMTarget.appAuth,
+    .SPMTarget.appAuthCore,
     .SPMTarget.googleSignIn,
     .SPMTarget.kakaoSDKAuth,
     .SPMTarget.kakaoSDKUser
